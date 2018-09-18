@@ -29,7 +29,9 @@ pub fn main() {
 
     // Save the scad code to a file
     let filename = &format!("{}.scad", env!("CARGO_PKG_NAME"));
-    sfile.write_to_file(filename.to_string());
+    let result = sfile.write_to_file(filename.to_string());
+
+    assert_eq!(result, true);
 
     // Our customer runner script expects the generated scad filename on stdout
     println!("{}", filename);
