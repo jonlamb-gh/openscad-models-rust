@@ -1,0 +1,5 @@
+/target
+**/*.rs.bk
+
+# project's generated scad files
+*/*.scad

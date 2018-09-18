@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -e
+
+if (( $# != 1 ))
+then
+  echo "usage: $0 <rust-executable>"
+  exit 1
+fi
+
+EXEC_FILE="$1"
+
+# run the Rust executable, expects it to output the scad filename
+SCAD_FILE="$($EXEC_FILE)"
+
+if [[ "$SCAD_FILE" != /* ]]; then
+    SCAD_FILE=$PWD/$SCAD_FILE
+fi
+
+if [ ! -f $SCAD_FILE ]; then
+    echo "invalid file: $SCAD_FILE"
+    exit 1
+fi
+
+openscad $SCAD_FILE
+
+exit 0
