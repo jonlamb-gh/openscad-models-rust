@@ -1,6 +1,5 @@
 use scad::*;
 
-use board_dimensions::BoardDimensions;
 use object_assembler::ObjectAssembler;
 
 // TODO - use vector3 or some other proper types
