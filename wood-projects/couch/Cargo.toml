@@ -1,0 +1,7 @@
+[package]
+name = "couch"
+version = "0.1.0"
+authors = ["Jon Lamb"]
+
+[dependencies]
+scad = "1.0.1"

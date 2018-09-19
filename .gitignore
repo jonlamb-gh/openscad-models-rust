@@ -3,3 +3,4 @@
 
 # project's generated scad files
 */*.scad
+*/*/*.scad

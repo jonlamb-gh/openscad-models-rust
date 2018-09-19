@@ -1,2 +1,2 @@
 [workspace]
-members = ["template-project"]
+members = ["template-project", "wood-projects/couch"]
