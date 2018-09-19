@@ -99,9 +99,11 @@ impl Post {
 
 impl ObjectAssembler for Post {
     fn assemble(&self) -> ScadObject {
-        let mut transl = scad!(Translate(vec3(POST_STOCK_THICKNESS, 0.0, 0.0)));
+        // align back to center and orientate
+        let mut pos = scad!(Translate(vec3(POST_STOCK_THICKNESS, 0.0, 0.0)));
         let mut rot = scad!(Rotate(-90.0, vec3(0.0, 1.0, 0.0)));
 
+        // subtract the cutouts from the board
         let mut parent = scad!(Difference);
         parent.add_child(self.board.assemble());
 
@@ -112,8 +114,9 @@ impl ObjectAssembler for Post {
             Loc::RightRear => self.add_rear_cutaways(&mut parent),
         }
 
+        // combine and return a parent container object
         rot.add_child(parent);
-        transl.add_child(rot);
-        transl
+        pos.add_child(rot);
+        pos
     }
 }

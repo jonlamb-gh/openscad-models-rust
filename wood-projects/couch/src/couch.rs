@@ -11,8 +11,8 @@ qstruct!(Couch() {
     post_rr: Post = Post::new(Loc::RightRear),
 });
 
-impl ObjectAssembler for Couch {
-    fn assemble(&self) -> ScadObject {
+impl Couch {
+    fn assemble_posts(&self) -> ScadObject {
         let dx = POST_STOCK_THICKNESS + BASE_POST_TO_POST_LENGTH;
         let dy = POST_STOCK_WIDTH + BASE_POST_TO_POST_DEPTH;
 
@@ -28,5 +28,11 @@ impl ObjectAssembler for Couch {
                 self.post_rr.assemble(),
             }),
         })
+    }
+}
+
+impl ObjectAssembler for Couch {
+    fn assemble(&self) -> ScadObject {
+        self.assemble_posts()
     }
 }
