@@ -18,11 +18,9 @@ impl Board {
         Self::new(size[0], size[1], size[2])
     }
 
-    /*
-    pub fn dimensions(&self) -> &BoardDimensions {
+    pub fn dims(&self) -> &BoardDimensions {
         &self.dimensions
     }
-    */
 }
 
 impl ObjectAssembler for Board {

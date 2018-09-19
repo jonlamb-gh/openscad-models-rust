@@ -13,6 +13,8 @@ mod common_functions;
 mod config;
 mod couch;
 mod cutaway;
+mod long_beam;
+mod lower_short_beam;
 mod object_assembler;
 mod post;
 mod post_board;

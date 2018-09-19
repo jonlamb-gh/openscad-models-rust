@@ -1,3 +1,4 @@
+// TODO - this level of abstraction seems unnecessary
 use scad::*;
 
 use board::Board;
