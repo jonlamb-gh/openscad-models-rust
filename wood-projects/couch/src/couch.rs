@@ -5,6 +5,7 @@ use long_beam::LongBeam;
 use lower_short_beam::LowerShortBeam;
 use object_assembler::ObjectAssembler;
 use post::{Loc, Post};
+use upper_short_beam::UpperShortBeam;
 
 qstruct!(Couch() {
     post_lf: Post = Post::new(Loc::LeftFront),
@@ -14,6 +15,7 @@ qstruct!(Couch() {
 
     long_beam: LongBeam = LongBeam::new(),
     lower_short_beam: LowerShortBeam = LowerShortBeam::new(),
+    upper_short_beam: UpperShortBeam = UpperShortBeam::new(),
 });
 
 impl Couch {
@@ -44,10 +46,18 @@ impl Couch {
 
         let front_long_beam_pos = vec3(-TENON_OVERRUN, depth_offset, height_offset);
 
-        let rear_long_beam_pos = vec3(
+        let rear_lower_long_beam_pos = vec3(
             -TENON_OVERRUN,
             depth_offset + POST_STOCK_WIDTH + BASE_POST_TO_POST_DEPTH,
             height_offset,
+        );
+
+        let rear_upper_long_beam_pos = vec3(
+            -TENON_OVERRUN,
+            (POST_STOCK_THICKNESS - BEAM_STOCK_THICKNESS) / 2.0
+                + POST_STOCK_WIDTH
+                + BASE_POST_TO_POST_DEPTH,
+            BASE_POST_HEIGHT - BEAM_STOCK_WIDTH,
         );
 
         let left_lower_short_beam_pos = vec3(depth_offset, -TENON_OVERRUN, side_height_offset);
@@ -58,11 +68,26 @@ impl Couch {
             side_height_offset,
         );
 
+        let left_upper_short_beam_pos = vec3(
+            depth_offset,
+            -TENON_OVERRUN,
+            BASE_POST_HEIGHT - SIDE_ARM_THICKNESS - BEAM_STOCK_WIDTH,
+        );
+
+        let right_upper_short_beam_pos = vec3(
+            depth_offset + POST_STOCK_THICKNESS + BASE_POST_TO_POST_LENGTH,
+            -TENON_OVERRUN,
+            BASE_POST_HEIGHT - SIDE_ARM_THICKNESS - BEAM_STOCK_WIDTH,
+        );
+
         scad!(Union;{
             scad!(Translate(front_long_beam_pos);{
                 self.long_beam.assemble(),
             }),
-            scad!(Translate(rear_long_beam_pos);{
+            scad!(Translate(rear_lower_long_beam_pos);{
+                self.long_beam.assemble(),
+            }),
+            scad!(Translate(rear_upper_long_beam_pos);{
                 self.long_beam.assemble(),
             }),
             scad!(Translate(left_lower_short_beam_pos);{
@@ -70,6 +95,12 @@ impl Couch {
             }),
             scad!(Translate(right_lower_short_beam_pos);{
                 self.lower_short_beam.assemble(),
+            }),
+            scad!(Translate(left_upper_short_beam_pos);{
+                self.upper_short_beam.assemble(),
+            }),
+            scad!(Translate(right_upper_short_beam_pos);{
+                self.upper_short_beam.assemble(),
             }),
         })
     }
