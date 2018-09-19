@@ -5,6 +5,7 @@ use long_beam::LongBeam;
 use lower_short_beam::LowerShortBeam;
 use object_assembler::ObjectAssembler;
 use post::{Loc, Post};
+use support_plank::SupportPlank;
 use upper_short_beam::UpperShortBeam;
 
 qstruct!(Couch() {
@@ -16,6 +17,8 @@ qstruct!(Couch() {
     long_beam: LongBeam = LongBeam::new(),
     lower_short_beam: LowerShortBeam = LowerShortBeam::new(),
     upper_short_beam: UpperShortBeam = UpperShortBeam::new(),
+
+    support_plank: SupportPlank = SupportPlank::new(),
 });
 
 impl Couch {
@@ -104,13 +107,52 @@ impl Couch {
             }),
         })
     }
+
+    fn assemble_support_planks(&self) -> ScadObject {
+        assert_eq!(SUPPORT_PLANK_COUNT % 2, 0);
+
+        let height_offset = BASE_HEIGHT - SUPPORT_PLANK_CUTOUT_THICKNESS;
+        let depth_offset = (POST_STOCK_THICKNESS - BEAM_STOCK_THICKNESS) / 2.0 - PLANK_OVERRUN;
+
+        let center = (BASE_POST_TO_POST_LENGTH / 2.0) + POST_STOCK_THICKNESS;
+
+        let mut parent = scad!(Union);
+
+        // add the planks from center outward
+        for p in 0..(SUPPORT_PLANK_COUNT / 2) {
+            let dist = SUPPORT_PLANK_WIDTH + SUPPORT_PLANK_SEP_DISTANCE;
+
+            let left_plank_pos = vec3(
+                center + SUPPORT_PLANK_START_OFFSET + (p as f32 * dist),
+                depth_offset,
+                height_offset,
+            );
+
+            let right_plank_pos = vec3(
+                center - SUPPORT_PLANK_WIDTH - SUPPORT_PLANK_START_OFFSET - (p as f32 * dist),
+                depth_offset,
+                height_offset,
+            );
+
+            parent.add_child(scad!(Translate(left_plank_pos);{
+                self.support_plank.assemble(),
+            }));
+
+            parent.add_child(scad!(Translate(right_plank_pos);{
+                self.support_plank.assemble(),
+            }));
+        }
+
+        parent
+    }
 }
 
 impl ObjectAssembler for Couch {
     fn assemble(&self) -> ScadObject {
         scad!(Union;{
             self.assemble_posts(),
-            self.assemble_base_beams()
+            self.assemble_base_beams(),
+            self.assemble_support_planks(),
         })
     }
 }

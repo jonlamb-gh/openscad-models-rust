@@ -18,6 +18,7 @@ mod lower_short_beam;
 mod object_assembler;
 mod post;
 mod post_board;
+mod support_plank;
 mod upper_short_beam;
 
 use couch::Couch;
