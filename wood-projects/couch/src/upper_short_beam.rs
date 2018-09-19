@@ -14,25 +14,25 @@ impl UpperShortBeam {
         Cutaway::new(
             // position
             -VISUAL_OVERRUN,
+            SHORT_BEAM_UPPER_FRONT_TENON_WIDTH,
             -VISUAL_OVERRUN,
-            -SHORT_BEAM_UPPER_FRONT_TENON_WIDTH,
             // size
-            BEAM_STOCK_THICKNESS + (2.0 * VISUAL_OVERRUN),
             SHORT_BEAM_TENON_DEPTH + VISUAL_OVERRUN,
             BEAM_STOCK_WIDTH - SHORT_BEAM_UPPER_FRONT_TENON_WIDTH + VISUAL_OVERRUN,
+            BEAM_STOCK_THICKNESS + (2.0 * VISUAL_OVERRUN),
         )
     }
 
     fn right_tenon_cutaway(&self) -> Cutaway {
         Cutaway::new(
             // position
-            -VISUAL_OVERRUN,
             self.board.dims().length() - SHORT_BEAM_TENON_DEPTH,
             SHORT_BEAM_UPPER_REAR_TENON_WIDTH,
+            -VISUAL_OVERRUN,
             // size
-            BEAM_STOCK_THICKNESS + (2.0 * VISUAL_OVERRUN),
             SHORT_BEAM_TENON_DEPTH + VISUAL_OVERRUN,
             BEAM_STOCK_WIDTH - SHORT_BEAM_UPPER_REAR_TENON_WIDTH + VISUAL_OVERRUN,
+            BEAM_STOCK_THICKNESS + (2.0 * VISUAL_OVERRUN),
         )
     }
 }
