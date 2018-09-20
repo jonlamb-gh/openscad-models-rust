@@ -3,6 +3,8 @@ use scad::*;
 use super::{arrow, HEIGHT, LINE_WIDTH};
 
 pub fn line(length: f32, left_arrow: bool, right_arrow: bool) -> ScadObject {
+    assert!(length >= 0.0);
+
     let arrow_size = LINE_WIDTH * 4.0;
     let arrow_length = arrow_size * 0.6;
 

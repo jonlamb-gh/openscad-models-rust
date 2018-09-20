@@ -48,6 +48,10 @@ fn main() {
         dim_line(5.0, DimLocation::Outside)
     }));
 
+    object.add_child(scad!(Translate(vec3(0.0, 4.5, 0.0));{
+        leader_line(&LeaderLineParams::default())
+    }));
+
     sfile.add_object(object);
 
     let filename = &format!("{}.scad", env!("CARGO_PKG_NAME"));
