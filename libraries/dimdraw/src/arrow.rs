@@ -1,6 +1,6 @@
-use super::HEIGHT;
-
 use scad::*;
+
+use super::HEIGHT;
 
 pub fn arrow(length: f32, arr: f32) -> ScadObject {
     let polygon = Polygon(PolygonParameters::new(vec![

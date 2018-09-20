@@ -28,6 +28,10 @@ fn main() {
         line(15.0, false, false)
     }));
 
+    object.add_child(scad!(Translate(vec3(1.0, 4.0, 0.0));{
+        text("A String")
+    }));
+
     sfile.add_object(object);
 
     let filename = &format!("{}.scad", env!("CARGO_PKG_NAME"));
