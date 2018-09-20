@@ -13,6 +13,6 @@ Rust workspace for my OpenScad projects
 ```bash
 cargo build
 
-# generates couch.scad and launches OpenScad
+# generates package-name.scad and opens it with OpenScad
 cargo run
 ```
