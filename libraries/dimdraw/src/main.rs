@@ -7,11 +7,34 @@ mod lib;
 use lib::*;
 use scad::*;
 
+qstruct!(Part() {
+    length: f32 = 3.0,
+    width: f32 = 3.0,
+    thickness: f32 = 3.0,
+});
+
+impl ObjectAssembler for Part {
+    fn assemble(&self) -> ScadObject {
+        scad!(Cube(vec3(self.length, self.width, self.thickness,)))
+    }
+}
+
+impl DrawingBuilder for Part {
+    fn describe_drawing(&self) -> DrawingParams {
+        DrawingParams::default()
+    }
+}
+
 fn main() {
     let mut sfile = ScadFile::new();
 
     sfile.set_detail(100);
 
+    let part = Part::new();
+
+    let mut object = part.build_drawing();
+
+    /*
     let mut object = scad!(Color(vec3(0.0, 0.0, 0.0)));
 
     object.add_child(line(10.0, true, true));
@@ -51,6 +74,7 @@ fn main() {
     object.add_child(scad!(Translate(vec3(0.0, 4.5, 0.0));{
         leader_line(&LeaderLineParams::default())
     }));
+    */
 
     sfile.add_object(object);
 
