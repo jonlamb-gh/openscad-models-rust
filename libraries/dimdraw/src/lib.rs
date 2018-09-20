@@ -6,8 +6,8 @@ extern crate scad;
 mod arrow;
 #[path = "dim_line.rs"]
 mod dim_line;
-#[path = "drawing_builder.rs"]
-mod drawing_builder;
+#[path = "drawing_assembler.rs"]
+mod drawing_assembler;
 #[path = "leader_line.rs"]
 mod leader_line;
 #[path = "line.rs"]
@@ -21,16 +21,18 @@ mod title_block;
 
 pub use self::arrow::arrow;
 pub use self::dim_line::{dim_line, DimLocation};
-pub use self::drawing_builder::{DrawingBuilder, DrawingParams};
+pub use self::drawing_assembler::{DrawingAssembler, DrawingParams, ObjectDescriptor};
 pub use self::leader_line::{leader_line, LeaderDirection, LeaderLineParams};
 pub use self::line::line;
 pub use self::object_assembler::ObjectAssembler;
 pub use self::text::text;
 //pub use self::title_block::{title_block, TitleBlockParams};
 
-const LINE_WIDTH: f32 = 0.025;
+const DOC_SCALING_FACTOR: f32 = 4.0;
 
-// const SPACE = 0.1
+const LINE_WIDTH: f32 = 0.025 * DOC_SCALING_FACTOR;
+
+const SPACING: f32 = 0.1 * DOC_SCALING_FACTOR;
 
 const HEIGHT: f32 = 0.01;
 

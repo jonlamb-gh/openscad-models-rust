@@ -8,9 +8,9 @@ use lib::*;
 use scad::*;
 
 qstruct!(Part() {
-    length: f32 = 3.0,
-    width: f32 = 3.0,
-    thickness: f32 = 3.0,
+    length: f32 = 10.0,
+    width: f32 = 8.0,
+    thickness: f32 = 6.0,
 });
 
 impl ObjectAssembler for Part {
@@ -19,9 +19,17 @@ impl ObjectAssembler for Part {
     }
 }
 
-impl DrawingBuilder for Part {
+impl DrawingAssembler for Part {
     fn describe_drawing(&self) -> DrawingParams {
         DrawingParams::default()
+    }
+
+    fn describe_object(&self) -> ObjectDescriptor {
+        ObjectDescriptor {
+            length: self.length,
+            width: self.width,
+            thickness: self.thickness,
+        }
     }
 }
 
@@ -32,7 +40,7 @@ fn main() {
 
     let part = Part::new();
 
-    let mut object = part.build_drawing();
+    let object = part.assemble_drawing();
 
     /*
     let mut object = scad!(Color(vec3(0.0, 0.0, 0.0)));
