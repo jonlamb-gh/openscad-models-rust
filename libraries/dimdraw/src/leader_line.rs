@@ -24,9 +24,9 @@ impl Default for LeaderLineParams {
             radius: 1.0,
             angle_length: 1.0,
             horiz_line_length: 1.0,
-            dir: LeaderDirection::Left,
-            do_circle: true,
-            text: String::from("*"),
+            dir: LeaderDirection::Right,
+            do_circle: false,
+            text: String::new(),
         }
     }
 }
