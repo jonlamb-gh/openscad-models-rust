@@ -20,7 +20,7 @@ pub use self::dim_line::{dim_line, DimLocation};
 pub use self::leader_line::{leader_line, LeaderDirection, LeaderLineParams};
 pub use self::line::line;
 pub use self::text::text;
-pub use self::title_block::{title_block, TitleBlockParams};
+//pub use self::title_block::{title_block, TitleBlockParams};
 
 const LINE_WIDTH: f32 = 0.025;
 
