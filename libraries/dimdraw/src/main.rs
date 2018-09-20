@@ -15,13 +15,9 @@ fn main() {
     sfile.set_detail(50);
 
     // Create an scad object
-    let mut object = scad!(Union);
+    let mut object = scad!(Color(vec3(0.0, 0.0, 0.0)));
 
-    object.add_child(scad!(Cube(vec3(5.0, 5.0, 5.0))));
-
-    object.add_child(scad!(Color(vec3(0.0, 0.0, 0.0));{
-            line(15.0)
-        }));
+    object.add_child(line(15.0, true, true));
 
     // Add the cube object to the file
     sfile.add_object(object);

@@ -27,9 +27,32 @@ pub fn arrow(length: f32, arr: f32) -> ScadObject {
 }
 
 // TODO - params for left/right arrows
-pub fn line(length: f32) -> ScadObject {
-    scad!(Translate(vec3(0.0, -WIDTH / 2.0, 6.0));{
-        scad!(Cube(vec3(length, WIDTH, HEIGHT))),
-        arrow(WIDTH * 4.0 * 0.6, WIDTH * 4.0),
-    })
+pub fn line(length: f32, left_arrow: bool, right_arrow: bool) -> ScadObject {
+    let arrow_size = WIDTH * 4.0;
+    let arrow_length = arrow_size * 0.6;
+
+    let mut obj = if left_arrow && right_arrow {
+        scad!(Translate(vec3(arrow_length, -WIDTH / 2.0, 0.0));{
+            scad!(Cube(vec3(length - (arrow_length * 2.0), WIDTH, HEIGHT)))
+        })
+    } else {
+        // TODO
+        scad!(Translate(vec3(0.0, -WIDTH / 2.0, 0.0));{
+            scad!(Cube(vec3(length, WIDTH, HEIGHT))),
+        })
+    };
+
+    if left_arrow {
+        obj.add_child(arrow(arrow_length, arrow_size));
+    }
+
+    if right_arrow {
+        obj.add_child(scad!(Translate(vec3(length, 0.0, 0.0));{
+            scad!(Rotate(180.0, vec3(0.0, 0.0, 1.0));{
+                arrow(arrow_length, arrow_size)
+            })
+        }));
+    }
+
+    obj
 }
