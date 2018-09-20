@@ -1,2 +1,6 @@
 [workspace]
-members = ["template-project", "wood-projects/couch"]
+members = [
+    "template-project",
+    "libraries/dimdraw",
+    "wood-projects/couch"
+]
