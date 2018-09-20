@@ -4,12 +4,15 @@ extern crate scad;
 // TODO - clean this up
 #[path = "arrow.rs"]
 mod arrow;
+#[path = "dim_line.rs"]
+mod dim_line;
 #[path = "line.rs"]
 mod line;
 #[path = "text.rs"]
 mod text;
 
 pub use self::arrow::arrow;
+pub use self::dim_line::{dim_line, DimLocation};
 pub use self::line::line;
 pub use self::text::text;
 
