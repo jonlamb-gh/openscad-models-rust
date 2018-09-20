@@ -1,6 +1,6 @@
 use scad::*;
 
-use super::{line, text, FONT_SCALE};
+use super::{line, text, FONT_SCALE, HEIGHT, LINE_WIDTH};
 
 pub enum LeaderDirection {
     Left,
@@ -24,9 +24,9 @@ impl Default for LeaderLineParams {
             radius: 1.0,
             angle_length: 1.0,
             horiz_line_length: 1.0,
-            dir: LeaderDirection::Right,
-            do_circle: false,
-            text: String::from("SDF"),
+            dir: LeaderDirection::Left,
+            do_circle: true,
+            text: String::from("*"),
         }
     }
 }
@@ -76,7 +76,9 @@ fn left_leader(params: &LeaderLineParams) -> ScadObject {
         }
     ));
 
-    // TODO - call circle
+    if params.do_circle {
+        parent.add_child(circle(params));
+    }
 
     parent
 }
@@ -94,7 +96,26 @@ fn right_leader(params: &LeaderLineParams) -> ScadObject {
         }
     ));
 
-    // TODO - call circle
+    if params.do_circle {
+        parent.add_child(circle(params));
+    }
 
     parent
+}
+
+fn circle(params: &LeaderLineParams) -> ScadObject {
+    let text_len = params.text.len() as f32 * FONT_SCALE * 6.0;
+    let space = FONT_SCALE * 6.0;
+
+    let pos_x = match params.dir {
+        LeaderDirection::Left => -(params.horiz_line_length + space + (text_len / 2.0)),
+        LeaderDirection::Right => params.horiz_line_length + space + (text_len / 2.0),
+    };
+
+    scad!(Translate(vec3(pos_x, 0.0, 0.0));{
+        scad!(Difference;{
+            scad!(Cylinder(HEIGHT, CircleType::Radius(text_len + space - LINE_WIDTH))),
+            scad!(Cylinder(HEIGHT, CircleType::Radius(text_len + space - (LINE_WIDTH * 2.0))))
+        })
+    })
 }

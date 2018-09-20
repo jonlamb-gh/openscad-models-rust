@@ -10,7 +10,7 @@ use scad::*;
 fn main() {
     let mut sfile = ScadFile::new();
 
-    sfile.set_detail(50);
+    sfile.set_detail(100);
 
     let mut object = scad!(Color(vec3(0.0, 0.0, 0.0)));
 
