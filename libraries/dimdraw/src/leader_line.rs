@@ -25,7 +25,7 @@ impl Default for LeaderLineParams {
             angle_length: 1.0,
             horiz_line_length: 1.0,
             dir: LeaderDirection::Right,
-            do_circle: false,
+            do_circle: true,
             text: String::new(),
         }
     }
@@ -115,7 +115,12 @@ fn circle(params: &LeaderLineParams) -> ScadObject {
     scad!(Translate(vec3(pos_x, 0.0, 0.0));{
         scad!(Difference;{
             scad!(Cylinder(HEIGHT, CircleType::Radius(text_len + space - LINE_WIDTH))),
-            scad!(Cylinder(HEIGHT, CircleType::Radius(text_len + space - (LINE_WIDTH * 2.0))))
+            scad!(Translate(vec3(0.0, 0.0, -0.01));{
+                scad!(Cylinder(
+                    HEIGHT + 0.02,
+                    CircleType::Radius(text_len + space - (LINE_WIDTH * 2.0)))
+                )
+            })
         })
     })
 }
