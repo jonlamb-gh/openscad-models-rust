@@ -47,7 +47,7 @@ impl Default for DrawingParams {
             // TODO - doc scale?
             show_frame: true,
             // TODO
-            doc_height: 7.0,
+            doc_height: 9.0,
             top_left_view_pos: vec3(-15.0, 5.0, 0.0),
             top_right_view_pos: vec3(5.0, 5.0, 0.0),
             bottom_left_view_pos: vec3(-15.0, -15.0, 0.0),
@@ -62,8 +62,28 @@ pub trait DrawingAssembler: ObjectAssembler {
     fn describe_object(&self) -> ObjectDescriptor;
 
     // TODO - param enum TopLeft, BottomLeft, etc
-    fn assemble_preview(&self, _vp: Viewport) -> ScadObject {
-        self.assemble()
+    fn assemble_preview(&self, vp: Viewport) -> ScadObject {
+        let obj_desc = self.describe_object();
+        let parent = match vp {
+            Viewport::TopLeft => self.assemble(),
+            Viewport::TopRight => self.assemble(),
+            Viewport::BottomLeft => scad!(Translate(vec3(0.0, 0.0, obj_desc.width));{
+                    scad!(Rotate(-90.0, vec3(1.0, 0.0, 0.0));{
+                        self.assemble()
+                    })
+                }),
+            Viewport::BottomRight => {
+                scad!(Translate(vec3(obj_desc.width, 0.0, obj_desc.thickness));{
+                    scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
+                        scad!(Rotate(90.0, vec3(0.0, 1.0, 0.0));{
+                            self.assemble()
+                        })
+                    })
+                })
+            }
+        };
+
+        parent
     }
 
     fn assemble_drawing(&self) -> ScadObject {
@@ -110,7 +130,7 @@ pub trait DrawingAssembler: ObjectAssembler {
                 })
             }));
         dims_children.add_child(
-            scad!(Translate(vec3(obj_desc.length + SPACING, obj_desc.width + SPACING, 0.0));{
+            scad!(Translate(vec3(obj_desc.length, obj_desc.width + SPACING, 0.0));{
                 scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
                     line(SPACING * 3.0, false, false)
                 })
