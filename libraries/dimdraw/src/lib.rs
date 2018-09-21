@@ -4,6 +4,8 @@ extern crate scad;
 // TODO - clean this up once restored back to a proper lib
 #[path = "arrow.rs"]
 mod arrow;
+#[path = "constants.rs"]
+mod constants;
 #[path = "dim_line.rs"]
 mod dim_line;
 #[path = "drawing_assembler.rs"]
@@ -20,6 +22,7 @@ mod text;
 mod title_block;
 
 pub use self::arrow::arrow;
+pub use self::constants::*;
 pub use self::dim_line::{dim_line, DimLocation};
 pub use self::drawing_assembler::{DrawingAssembler, DrawingParams, ObjectDescriptor};
 pub use self::leader_line::{leader_line, LeaderDirection, LeaderLineParams};

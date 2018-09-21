@@ -1,8 +1,11 @@
 // TODO - pull out the hard-coded magic scalers
-
+// should only expose R^2/vec2?
 use scad::*;
 
-use super::{dim_line, line, na, DimLocation, ObjectAssembler, SPACING};
+// would rather use modules directly?
+use super::{
+    dim_line, line, na, vec3z, x_axis, y_axis, z_axis, DimLocation, ObjectAssembler, SPACING,
+};
 
 #[derive(Clone, PartialEq)]
 pub enum Viewport {
@@ -28,7 +31,7 @@ pub struct DrawingParams {
     // title block ?
     show_frame: bool,
     doc_height: f32,
-    // top_view params, pos/orien
+    // TODO - pos/orien
     top_left_view_pos: na::Vector3<f32>,
     top_right_view_pos: na::Vector3<f32>,
     bottom_left_view_pos: na::Vector3<f32>,
@@ -47,9 +50,9 @@ impl Default for DrawingParams {
             // TODO - doc scale?
             show_frame: true,
             // TODO
-            doc_height: 9.0,
+            doc_height: 1.0,
             top_left_view_pos: vec3(-15.0, 5.0, 0.0),
-            top_right_view_pos: vec3(5.0, 5.0, 0.0),
+            top_right_view_pos: vec3(7.0, 4.0, 0.0),
             bottom_left_view_pos: vec3(-15.0, -15.0, 0.0),
             bottom_right_view_pos: vec3(5.0, -15.0, 0.0),
         }
@@ -61,26 +64,34 @@ pub trait DrawingAssembler: ObjectAssembler {
     fn describe_drawing(&self) -> DrawingParams;
     fn describe_object(&self) -> ObjectDescriptor;
 
-    // TODO - param enum TopLeft, BottomLeft, etc
+    // currently at or below z == 0
     fn assemble_preview(&self, vp: Viewport) -> ScadObject {
         let obj_desc = self.describe_object();
         let parent = match vp {
-            Viewport::TopLeft => self.assemble(),
-            Viewport::TopRight => self.assemble(),
-            Viewport::BottomLeft => scad!(Translate(vec3(0.0, 0.0, obj_desc.width));{
-                    scad!(Rotate(-90.0, vec3(1.0, 0.0, 0.0));{
-                        self.assemble()
-                    })
-                }),
-            Viewport::BottomRight => {
-                scad!(Translate(vec3(obj_desc.width, 0.0, obj_desc.thickness));{
-                    scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
-                        scad!(Rotate(90.0, vec3(0.0, 1.0, 0.0));{
+            Viewport::TopLeft => scad!(Translate(vec3(0.0, 0.0, -obj_desc.thickness));{
+                self.assemble()
+            }),
+            Viewport::TopRight => scad!(Translate(vec3(0.0, 0.0, -obj_desc.thickness));{
+                scad!(Rotate(20.0, z_axis());{
+                    scad!(Rotate(40.0, y_axis());{
+                        scad!(Rotate(-30.0, x_axis());{
                             self.assemble()
                         })
                     })
                 })
-            }
+            }),
+            Viewport::BottomLeft => scad!(Translate(vec3z());{
+                    scad!(Rotate(-90.0, x_axis());{
+                        self.assemble()
+                    })
+                }),
+            Viewport::BottomRight => scad!(Translate(vec3(obj_desc.width, 0.0, 0.0));{
+                    scad!(Rotate(90.0, z_axis());{
+                        scad!(Rotate(90.0, y_axis());{
+                            self.assemble()
+                        })
+                    })
+                }),
         };
 
         parent
@@ -110,51 +121,55 @@ pub trait DrawingAssembler: ObjectAssembler {
         parent
     }
 
-    fn assemble_viewport(&self, _vp: Viewport) -> ScadObject {
+    fn assemble_viewport(&self, vp: Viewport) -> ScadObject {
         let obj_desc = self.describe_object();
         let mut parent = scad!(Union);
 
-        let mut dims_children = scad!(Color(vec3(0.0, 0.0, 0.0)));
+        let mut dims_children = scad!(Color(vec3z()));
 
-        // length dimension
+        let (major_dim, minor_dim) = match vp {
+            Viewport::TopLeft => (obj_desc.length, obj_desc.width),
+            // top right is used to show a perspective view, no dimensions
+            Viewport::TopRight => return parent,
+            Viewport::BottomLeft => (obj_desc.length, obj_desc.thickness),
+            Viewport::BottomRight => (obj_desc.width, obj_desc.thickness),
+        };
+
+        // major dimension
         dims_children.add_child(
-            scad!(Translate(vec3(0.0, obj_desc.width + SPACING * 3.0, 0.0));{
-                dim_line(obj_desc.length, DimLocation::Center)
+            scad!(Translate(vec3(0.0, minor_dim + (SPACING * 3.0), 0.0));{
+                dim_line(major_dim, DimLocation::Center)
             }),
         );
 
         // extension lines
-        dims_children.add_child(scad!(Translate(vec3(0.0, obj_desc.width + SPACING, 0.0));{
-                scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
+        dims_children.add_child(scad!(Translate(vec3(0.0, minor_dim + SPACING, 0.0));{
+                scad!(Rotate(90.0, z_axis());{
                     line(SPACING * 3.0, false, false)
                 })
             }));
-        dims_children.add_child(
-            scad!(Translate(vec3(obj_desc.length, obj_desc.width + SPACING, 0.0));{
-                scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
+        dims_children.add_child(scad!(Translate(vec3(major_dim, minor_dim + SPACING, 0.0));{
+                scad!(Rotate(90.0, z_axis());{
                     line(SPACING * 3.0, false, false)
                 })
-            }),
-        );
+            }));
 
-        // width dimension
+        // minor dimension
         dims_children.add_child(
-            scad!(Translate(vec3(obj_desc.length + SPACING * 3.0, obj_desc.width, 0.0));{
-                scad!(Rotate(-90.0, vec3(0.0, 0.0, 1.0));{
-                    dim_line(obj_desc.width, DimLocation::Center)
+            scad!(Translate(vec3(major_dim + SPACING * 3.0, minor_dim, 0.0));{
+                scad!(Rotate(-90.0, z_axis());{
+                    dim_line(minor_dim, DimLocation::Center)
                 })
             }),
         );
 
         // extension lines
-        dims_children.add_child(scad!(Translate(vec3(obj_desc.length + SPACING, 0.0, 0.0));{
+        dims_children.add_child(scad!(Translate(vec3(major_dim + SPACING, 0.0, 0.0));{
                 line(SPACING * 3.0, false, false)
             }));
-        dims_children.add_child(
-            scad!(Translate(vec3(obj_desc.length + SPACING, obj_desc.width, 0.0));{
+        dims_children.add_child(scad!(Translate(vec3(major_dim + SPACING, minor_dim, 0.0));{
                 line(SPACING * 3.0, false, false)
-            }),
-        );
+            }));
 
         parent.add_child(dims_children);
 
