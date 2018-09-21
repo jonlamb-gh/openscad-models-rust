@@ -5,3 +5,6 @@ authors = ["Jon Lamb"]
 
 [dependencies]
 scad = "1.0.1"
+
+[dependencies.dimdraw]
+path = "../../libraries/dimdraw/"

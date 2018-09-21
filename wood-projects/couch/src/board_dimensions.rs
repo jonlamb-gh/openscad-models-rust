@@ -1,6 +1,6 @@
 use scad::*;
 
-use object_assembler::ObjectAssembler;
+use dimdraw::ObjectAssembler;
 
 pub struct BoardDimensions {
     // size[0] is always with the grain

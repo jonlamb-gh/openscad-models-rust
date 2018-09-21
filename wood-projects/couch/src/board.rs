@@ -1,7 +1,7 @@
+use dimdraw::ObjectAssembler;
 use scad::*;
 
 use board_dimensions::BoardDimensions;
-use object_assembler::ObjectAssembler;
 
 pub struct Board {
     dimensions: BoardDimensions,

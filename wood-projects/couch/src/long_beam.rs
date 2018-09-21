@@ -3,7 +3,7 @@ use scad::*;
 use board::Board;
 use config::*;
 use cutaway::Cutaway;
-use object_assembler::ObjectAssembler;
+use dimdraw::ObjectAssembler;
 
 qstruct!(LongBeam() {
     board: Board = Board::from_array(&LONG_BEAM_BOARD_SIZE),

@@ -3,6 +3,7 @@
 // TODO - use dimensioned crate for units?
 
 //#[macro_use]
+extern crate dimdraw;
 extern crate scad;
 
 use scad::*;
@@ -15,14 +16,13 @@ mod couch;
 mod cutaway;
 mod long_beam;
 mod lower_short_beam;
-mod object_assembler;
 mod post;
 mod post_board;
 mod support_plank;
 mod upper_short_beam;
 
 use couch::Couch;
-use object_assembler::ObjectAssembler;
+use dimdraw::ObjectAssembler;
 
 fn main() {
     // Create an scad file object for storing the scad objects. This

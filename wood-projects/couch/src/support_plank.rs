@@ -2,7 +2,7 @@ use scad::*;
 
 use board::Board;
 use config::*;
-use object_assembler::ObjectAssembler;
+use dimdraw::ObjectAssembler;
 
 qstruct!(SupportPlank() {
     board: Board = Board::from_array(&SUPPORT_PLANK_BOARD_SIZE),

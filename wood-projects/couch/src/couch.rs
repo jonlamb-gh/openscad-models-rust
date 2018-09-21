@@ -1,9 +1,9 @@
+use dimdraw::ObjectAssembler;
 use scad::*;
 
 use config::*;
 use long_beam::LongBeam;
 use lower_short_beam::LowerShortBeam;
-use object_assembler::ObjectAssembler;
 use post::{Loc, Post};
 use support_plank::SupportPlank;
 use upper_short_beam::UpperShortBeam;

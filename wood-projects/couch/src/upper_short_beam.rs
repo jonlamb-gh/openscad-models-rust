@@ -3,7 +3,7 @@ use scad::*;
 use board::Board;
 use config::*;
 use cutaway::Cutaway;
-use object_assembler::ObjectAssembler;
+use dimdraw::ObjectAssembler;
 
 qstruct!(UpperShortBeam() {
     board: Board = Board::from_array(&SHORT_BEAM_BOARD_SIZE),

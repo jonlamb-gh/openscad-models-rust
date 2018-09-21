@@ -1,8 +1,8 @@
+use dimdraw::ObjectAssembler;
 use scad::*;
 
 use config::*;
 use cutaway::Cutaway;
-use object_assembler::ObjectAssembler;
 use post_board::PostBoard;
 
 pub enum Loc {

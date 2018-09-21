@@ -12,6 +12,7 @@ pub fn z_axis() -> Vector3<f32> {
     Vector3::new(0.0, 0.0, 1.0)
 }
 
+// or v3zero or something?
 pub fn vec3z() -> Vector3<f32> {
     Vector3::new(0.0, 0.0, 0.0)
 }

@@ -3,7 +3,7 @@ use scad::*;
 
 use board::Board;
 use config::POST_BOARD_SIZE;
-use object_assembler::ObjectAssembler;
+use dimdraw::ObjectAssembler;
 
 qstruct!(PostBoard() {
     board: Board = Board::from_array(&POST_BOARD_SIZE),

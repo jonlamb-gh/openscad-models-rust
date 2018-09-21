@@ -1,6 +1,6 @@
 use scad::*;
 
-use object_assembler::ObjectAssembler;
+use dimdraw::ObjectAssembler;
 
 // TODO - use vector3 or some other proper types
 qstruct!(Cutaway(x: f32, y: f32, z: f32, sx: f32, sy: f32, sz: f32) {
