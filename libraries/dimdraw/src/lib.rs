@@ -1,24 +1,14 @@
 extern crate nalgebra as na;
 extern crate scad;
 
-// TODO - clean this up once restored back to a proper lib
-#[path = "arrow.rs"]
 mod arrow;
-#[path = "constants.rs"]
 mod constants;
-#[path = "dim_line.rs"]
 mod dim_line;
-#[path = "drawing_assembler.rs"]
 mod drawing_assembler;
-#[path = "leader_line.rs"]
 mod leader_line;
-#[path = "line.rs"]
 mod line;
-#[path = "object_assembler.rs"]
 mod object_assembler;
-#[path = "text.rs"]
 mod text;
-#[path = "title_block.rs"]
 mod title_block;
 
 pub use self::arrow::arrow;

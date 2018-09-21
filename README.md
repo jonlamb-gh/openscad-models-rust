@@ -10,9 +10,15 @@ Rust workspace for my OpenScad projects
 
 ## Building the Projects
 
+The runner used in this workspace expects OpenScad binary name to be `openscad`.
+
 ```bash
 cargo build
 
 # generates package-name.scad and opens it with OpenScad
 cargo run
 ```
+
+## Projects
+
+- [dimdraw](libraries/dimdraw) A Rust library to generate annotated engineering drawings in OpenScad

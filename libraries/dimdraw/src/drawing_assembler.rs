@@ -121,6 +121,7 @@ pub trait DrawingAssembler: ObjectAssembler {
         parent
     }
 
+    // default impl just does some basic major/minor dimensions
     fn assemble_viewport(&self, vp: Viewport) -> ScadObject {
         let obj_desc = self.describe_object();
         let mut parent = scad!(Union);
