@@ -21,6 +21,7 @@ pub use self::object_assembler::ObjectAssembler;
 pub use self::text::text;
 //pub use self::title_block::{title_block, TitleBlockParams};
 
+//  TODO - these need to be runtime configurable
 const DOC_SCALING_FACTOR: f32 = 4.0;
 
 const LINE_WIDTH: f32 = 0.025 * DOC_SCALING_FACTOR;

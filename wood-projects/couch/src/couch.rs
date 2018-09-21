@@ -1,4 +1,4 @@
-use dimdraw::ObjectAssembler;
+use dimdraw::{DrawingAssembler, DrawingParams, ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 use config::*;
@@ -154,5 +154,21 @@ impl ObjectAssembler for Couch {
             self.assemble_base_beams(),
             self.assemble_support_planks(),
         })
+    }
+}
+
+// TODO - which objects should implement these traits?
+impl DrawingAssembler for Couch {
+    fn describe_drawing(&self) -> DrawingParams {
+        DrawingParams::default()
+    }
+
+    // maximum dimensions of the couch
+    fn describe_object(&self) -> ObjectDescriptor {
+        ObjectDescriptor {
+            length: LONG_BEAM_BOARD_SIZE[0],
+            width: SHORT_BEAM_BOARD_SIZE[0],
+            thickness: BASE_POST_HEIGHT,
+        }
     }
 }
