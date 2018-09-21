@@ -29,13 +29,13 @@ impl Viewport {
 //#[derive(Clone)]
 pub struct DrawingParams {
     // title block ?
-    show_frame: bool,
-    doc_height: f32,
+    pub show_frame: bool,
+    pub doc_height: f32,
     // TODO - pos/orien
-    top_left_view_pos: na::Vector3<f32>,
-    top_right_view_pos: na::Vector3<f32>,
-    bottom_left_view_pos: na::Vector3<f32>,
-    bottom_right_view_pos: na::Vector3<f32>,
+    pub top_left_view_pos: na::Vector3<f32>,
+    pub top_right_view_pos: na::Vector3<f32>,
+    pub bottom_left_view_pos: na::Vector3<f32>,
+    pub bottom_right_view_pos: na::Vector3<f32>,
 }
 
 pub struct ObjectDescriptor {
