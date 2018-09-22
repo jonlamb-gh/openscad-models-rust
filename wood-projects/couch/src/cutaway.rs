@@ -1,6 +1,5 @@
+use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use scad::*;
-
-use dimdraw::ObjectAssembler;
 
 // TODO - use vector3 or some other proper types
 qstruct!(Cutaway(x: f32, y: f32, z: f32, sx: f32, sy: f32, sz: f32) {
@@ -15,6 +14,14 @@ qstruct!(Cutaway(x: f32, y: f32, z: f32, sx: f32, sy: f32, sz: f32) {
 });
 
 impl ObjectAssembler for Cutaway {
+    fn describe(&self) -> ObjectDescriptor {
+        ObjectDescriptor {
+            length: self.sx,
+            width: self.sy,
+            thickness: self.sz,
+        }
+    }
+
     fn assemble(&self) -> ScadObject {
         assert!(self.sx > 0.0);
         assert!(self.sy > 0.0);

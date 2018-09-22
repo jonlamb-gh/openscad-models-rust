@@ -1,9 +1,9 @@
+use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 use board::Board;
 use config::*;
 use cutaway::Cutaway;
-use dimdraw::ObjectAssembler;
 
 qstruct!(LowerShortBeam() {
     board: Board = Board::from_array(&SHORT_BEAM_BOARD_SIZE),
@@ -38,6 +38,10 @@ impl LowerShortBeam {
 }
 
 impl ObjectAssembler for LowerShortBeam {
+    fn describe(&self) -> ObjectDescriptor {
+        self.board.describe()
+    }
+
     fn assemble(&self) -> ScadObject {
         // align back to center and orientate
         let mut rot_sub = scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0)));

@@ -1,6 +1,5 @@
+use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use scad::*;
-
-use dimdraw::ObjectAssembler;
 
 pub struct BoardDimensions {
     // size[0] is always with the grain
@@ -39,6 +38,14 @@ impl BoardDimensions {
 }
 
 impl ObjectAssembler for BoardDimensions {
+    fn describe(&self) -> ObjectDescriptor {
+        ObjectDescriptor {
+            length: self.length(),
+            width: self.width(),
+            thickness: self.thickness(),
+        }
+    }
+
     fn assemble(&self) -> ScadObject {
         scad!(Cube(vec3(self.length(), self.width(), self.thickness(),)))
     }

@@ -1,9 +1,9 @@
+use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 use board::Board;
 use config::*;
 use cutaway::Cutaway;
-use dimdraw::ObjectAssembler;
 
 qstruct!(LongBeam() {
     board: Board = Board::from_array(&LONG_BEAM_BOARD_SIZE),
@@ -38,6 +38,10 @@ impl LongBeam {
 }
 
 impl ObjectAssembler for LongBeam {
+    fn describe(&self) -> ObjectDescriptor {
+        self.board.describe()
+    }
+
     fn assemble(&self) -> ScadObject {
         // align back to center and orientate
         let mut pos = scad!(Translate(vec3(0.0, BEAM_STOCK_THICKNESS, 0.0)));

@@ -1,4 +1,4 @@
-use dimdraw::ObjectAssembler;
+use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 use config::*;
@@ -98,6 +98,10 @@ impl Post {
 }
 
 impl ObjectAssembler for Post {
+    fn describe(&self) -> ObjectDescriptor {
+        self.board.describe()
+    }
+
     fn assemble(&self) -> ScadObject {
         // align back to center and orientate
         let mut pos = scad!(Translate(vec3(POST_STOCK_THICKNESS, 0.0, 0.0)));

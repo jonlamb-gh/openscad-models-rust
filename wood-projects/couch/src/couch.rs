@@ -148,6 +148,15 @@ impl Couch {
 }
 
 impl ObjectAssembler for Couch {
+    // maximum dimensions of the couch
+    fn describe(&self) -> ObjectDescriptor {
+        ObjectDescriptor {
+            length: LONG_BEAM_BOARD_SIZE[0],
+            width: SHORT_BEAM_BOARD_SIZE[0],
+            thickness: BASE_POST_HEIGHT,
+        }
+    }
+
     fn assemble(&self) -> ScadObject {
         scad!(Union;{
             self.assemble_posts(),
@@ -159,28 +168,18 @@ impl ObjectAssembler for Couch {
 
 // TODO - which objects should implement these traits?
 impl DrawingAssembler for Couch {
-    fn describe_drawing(&self) -> DrawingParams {
-        let desc = self.describe_object();
+    fn drawing_params(&self) -> DrawingParams {
+        let desc = self.describe();
         let delta = 50.0;
 
         DrawingParams {
-            // TODO - doc scale?
+            doc_scale: 40.0,
             show_frame: true,
-            // TODO
             doc_height: 1.0,
             top_left_view_pos: vec3(-desc.length - delta, delta, 0.0),
             top_right_view_pos: vec3(80.0 + delta, delta, 0.0),
             bottom_left_view_pos: vec3(-desc.length - delta, -desc.thickness - delta, 0.0),
             bottom_right_view_pos: vec3(delta, -desc.thickness - delta, 0.0),
-        }
-    }
-
-    // maximum dimensions of the couch
-    fn describe_object(&self) -> ObjectDescriptor {
-        ObjectDescriptor {
-            length: LONG_BEAM_BOARD_SIZE[0],
-            width: SHORT_BEAM_BOARD_SIZE[0],
-            thickness: BASE_POST_HEIGHT,
         }
     }
 }

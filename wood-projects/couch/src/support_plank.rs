@@ -2,13 +2,17 @@ use scad::*;
 
 use board::Board;
 use config::*;
-use dimdraw::ObjectAssembler;
+use dimdraw::{ObjectAssembler, ObjectDescriptor};
 
 qstruct!(SupportPlank() {
     board: Board = Board::from_array(&SUPPORT_PLANK_BOARD_SIZE),
 });
 
 impl ObjectAssembler for SupportPlank {
+    fn describe(&self) -> ObjectDescriptor {
+        self.board.describe()
+    }
+
     fn assemble(&self) -> ScadObject {
         // align back to center and orientate
         let mut pos = scad!(Translate(vec3(self.board.dims().width(), 0.0, 0.0)));
