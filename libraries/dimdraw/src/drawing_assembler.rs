@@ -1,11 +1,10 @@
-// TODO - pull out the hard-coded magic scalers
-// should only expose R^2/vec2?
 use scad::*;
 
-// would rather use modules directly?
-use super::{
-    dim_line, line, na, vec3z, x_axis, y_axis, z_axis, DimLocation, ObjectAssembler, SPACING,
-};
+use super::na;
+use constants::*;
+use dim_line::DimLocation;
+use drawing::Drawing;
+use object_assembler::ObjectAssembler;
 
 #[derive(Clone, PartialEq)]
 pub enum Viewport {
@@ -26,9 +25,9 @@ impl Viewport {
     }
 }
 
-//#[derive(Clone)]
 pub struct DrawingParams {
     // title block ?
+    pub doc_scale: f32,
     pub show_frame: bool,
     pub doc_height: f32,
     // TODO - pos/orien
@@ -38,18 +37,11 @@ pub struct DrawingParams {
     pub bottom_right_view_pos: na::Vector3<f32>,
 }
 
-pub struct ObjectDescriptor {
-    pub length: f32,
-    pub width: f32,
-    pub thickness: f32,
-}
-
 impl Default for DrawingParams {
     fn default() -> DrawingParams {
         DrawingParams {
-            // TODO - doc scale?
+            doc_scale: 4.0,
             show_frame: true,
-            // TODO
             doc_height: 1.0,
             top_left_view_pos: vec3(-15.0, 5.0, 0.0),
             top_right_view_pos: vec3(7.0, 4.0, 0.0),
@@ -59,14 +51,39 @@ impl Default for DrawingParams {
     }
 }
 
-// assemble_frame() ?
+// trait that constructs and uses Drawing object or
+// methods of drawing object?
 pub trait DrawingAssembler: ObjectAssembler {
-    fn describe_drawing(&self) -> DrawingParams;
-    fn describe_object(&self) -> ObjectDescriptor;
+    fn drawing_params(&self) -> DrawingParams;
+
+    fn assemble_drawing(&self) -> ScadObject {
+        let params = self.drawing_params();
+
+        let mut parent = scad!(Union);
+
+        for vp in Viewport::enumerate() {
+            let vp_offset = match vp {
+                Viewport::TopLeft => params.top_left_view_pos,
+                Viewport::TopRight => params.top_right_view_pos,
+                Viewport::BottomLeft => params.bottom_left_view_pos,
+                Viewport::BottomRight => params.bottom_right_view_pos,
+            };
+
+            parent.add_child(scad!(Translate(vp_offset);{
+                    self.assemble_preview(vp.clone()),
+                    scad!(Translate(vec3(0.0, 0.0, params.doc_height));{
+                        self.assemble_viewport(vp.clone())
+                    })
+                }));
+        }
+
+        parent
+    }
 
     // currently at or below z == 0
     fn assemble_preview(&self, vp: Viewport) -> ScadObject {
-        let obj_desc = self.describe_object();
+        let obj_desc = self.describe();
+
         let parent = match vp {
             Viewport::TopLeft => scad!(Translate(vec3(0.0, 0.0, -obj_desc.thickness));{
                 self.assemble()
@@ -97,33 +114,11 @@ pub trait DrawingAssembler: ObjectAssembler {
         parent
     }
 
-    fn assemble_drawing(&self) -> ScadObject {
-        let params = self.describe_drawing();
-
-        let mut parent = scad!(Union);
-
-        for vp in Viewport::enumerate() {
-            let vp_offset = match vp {
-                Viewport::TopLeft => params.top_left_view_pos,
-                Viewport::TopRight => params.top_right_view_pos,
-                Viewport::BottomLeft => params.bottom_left_view_pos,
-                Viewport::BottomRight => params.bottom_right_view_pos,
-            };
-
-            parent.add_child(scad!(Translate(vp_offset);{
-                    self.assemble_preview(vp.clone()),
-                    scad!(Translate(vec3(0.0, 0.0, params.doc_height));{
-                        self.assemble_viewport(vp.clone())
-                    })
-                }));
-        }
-
-        parent
-    }
-
     // default impl just does some basic major/minor dimensions
     fn assemble_viewport(&self, vp: Viewport) -> ScadObject {
-        let obj_desc = self.describe_object();
+        let params = self.drawing_params();
+        let drawing = Drawing::new(params.doc_scale);
+        let obj_desc = self.describe();
         let mut parent = scad!(Union);
 
         let mut dims_children = scad!(Color(vec3z()));
@@ -138,39 +133,47 @@ pub trait DrawingAssembler: ObjectAssembler {
 
         // major dimension
         dims_children.add_child(
-            scad!(Translate(vec3(0.0, minor_dim + (SPACING * 3.0), 0.0));{
-                dim_line(major_dim, DimLocation::Center)
+            scad!(Translate(vec3(0.0, minor_dim + (drawing.spacing * 3.0), 0.0));{
+                drawing.dim_line(major_dim, DimLocation::Center)
             }),
         );
 
         // extension lines
-        dims_children.add_child(scad!(Translate(vec3(0.0, minor_dim + SPACING, 0.0));{
+        dims_children.add_child(
+            scad!(Translate(vec3(0.0, minor_dim + drawing.spacing, 0.0));{
                 scad!(Rotate(90.0, z_axis());{
-                    line(SPACING * 3.0, false, false)
+                    drawing.line(drawing.spacing * 3.0, false, false)
                 })
-            }));
-        dims_children.add_child(scad!(Translate(vec3(major_dim, minor_dim + SPACING, 0.0));{
+            }),
+        );
+        dims_children.add_child(
+            scad!(Translate(vec3(major_dim, minor_dim + drawing.spacing, 0.0));{
                 scad!(Rotate(90.0, z_axis());{
-                    line(SPACING * 3.0, false, false)
+                    drawing.line(drawing.spacing * 3.0, false, false)
                 })
-            }));
+            }),
+        );
 
         // minor dimension
         dims_children.add_child(
-            scad!(Translate(vec3(major_dim + SPACING * 3.0, minor_dim, 0.0));{
+            scad!(Translate(vec3(major_dim + drawing.spacing * 3.0, minor_dim, 0.0));{
                 scad!(Rotate(-90.0, z_axis());{
-                    dim_line(minor_dim, DimLocation::Center)
+                    drawing.dim_line(minor_dim, DimLocation::Center)
                 })
             }),
         );
 
         // extension lines
-        dims_children.add_child(scad!(Translate(vec3(major_dim + SPACING, 0.0, 0.0));{
-                line(SPACING * 3.0, false, false)
-            }));
-        dims_children.add_child(scad!(Translate(vec3(major_dim + SPACING, minor_dim, 0.0));{
-                line(SPACING * 3.0, false, false)
-            }));
+        dims_children.add_child(
+            scad!(Translate(vec3(major_dim + drawing.spacing, 0.0, 0.0));{
+                drawing.line(drawing.spacing * 3.0, false, false)
+            }),
+        );
+        dims_children.add_child(
+            scad!(Translate(vec3(major_dim + drawing.spacing, minor_dim, 0.0));{
+                drawing.line(drawing.spacing * 3.0, false, false)
+            }),
+        );
 
         parent.add_child(dims_children);
 

@@ -1,23 +1,26 @@
 use scad::*;
 
-use super::HEIGHT;
+use super::DOC_THICKNESS;
+use drawing::Drawing;
 
-pub fn arrow(length: f32, arr: f32) -> ScadObject {
-    let polygon = Polygon(PolygonParameters::new(vec![
-        vec2(0.0, 0.0),
-        vec2(arr, arr / 2.0),
-        vec2(length, 0.0),
-        vec2(arr, -arr / 2.0),
-    ]));
+impl Drawing {
+    pub fn arrow(&self, length: f32, size: f32) -> ScadObject {
+        let polygon = Polygon(PolygonParameters::new(vec![
+            vec2(0.0, 0.0),
+            vec2(size, size / 2.0),
+            vec2(length, 0.0),
+            vec2(size, -size / 2.0),
+        ]));
 
-    let shape = scad!(polygon);
+        let shape = scad!(polygon);
 
-    scad!(LinearExtrude(
-        LinExtrudeParams{
-            height: HEIGHT,
-            convexity: 2,
-            .. Default::default()
-        });
-        shape
-    )
+        scad!(LinearExtrude(
+            LinExtrudeParams{
+                height: DOC_THICKNESS,
+                convexity: 2,
+                .. Default::default()
+            });
+            shape
+        )
+    }
 }

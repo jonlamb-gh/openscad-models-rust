@@ -14,19 +14,19 @@ impl ObjectAssembler for Part {
     fn assemble(&self) -> ScadObject {
         scad!(Cube(vec3(self.length, self.width, self.thickness,)))
     }
-}
 
-impl DrawingAssembler for Part {
-    fn describe_drawing(&self) -> DrawingParams {
-        DrawingParams::default()
-    }
-
-    fn describe_object(&self) -> ObjectDescriptor {
+    fn describe(&self) -> ObjectDescriptor {
         ObjectDescriptor {
             length: self.length,
             width: self.width,
             thickness: self.thickness,
         }
+    }
+}
+
+impl DrawingAssembler for Part {
+    fn drawing_params(&self) -> DrawingParams {
+        DrawingParams::default()
     }
 }
 

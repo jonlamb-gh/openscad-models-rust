@@ -1,6 +1,6 @@
 use scad::*;
 
-use super::FONT_SCALE;
+use drawing::Drawing;
 
 // Characters
 static CHARS_LOOKUP: &'static str = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}";
@@ -112,35 +112,39 @@ static CHAR_TABLE: [[usize; 7]; 94] = [
     [8, 4, 4, 2, 4, 4, 8],
 ];
 
-pub fn text(string: &str) -> ScadObject {
-    let mut parent = scad!(Scale(vec3(FONT_SCALE, FONT_SCALE, FONT_SCALE)));
+impl Drawing {
+    pub fn text(&self, string: &str) -> ScadObject {
+        let mut parent = scad!(Scale(vec3(
+            self.font_scale,
+            self.font_scale,
+            self.font_scale
+        )));
 
-    // process each character
-    for (itext, c) in string.char_indices() {
-        // convert to index, this is ASCII so find (byte-offset) will do
-        let ichar = CHARS_LOOKUP.find(c).unwrap();
+        // process each character
+        for (itext, c) in string.char_indices() {
+            // convert to index, this is ASCII so find (byte-offset) will do
+            let ichar = CHARS_LOOKUP.find(c).unwrap();
 
-        // decode character - rows
-        for row in 0..=6 {
-            // select value to draw from table
-            let val = DEC_TABLE[CHAR_TABLE[ichar][row]];
+            // decode character - rows
+            for row in 0..=6 {
+                // select value to draw from table
+                let val = DEC_TABLE[CHAR_TABLE[ichar][row]];
 
-            //println!("  {} {}", row, val);
+                // decode character - cols
+                for col in 0..=4 {
+                    // bit to draw, each '0'/'1' in the DEC_TABLE represents a bit
+                    let bit = val.chars().nth(col).unwrap() == '1';
 
-            // decode character - cols
-            for col in 0..=4 {
-                // bit to draw, each '0'/'1' in the DEC_TABLE represents a bit
-                let bit = val.chars().nth(col).unwrap() == '1';
-
-                if bit {
-                    parent.add_child(scad!(
-                        Translate(vec3(col as f32 + (6.0 * itext as f32), row as f32, 0.0));{
-                            scad!(Cube(vec3(1.0001, 1.0001, 1.0)))
-                        }));
+                    if bit {
+                        parent.add_child(scad!(
+                            Translate(vec3(col as f32 + (6.0 * itext as f32), row as f32, 0.0));{
+                                scad!(Cube(vec3(1.0001, 1.0001, 1.0)))
+                            }));
+                    }
                 }
             }
         }
-    }
 
-    parent
+        parent
+    }
 }
