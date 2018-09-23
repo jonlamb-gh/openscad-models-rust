@@ -5,7 +5,7 @@ use config::*;
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
 
 qstruct!(SupportPlank() {
-    board: Board = Board::from_array(&SUPPORT_PLANK_BOARD_SIZE),
+    board: Board = Board::from_array(&SUPPORT_PLANK_BOARD_SIZE, Some("Sienna")),
 });
 
 impl ObjectAssembler for SupportPlank {

@@ -6,7 +6,7 @@ use board::Board;
 use config::POST_BOARD_SIZE;
 
 qstruct!(PostBoard() {
-    board: Board = Board::from_array(&POST_BOARD_SIZE),
+    board: Board = Board::from_array(&POST_BOARD_SIZE, Some("SandyBrown")),
 });
 
 impl ObjectAssembler for PostBoard {

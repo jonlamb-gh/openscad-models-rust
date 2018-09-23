@@ -6,7 +6,7 @@ use config::*;
 use cutaway::Cutaway;
 
 qstruct!(LongBeam() {
-    board: Board = Board::from_array(&LONG_BEAM_BOARD_SIZE),
+    board: Board = Board::from_array(&LONG_BEAM_BOARD_SIZE, Some("SaddleBrown")),
 });
 
 impl LongBeam {

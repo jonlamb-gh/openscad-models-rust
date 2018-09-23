@@ -6,7 +6,7 @@ use config::*;
 use cutaway::Cutaway;
 
 qstruct!(LowerShortBeam() {
-    board: Board = Board::from_array(&SHORT_BEAM_BOARD_SIZE),
+    board: Board = Board::from_array(&SHORT_BEAM_BOARD_SIZE, Some("SaddleBrown")),
 });
 
 impl LowerShortBeam {

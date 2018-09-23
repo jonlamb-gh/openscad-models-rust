@@ -12,7 +12,13 @@ qstruct!(Part() {
 
 impl ObjectAssembler for Part {
     fn assemble(&self) -> ScadObject {
-        scad!(Cube(vec3(self.length, self.width, self.thickness,)))
+        if self.has_color() {
+            let mut color_obj = self.object_color();
+            color_obj.add_child(scad!(Cube(vec3(self.length, self.width, self.thickness))));
+            color_obj
+        } else {
+            scad!(Cube(vec3(self.length, self.width, self.thickness)))
+        }
     }
 
     fn describe(&self) -> ObjectDescriptor {
@@ -21,6 +27,14 @@ impl ObjectAssembler for Part {
             width: self.width,
             thickness: self.thickness,
         }
+    }
+
+    fn has_color(&self) -> bool {
+        true
+    }
+
+    fn object_color(&self) -> ScadObject {
+        scad!(NamedColor("BurlyWood".to_string()))
     }
 }
 

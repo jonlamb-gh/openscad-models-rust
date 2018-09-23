@@ -51,9 +51,12 @@ impl Default for DrawingParams {
     }
 }
 
+// TODO
 // trait that constructs and uses Drawing object or
 // methods of drawing object?
+// this is the former
 pub trait DrawingAssembler: ObjectAssembler {
+    // describes the drawing parameters to be used by assemble_drawing()/etc
     fn drawing_params(&self) -> DrawingParams;
 
     fn assemble_drawing(&self) -> ScadObject {
@@ -83,29 +86,34 @@ pub trait DrawingAssembler: ObjectAssembler {
     // currently at or below z == 0
     fn assemble_preview(&self, vp: Viewport) -> ScadObject {
         let obj_desc = self.describe();
+        let obj = self.assemble();
 
         let parent = match vp {
+            // top
             Viewport::TopLeft => scad!(Translate(vec3(0.0, 0.0, -obj_desc.thickness));{
-                self.assemble()
+                obj
             }),
+            // 3D
             Viewport::TopRight => scad!(Translate(vec3(0.0, 0.0, -obj_desc.thickness));{
                 scad!(Rotate(20.0, z_axis());{
                     scad!(Rotate(40.0, y_axis());{
                         scad!(Rotate(-30.0, x_axis());{
-                            self.assemble()
+                            obj
                         })
                     })
                 })
             }),
+            // front
             Viewport::BottomLeft => scad!(Translate(vec3z());{
                     scad!(Rotate(-90.0, x_axis());{
-                        self.assemble()
+                        obj
                     })
                 }),
+            // left
             Viewport::BottomRight => scad!(Translate(vec3(obj_desc.width, 0.0, 0.0));{
                     scad!(Rotate(90.0, z_axis());{
                         scad!(Rotate(90.0, y_axis());{
-                            self.assemble()
+                            obj
                         })
                     })
                 }),
