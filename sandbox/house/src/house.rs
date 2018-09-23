@@ -5,8 +5,8 @@ use scad::*;
 use foundation::Foundation;
 
 qstruct!(House() {
-    board: Board = Board::new(3.0, 4.0, 5.0, None),
-    foundation: Foundation = Foundation::new(vec3(10.0, 10.0, 1.0)),
+    board: Board = Board::new(50.0, 40.0, 50.0, None),
+    foundation: Foundation = Foundation::new(vec3(1000.0, 1000.0, 5.0), None),
 });
 
 impl ObjectAssembler for House {

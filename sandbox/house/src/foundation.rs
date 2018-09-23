@@ -3,8 +3,9 @@ use scad::*;
 
 use super::na;
 
-qstruct!(Foundation(size: na::Vector3<f32>) {
+qstruct!(Foundation(size: na::Vector3<f32>, color: Option<&'static str>) {
     size: na::Vector3<f32> = size,
+    color: Option<String> = if let Some(c) = color { Some(c.to_string()) } else { None },
 });
 
 impl ObjectAssembler for Foundation {
@@ -13,6 +14,22 @@ impl ObjectAssembler for Foundation {
             length: self.size[0],
             width: self.size[1],
             thickness: self.size[2],
+        }
+    }
+
+    fn has_color(&self) -> bool {
+        if let Some(_) = self.color {
+            true
+        } else {
+            false
+        }
+    }
+
+    fn object_color(&self) -> ScadObject {
+        if let Some(ref c) = self.color {
+            scad!(NamedColor(c.to_string()))
+        } else {
+            scad!(Color(vec3(0.0, 0.0, 0.0)))
         }
     }
 
