@@ -41,7 +41,7 @@ impl Couch {
     }
 
     fn assemble_base_beams(&self) -> ScadObject {
-        assert_eq!(POST_STOCK_THICKNESS, POST_STOCK_WIDTH);
+        //assert_eq!(POST_STOCK_THICKNESS, POST_STOCK_WIDTH);
 
         let height_offset = BASE_HEIGHT - BEAM_STOCK_WIDTH;
         let side_height_offset = BASE_HEIGHT;
