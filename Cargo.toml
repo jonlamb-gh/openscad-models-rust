@@ -2,5 +2,7 @@
 members = [
     "template-project",
     "libraries/dimdraw",
-    "wood-projects/couch"
+    "libraries/parts",
+    "wood-projects/couch",
+    "sandbox/house",
 ]
