@@ -34,3 +34,11 @@ pub trait ObjectAssembler {
         })
     }
 }
+
+pub fn some_color(color: Option<&'static str>) -> Option<String> {
+    if let Some(c) = color {
+        Some(c.to_string())
+    } else {
+        None
+    }
+}

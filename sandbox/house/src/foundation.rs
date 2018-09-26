@@ -1,11 +1,11 @@
-use dimdraw::{ObjectAssembler, ObjectDescriptor};
+use dimdraw::{some_color, ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 use super::na;
 
 qstruct!(Foundation(size: na::Vector3<f32>, color: Option<&'static str>) {
     size: na::Vector3<f32> = size,
-    color: Option<String> = if let Some(c) = color { Some(c.to_string()) } else { None },
+    color: Option<String> = some_color(color),
 });
 
 impl ObjectAssembler for Foundation {

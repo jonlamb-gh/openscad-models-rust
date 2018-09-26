@@ -1,4 +1,4 @@
-use dimdraw::{ObjectAssembler, ObjectDescriptor};
+use dimdraw::{some_color, ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 use board_dimensions::BoardDimensions;
@@ -10,15 +10,9 @@ pub struct Board {
 
 impl Board {
     pub fn new(length: f32, width: f32, thickness: f32, color: Option<&'static str>) -> Self {
-        let mc = if let Some(c) = color {
-            Some(c.to_string())
-        } else {
-            None
-        };
-
         Self {
             dimensions: BoardDimensions::new(length, width, thickness),
-            color: mc,
+            color: some_color(color),
         }
     }
 
@@ -28,6 +22,18 @@ impl Board {
 
     pub fn dims(&self) -> &BoardDimensions {
         &self.dimensions
+    }
+
+    pub fn length(&self) -> f32 {
+        self.dimensions.length()
+    }
+
+    pub fn width(&self) -> f32 {
+        self.dimensions.width()
+    }
+
+    pub fn thickness(&self) -> f32 {
+        self.dimensions.thickness()
     }
 }
 

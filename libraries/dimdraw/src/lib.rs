@@ -15,6 +15,6 @@ pub use self::dim_line::DimLocation;
 pub use self::drawing::Drawing;
 pub use self::drawing_assembler::{DrawingAssembler, DrawingParams, Viewport};
 pub use self::leader_line::{LeaderDirection, LeaderLineParams};
-pub use self::object_assembler::{ObjectAssembler, ObjectDescriptor};
+pub use self::object_assembler::{some_color, ObjectAssembler, ObjectDescriptor};
 
 pub const DOC_THICKNESS: f32 = 0.01;
