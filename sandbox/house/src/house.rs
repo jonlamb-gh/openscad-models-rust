@@ -4,6 +4,7 @@ use scad::*;
 use config::*;
 use foundation::Foundation;
 use girders::Girders;
+use posts::Posts;
 
 qstruct!(House() {
     foundation: Foundation = Foundation::new(vec3(
@@ -12,6 +13,7 @@ qstruct!(House() {
         FOUNDATION_SIZE[2]),
         Some("Gainsboro")),
     girders: Girders = Girders::new(Some("SandyBrown")),
+    posts: Posts = Posts::new(Some("SaddleBrown")),
 });
 
 impl ObjectAssembler for House {
@@ -20,12 +22,16 @@ impl ObjectAssembler for House {
         self.foundation.describe()
     }
 
+    // TODO - positions
     fn assemble(&self) -> ScadObject {
         scad!(Union;{
             self.foundation.assemble(),
-            scad!(Translate(vec3(0.0, 0.0, 20.0));{
+            scad!(Translate(vec3(0.0, 0.0, 30.0));{
                 self.girders.assemble(),
-            })
+            }),
+            scad!(Translate(vec3(0.0, 0.0, 30.0));{
+                self.posts.assemble(),
+            }),
         })
     }
 }

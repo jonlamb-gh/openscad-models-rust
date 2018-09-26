@@ -7,6 +7,7 @@ mod config;
 mod foundation;
 mod girders;
 mod house;
+mod posts;
 
 use dimdraw::ObjectAssembler;
 use scad::*;
