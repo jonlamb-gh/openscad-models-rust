@@ -40,31 +40,22 @@ impl ObjectAssembler for Board {
         }
     }
 
-    fn has_color(&self) -> bool {
-        if let Some(_) = self.color {
-            true
-        } else {
-            false
-        }
-    }
-
-    fn object_color(&self) -> ScadObject {
+    fn object_color(&self) -> Option<ScadObject> {
         if let Some(ref c) = self.color {
-            scad!(NamedColor(c.to_string()))
+            Some(scad!(NamedColor(c.to_string())))
         } else {
-            scad!(Color(vec3(0.0, 0.0, 0.0)))
+            None
         }
     }
 
     fn assemble(&self) -> ScadObject {
-        if self.has_color() {
-            let mut color_obj = self.object_color();
-            color_obj.add_child(scad!(Cube(vec3(
+        if let Some(mut c) = self.object_color() {
+            c.add_child(scad!(Cube(vec3(
                 self.dimensions.length(),
                 self.dimensions.width(),
                 self.dimensions.thickness(),
             ))));
-            color_obj
+            c
         } else {
             scad!(Cube(vec3(
                 self.dimensions.length(),

@@ -24,7 +24,7 @@ fn main() {
     sfile.set_detail(100);
 
     // Add the model to the file
-    sfile.add_object(part.assemble());
+    sfile.add_object(part.assemble_center_xy());
 
     // Save the scad code to a file
     let filename = &format!("{}.scad", env!("CARGO_PKG_NAME"));

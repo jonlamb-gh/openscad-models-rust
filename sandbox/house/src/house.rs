@@ -6,12 +6,12 @@ use foundation::Foundation;
 
 qstruct!(House() {
     board: Board = Board::new(50.0, 40.0, 50.0, None),
-    foundation: Foundation = Foundation::new(vec3(1000.0, 1000.0, 5.0), None),
+    foundation: Foundation = Foundation::new(vec3(1000.0, 1000.0, 5.0), Some("Gainsboro")),
 });
 
 impl ObjectAssembler for House {
     fn describe(&self) -> ObjectDescriptor {
-        self.board.describe()
+        self.foundation.describe()
     }
 
     fn assemble(&self) -> ScadObject {
