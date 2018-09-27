@@ -2,6 +2,7 @@ use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 use config::*;
+use floor_joists::FloorJoists;
 use foundation::Foundation;
 use girders::Girders;
 use posts::Posts;
@@ -14,6 +15,7 @@ qstruct!(House() {
         Some("Gainsboro")),
     girders: Girders = Girders::new(Some("SandyBrown")),
     posts: Posts = Posts::new(Some("SaddleBrown")),
+    floor_joists: FloorJoists = FloorJoists::new(Some("SaddleBrown")),
 });
 
 impl ObjectAssembler for House {
@@ -31,6 +33,10 @@ impl ObjectAssembler for House {
             }),
             scad!(Translate(vec3(0.0, 0.0, 30.0));{
                 self.posts.assemble(),
+            }),
+            scad!(Translate(
+                vec3(0.0, 0.0, 30.0 + (GIRDER_BEAM_THICKNESS - FLOOR_JOIST_WIDTH)));{
+                    self.floor_joists.assemble(),
             }),
         })
     }

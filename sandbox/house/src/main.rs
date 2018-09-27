@@ -4,6 +4,7 @@ extern crate parts;
 extern crate scad;
 
 mod config;
+mod floor_joists;
 mod foundation;
 mod girders;
 mod house;

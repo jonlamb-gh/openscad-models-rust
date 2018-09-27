@@ -12,9 +12,15 @@ pub const FOUNDATION_SIZE: [f32; 3] = [1828.8, 1828.8, 5.0];
 pub const POST_WIDTH: f32 = 22.86;
 pub const POST_THICKNESS: f32 = 22.86;
 
+// TODO - swap this?
 // 9" X 11"
 pub const GIRDER_BEAM_WIDTH: f32 = 22.86;
 pub const GIRDER_BEAM_THICKNESS: f32 = 27.94;
+
+// 10" X 2"
+pub const FLOOR_JOIST_LENGTH: f32 = 243.84 - GIRDER_BEAM_WIDTH;
+pub const FLOOR_JOIST_WIDTH: f32 = 25.4;
+pub const FLOOR_JOIST_THICKNESS: f32 = 5.08;
 
 // 4', 8', 16', 24', 32' plus 2*(w/2)
 pub const GIRDER_BEAM_L4_LENGTH: f32 = 121.92 + GIRDER_BEAM_WIDTH;
