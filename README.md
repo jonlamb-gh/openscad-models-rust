@@ -26,3 +26,5 @@ cargo run
 - [parts](libraries/parts) A Rust library of OpenSCAD parts and things
 
 - [House](sandbox/house) A house project for experimenting with OpenSCAD
+
+- [Rammed Earth House](sandbox/rammed-earth) A Rammed Earth house project

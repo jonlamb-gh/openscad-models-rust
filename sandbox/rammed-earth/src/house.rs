@@ -6,11 +6,7 @@ use foundation::Foundation;
 use outer_walls::OuterWalls;
 
 qstruct!(House() {
-    foundation: Foundation = Foundation::new(vec3(
-        FOUNDATION_SIZE[0],
-        FOUNDATION_SIZE[1],
-        FOUNDATION_SIZE[2]),
-        Some("Gainsboro")),
+    foundation: Foundation = Foundation::new(Some("Gainsboro")),
     outer_walls: OuterWalls = OuterWalls::new(Some("SaddleBrown")),
 });
 
@@ -24,7 +20,9 @@ impl ObjectAssembler for House {
     fn assemble(&self) -> ScadObject {
         scad!(Union;{
             self.foundation.assemble(),
-            self.outer_walls.assemble(),
+            scad!(Translate(vec3(0.0, 0.0, FOUNDATION_THICKNESS));{
+                self.outer_walls.assemble(),
+            }),
         })
     }
 }
