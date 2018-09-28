@@ -6,13 +6,13 @@ use scad::*;
 use config::*;
 
 qstruct!(InnerWalls(color: Option<&'static str>) {
-    l8: Wall = Wall::new(
-        INNER_WALL_L8_LENGTH,
+    l6: Wall = Wall::new(
+        INNER_WALL_L6_LENGTH,
         INNER_WALL_WIDTH,
         INNER_WALL_THICKNESS,
         color),
-    l6: Wall = Wall::new(
-        INNER_WALL_L6_LENGTH,
+    l8: Wall = Wall::new(
+        INNER_WALL_L8_LENGTH,
         INNER_WALL_WIDTH,
         INNER_WALL_THICKNESS,
         color),
@@ -27,14 +27,24 @@ impl InnerWalls {
     fn assemble_rows(&self) -> ScadObject {
         let mut parent = scad!(Union);
 
-        let x_offset = ft_to_cm(42.0);
-        let y_offset = ft_to_cm(24.0) - self.l6.thickness();
+        let y_offset = ft_to_cm(20.0);
+        let x_offset = ft_to_cm(34.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l6.assemble_xaligned()
+            self.l8.assemble_xaligned()
         }));
-        let x_offset = ft_to_cm(36.0);
+        let x_offset = ft_to_cm(42.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l6.assemble_xaligned()
+            self.l8.assemble_xaligned()
+        }));
+
+        let y_offset = ft_to_cm(26.0) - self.l6.thickness();
+        let x_offset = ft_to_cm(18.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l8.assemble_xaligned()
+        }));
+        let x_offset = ft_to_cm(26.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l8.assemble_xaligned()
         }));
 
         parent
@@ -43,10 +53,42 @@ impl InnerWalls {
     fn assemble_columns(&self) -> ScadObject {
         let mut parent = scad!(Union);
 
-        let x_offset = ft_to_cm(36.0) - self.l10.thickness();
-        let y_offset = ft_to_cm(24.0);
+        let x_offset = ft_to_cm(34.0);
+        let y_offset = ft_to_cm(10.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
             self.l10.assemble_yaligned()
+        }));
+        let x_offset = ft_to_cm(34.0) - self.l10.thickness();
+        let y_offset = ft_to_cm(20.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l8.assemble_yaligned()
+        }));
+
+        let y_offset = ft_to_cm(28.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l6.assemble_yaligned()
+        }));
+
+        let x_offset = ft_to_cm(18.0);
+        let y_offset = ft_to_cm(26.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l8.assemble_yaligned()
+        }));
+
+        let x_offset = ft_to_cm(18.0);
+        let y_offset = OUTER_WALL_THICKNESS;
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l8.assemble_yaligned()
+        }));
+
+        let y_offset = OUTER_WALL_THICKNESS + self.l8.length();
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            scad!(Rotate(-66.0, z_axis());{
+                self.l10.assemble_yaligned(),
+                scad!(Translate(vec3(0.0, self.l10.length(), 0.0));{
+                    self.l8.assemble_yaligned(),
+                })
+            })
         }));
 
         parent

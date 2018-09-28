@@ -1,3 +1,4 @@
+// TODO - move constants out, 8' X 8' module as an object?
 use dimdraw::{some_color, ObjectAssembler, ObjectDescriptor};
 use parts::common_functions::*;
 use scad::*;
@@ -45,24 +46,60 @@ impl Foundation {
     fn assemble_both(&self) -> ScadObject {
         scad!(Union;{
             self.assemble_major(),
-            scad!(Translate(vec3(ft_to_cm(32.0) + OUTER_WALL_2X_THICKNESS, ft_to_cm(8.0), 0.0));{
+            scad!(Translate(vec3(ft_to_cm(32.0) + OUTER_WALL_THICKNESS, ft_to_cm(8.0), 0.0));{
                 self.assemble_minor(),
             }),
         })
     }
 
     fn assemble_major(&self) -> ScadObject {
+        let mut parent = scad!(Union);
+
+        for row in 0..4 {
+            let y_offset = row as f32 * ft_to_cm(8.0) + OUTER_WALL_THICKNESS;
+            for col in 0..4 {
+                let x_offset = col as f32 * ft_to_cm(8.0) + OUTER_WALL_THICKNESS;
+                parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+                        self.assemble_module()
+                    }));
+            }
+        }
+
+        parent
+        /*
         scad!(Cube(vec3(
             ft_to_cm(32.0) + OUTER_WALL_2X_THICKNESS,
             ft_to_cm(32.0) + OUTER_WALL_2X_THICKNESS,
             FOUNDATION_THICKNESS
         )))
+        */
     }
 
     fn assemble_minor(&self) -> ScadObject {
+        let mut parent = scad!(Union);
+
+        for row in 0..3 {
+            let y_offset = row as f32 * ft_to_cm(8.0) + OUTER_WALL_THICKNESS;
+            for col in 0..2 {
+                let x_offset = col as f32 * ft_to_cm(8.0);
+                parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+                        self.assemble_module()
+                    }));
+            }
+        }
+
+        parent
+    }
+
+    fn assemble_outer_wall_footing(&self) -> ScadObject {
+        // TODO
+        scad!(Union)
+    }
+
+    fn assemble_module(&self) -> ScadObject {
         scad!(Cube(vec3(
-            ft_to_cm(12.0) + OUTER_WALL_THICKNESS,
-            ft_to_cm(24.0) + OUTER_WALL_2X_THICKNESS,
+            ft_to_cm(8.0),
+            ft_to_cm(8.0),
             FOUNDATION_THICKNESS
         )))
     }
