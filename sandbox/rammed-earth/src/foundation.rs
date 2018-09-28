@@ -1,6 +1,6 @@
 use dimdraw::{some_color, ObjectAssembler, ObjectDescriptor};
-use scad::*;
 use parts::common_functions::*;
+use scad::*;
 
 use config::*;
 
@@ -49,13 +49,15 @@ impl Foundation {
         scad!(Cube(vec3(
             ft_to_cm(32.0),
             ft_to_cm(32.0),
-            FOUNDATION_THICKNESS)))
+            FOUNDATION_THICKNESS
+        )))
     }
 
     fn assemble_minor(&self) -> ScadObject {
         scad!(Cube(vec3(
             ft_to_cm(12.0),
             ft_to_cm(24.0),
-            FOUNDATION_THICKNESS)))
+            FOUNDATION_THICKNESS
+        )))
     }
 }

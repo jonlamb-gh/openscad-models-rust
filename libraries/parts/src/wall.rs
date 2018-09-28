@@ -73,11 +73,23 @@ impl Wall {
         })
     }
 
+    pub fn assemble_cxaligned(&self) -> ScadObject {
+        scad!(Translate(vec3(0.0, -self.thickness() / 2.0, 0.0));{
+            self.assemble_xaligned()
+        })
+    }
+
     pub fn assemble_yaligned(&self) -> ScadObject {
         scad!(Rotate(90.0, z_axis());{
             scad!(Rotate(90.0, x_axis());{
                 self.assemble()
             })
+        })
+    }
+
+    pub fn assemble_cyaligned(&self) -> ScadObject {
+        scad!(Translate(vec3(-self.thickness() / 2.0, 0.0, 0.0));{
+            self.assemble_yaligned()
         })
     }
 }

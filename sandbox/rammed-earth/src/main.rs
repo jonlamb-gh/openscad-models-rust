@@ -6,6 +6,7 @@ extern crate scad;
 mod config;
 mod foundation;
 mod house;
+mod inner_walls;
 mod outer_walls;
 
 use dimdraw::ObjectAssembler;
