@@ -49,10 +49,15 @@ impl InnerWalls {
         let mut parent = scad!(Union);
 
         // rows
-        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(20.0);
-        let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(36.0);
+        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(24.0);
+        let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(31.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l4.assemble_xaligned()
+            self.l5.assemble_xaligned()
+        }));
+        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(20.0);
+        let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(35.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l5.assemble_xaligned()
         }));
         let x_offset = ft_to_cm(42.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
@@ -60,14 +65,14 @@ impl InnerWalls {
         }));
 
         // columns
-        let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(36.0) - self.l6.thickness();
-        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(20.0);
+        let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(32.0);
+        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(25.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l6.assemble_yaligned()
+            self.l5.assemble_yaligned()
         }));
-        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(26.0);
+        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(30.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l6.assemble_yaligned()
+            self.l2.assemble_yaligned()
         }));
 
         parent
@@ -91,7 +96,11 @@ impl InnerWalls {
         }));
         let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(10.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l10.assemble_yaligned()
+            self.l6.assemble_yaligned()
+        }));
+        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(16.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l5.assemble_yaligned()
         }));
 
         parent
@@ -137,11 +146,6 @@ impl InnerWalls {
         let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(21.0) + self.l4.thickness();
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
             self.l2.assemble_yaligned()
-        }));
-        let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(32.0) - self.l4.thickness();
-        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(24.0);
-        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l8.assemble_yaligned()
         }));
 
         parent
