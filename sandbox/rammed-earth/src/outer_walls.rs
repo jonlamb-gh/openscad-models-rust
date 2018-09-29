@@ -1,6 +1,6 @@
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use parts::common_functions::*;
-use parts::Wall;
+use parts::{CutoutFrame, Wall};
 use scad::*;
 
 use config::*;
@@ -26,6 +26,12 @@ qstruct!(OuterWalls(color: Option<&'static str>) {
         OUTER_WALL_WIDTH,
         OUTER_WALL_THICKNESS,
         color),
+    wd_l4: CutoutFrame = CutoutFrame::new(
+        OUTER_WINDOW_L4_MAJOR,
+        OUTER_WINDOW_L4_MINOR,
+        OUTER_WINDOW_FRAME_WIDTH,
+        OUTER_WINDOW_FRAME_THICKNESS,
+        Some("SandyBrown")),
 });
 
 impl OuterWalls {
