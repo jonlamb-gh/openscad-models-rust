@@ -6,6 +6,16 @@ use scad::*;
 use config::*;
 
 qstruct!(InnerWalls(color: Option<&'static str>) {
+    l4: Wall = Wall::new(
+        INNER_WALL_L4_LENGTH,
+        INNER_WALL_WIDTH,
+        INNER_WALL_THICKNESS,
+        color),
+    l5: Wall = Wall::new(
+        INNER_WALL_L5_LENGTH,
+        INNER_WALL_WIDTH,
+        INNER_WALL_THICKNESS,
+        color),
     l6: Wall = Wall::new(
         INNER_WALL_L6_LENGTH,
         INNER_WALL_WIDTH,
@@ -27,7 +37,7 @@ impl InnerWalls {
     fn assemble_rows(&self) -> ScadObject {
         let mut parent = scad!(Union);
 
-        let y_offset = ft_to_cm(20.0);
+        let y_offset = ft_to_cm(22.0) - self.l8.thickness();
         let x_offset = ft_to_cm(34.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
             self.l8.assemble_xaligned()
@@ -37,14 +47,28 @@ impl InnerWalls {
             self.l8.assemble_xaligned()
         }));
 
-        let y_offset = ft_to_cm(26.0) - self.l6.thickness();
-        let x_offset = ft_to_cm(18.0);
+        let y_offset = ft_to_cm(26.0);
+        let x_offset = ft_to_cm(20.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
             self.l8.assemble_xaligned()
         }));
-        let x_offset = ft_to_cm(26.0);
+        let x_offset = ft_to_cm(28.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l8.assemble_xaligned()
+            self.l5.assemble_xaligned()
+        }));
+
+        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(14.0);
+        let x_offset = ft_to_cm(19.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l5.assemble_xaligned()
+        }));
+        let x_offset = ft_to_cm(24.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l10.assemble_xaligned()
+        }));
+        let x_offset = ft_to_cm(34.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l4.assemble_xaligned()
         }));
 
         parent
@@ -53,42 +77,47 @@ impl InnerWalls {
     fn assemble_columns(&self) -> ScadObject {
         let mut parent = scad!(Union);
 
-        let x_offset = ft_to_cm(34.0);
+        let x_offset = ft_to_cm(38.0);
         let y_offset = ft_to_cm(10.0);
-        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l10.assemble_yaligned()
-        }));
-        let x_offset = ft_to_cm(34.0) - self.l10.thickness();
-        let y_offset = ft_to_cm(20.0);
-        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l8.assemble_yaligned()
-        }));
-
-        let y_offset = ft_to_cm(28.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
             self.l6.assemble_yaligned()
         }));
+        let y_offset = ft_to_cm(16.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l5.assemble_yaligned()
+        }));
 
-        let x_offset = ft_to_cm(18.0);
+        let x_offset = ft_to_cm(34.0) - self.l10.thickness();
+        let y_offset = ft_to_cm(20.0) + self.l4.thickness();
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l5.assemble_yaligned()
+        }));
+
         let y_offset = ft_to_cm(26.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
             self.l8.assemble_yaligned()
         }));
 
-        let x_offset = ft_to_cm(18.0);
-        let y_offset = OUTER_WALL_THICKNESS;
+        let x_offset = ft_to_cm(19.0);
+        let y_offset = ft_to_cm(26.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
             self.l8.assemble_yaligned()
         }));
 
-        let y_offset = OUTER_WALL_THICKNESS + self.l8.length();
+        let x_offset = ft_to_cm(19.0);
+        let y_offset = OUTER_WALL_THICKNESS;
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            scad!(Rotate(-66.0, z_axis());{
-                self.l10.assemble_yaligned(),
-                scad!(Translate(vec3(0.0, self.l10.length(), 0.0));{
-                    self.l8.assemble_yaligned(),
-                })
-            })
+            self.l8.assemble_yaligned()
+        }));
+        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(8.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l6.assemble_yaligned()
+        }));
+
+        let x_offset = ft_to_cm(33.0);
+        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(8.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+            self.l6.assemble_yaligned()
         }));
 
         parent
