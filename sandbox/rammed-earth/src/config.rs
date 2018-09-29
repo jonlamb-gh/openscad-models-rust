@@ -23,7 +23,8 @@ pub const OUTER_WALL_L10_LENGTH: f32 = 304.8;
 pub const INNER_WALL_WIDTH: f32 = 304.8;
 pub const INNER_WALL_THICKNESS: f32 = 30.48;
 
-// 4', 5', 6', 8', 10'
+// 2', 4', 5', 6', 8', 10'
+pub const INNER_WALL_L2_LENGTH: f32 = 60.96;
 pub const INNER_WALL_L4_LENGTH: f32 = 121.92;
 pub const INNER_WALL_L5_LENGTH: f32 = 152.4;
 pub const INNER_WALL_L6_LENGTH: f32 = 182.88;

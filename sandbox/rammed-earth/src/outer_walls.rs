@@ -36,9 +36,7 @@ qstruct!(OuterWalls(frame_color: Option<&'static str>, color: Option<&'static st
         OUTER_WALL_WIDTH,
         OUTER_WALL_THICKNESS,
         color,
-        vec!(CutoutFrameAt::new(
-            wd_l4.clone(),
-            vec3(OUTER_WALL_L10_LENGTH / 2.0, -OUTER_WINDOW_FRAME_OVERRUN, OUTER_WINDOW_H3_Z)))),
+        vec!()),
 });
 
 impl OuterWalls {
@@ -46,29 +44,30 @@ impl OuterWalls {
         let mut parent = scad!(Union);
 
         // row A
-        parent.add_child(self.l10.assemble_xaligned());
+        let y_offset = 0.0;
         let x_offset = ft_to_cm(10.0);
-        parent.add_child(scad!(Translate(vec3(x_offset, 0.0, 0.0));{
+        parent.add_child(self.l10.assemble_xaligned());
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
                 self.l8.assemble_xaligned()
             }));
         let x_offset = ft_to_cm(18.0);
-        parent.add_child(scad!(Translate(vec3(x_offset, 0.0, 0.0));{
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
                 self.l8.assemble_xaligned()
             }));
         let x_offset = ft_to_cm(26.0);
-        parent.add_child(scad!(Translate(vec3(x_offset, 0.0, 0.0));{
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+                self.l8.assemble_xaligned()
+            }));
+        let x_offset = ft_to_cm(34.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
                 self.l10.assemble_xaligned()
             }));
 
         // row B
         let y_offset = ft_to_cm(8.0);
-        let x_offset = ft_to_cm(34.0);
-        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l8.assemble_xaligned()
-        }));
         let x_offset = ft_to_cm(42.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l8.assemble_xaligned()
+            self.l10.assemble_xaligned()
         }));
 
         // row E
@@ -119,8 +118,8 @@ impl OuterWalls {
             self.l6.assemble_yaligned()
         }));
 
-        // col 5
-        let x_offset = ft_to_cm(36.0) - self.l8.thickness();
+        // col 6
+        let x_offset = ft_to_cm(44.0) - self.l6.thickness();
         let y_offset = self.l8.thickness();
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
             self.l6.assemble_yaligned()
@@ -128,9 +127,9 @@ impl OuterWalls {
 
         // col 7
         let x_offset = ft_to_cm(50.0);
-        let y_offset = ft_to_cm(8.0);
+        let y_offset = ft_to_cm(10.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l10.assemble_yaligned()
+            self.l8.assemble_yaligned()
         }));
         let y_offset = ft_to_cm(18.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{

@@ -7,8 +7,8 @@ use config::*;
 
 const OUTER_WALL_2X_THICKNESS: f32 = 2.0 * OUTER_WALL_THICKNESS;
 
-// 44' plus wall thicknesses
-pub const FOUNDATION_LENGTH: f32 = 1341.12 + OUTER_WALL_2X_THICKNESS;
+// 48' X 32' plus wall thicknesses
+pub const FOUNDATION_LENGTH: f32 = 1463.04 + OUTER_WALL_2X_THICKNESS;
 pub const FOUNDATION_WIDTH: f32 = 975.36 + OUTER_WALL_2X_THICKNESS;
 
 qstruct!(Foundation(color: Option<&'static str>) {
@@ -46,7 +46,7 @@ impl Foundation {
     fn assemble_both(&self) -> ScadObject {
         scad!(Union;{
             self.assemble_major(),
-            scad!(Translate(vec3(ft_to_cm(32.0) + OUTER_WALL_THICKNESS, ft_to_cm(8.0), 0.0));{
+            scad!(Translate(vec3(ft_to_cm(40.0) + OUTER_WALL_THICKNESS, ft_to_cm(8.0), 0.0));{
                 self.assemble_minor(),
             }),
         })
@@ -57,7 +57,7 @@ impl Foundation {
 
         for row in 0..4 {
             let y_offset = row as f32 * ft_to_cm(8.0) + OUTER_WALL_THICKNESS;
-            for col in 0..4 {
+            for col in 0..5 {
                 let x_offset = col as f32 * ft_to_cm(8.0) + OUTER_WALL_THICKNESS;
                 parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
                         self.assemble_module()
@@ -66,26 +66,17 @@ impl Foundation {
         }
 
         parent
-        /*
-        scad!(Cube(vec3(
-            ft_to_cm(32.0) + OUTER_WALL_2X_THICKNESS,
-            ft_to_cm(32.0) + OUTER_WALL_2X_THICKNESS,
-            FOUNDATION_THICKNESS
-        )))
-        */
     }
 
     fn assemble_minor(&self) -> ScadObject {
         let mut parent = scad!(Union);
 
+        let x_offset = 0.0;
         for row in 0..3 {
             let y_offset = row as f32 * ft_to_cm(8.0) + OUTER_WALL_THICKNESS;
-            for col in 0..2 {
-                let x_offset = col as f32 * ft_to_cm(8.0);
-                parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-                        self.assemble_module()
-                    }));
-            }
+            parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+                self.assemble_module()
+            }));
         }
 
         parent
