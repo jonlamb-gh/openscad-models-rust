@@ -3,6 +3,7 @@ use scad::*;
 
 use board_dimensions::BoardDimensions;
 
+#[derive(Clone)]
 pub struct Board {
     dimensions: BoardDimensions,
     color: Option<String>,

@@ -1,23 +1,39 @@
+// TODO:
+// - safety related assertions on cutouts/etc
+
 use dimdraw::{some_color, ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 use common_functions::*;
+use cutout_frame::CutoutFrameAt;
 
 pub struct Wall {
     size: [f32; 3],
     color: Option<String>,
+    cutout_frames: Vec<CutoutFrameAt>,
 }
 
 impl Wall {
-    pub fn new(length: f32, width: f32, thickness: f32, color: Option<&'static str>) -> Self {
+    pub fn new(
+        length: f32,
+        width: f32,
+        thickness: f32,
+        color: Option<&'static str>,
+        cutout_frames: Vec<CutoutFrameAt>,
+    ) -> Self {
         Self {
             size: [length, width, thickness],
             color: some_color(color),
+            cutout_frames,
         }
     }
 
-    pub fn from_array(size: &[f32; 3], color: Option<&'static str>) -> Self {
-        Self::new(size[0], size[1], size[2], color)
+    pub fn from_array(
+        size: &[f32; 3],
+        color: Option<&'static str>,
+        cutout_frames: Vec<CutoutFrameAt>,
+    ) -> Self {
+        Self::new(size[0], size[1], size[2], color, cutout_frames)
     }
 
     pub fn length(&self) -> f32 {
@@ -51,26 +67,58 @@ impl ObjectAssembler for Wall {
     }
 
     fn assemble(&self) -> ScadObject {
-        if let Some(mut c) = self.object_color() {
-            c.add_child(scad!(Cube(vec3(
-                self.length(),
-                self.width(),
-                self.thickness(),
-            ))));
-            c
-        } else {
-            scad!(Cube(vec3(self.length(), self.width(), self.thickness(),)))
-        }
+        let cutout_walls = scad!(Difference;{
+            self.assemble_base_wall(),
+            self.assemble_cutouts(),
+        });
+
+        scad!(Union;{
+            cutout_walls,
+            self.assemble_frames(),
+        })
     }
 }
 
 impl Wall {
+    fn assemble_base_wall(&self) -> ScadObject {
+        if let Some(mut c) = self.object_color() {
+            c.add_child(scad!(Cube(vec3(
+                self.length(),
+                self.thickness(),
+                self.width(),
+            ))));
+            c
+        } else {
+            scad!(Cube(vec3(self.length(), self.thickness(), self.width())))
+        }
+    }
+
+    fn assemble_cutouts(&self) -> ScadObject {
+        let mut parent = scad!(Union);
+
+        for c in self.cutout_frames.iter() {
+            parent.add_child(scad!(Translate(c.at);{
+                c.cutout_frame.assemble_cutout()
+            }));
+        }
+
+        parent
+    }
+
+    fn assemble_frames(&self) -> ScadObject {
+        let mut parent = scad!(Union);
+
+        for c in self.cutout_frames.iter() {
+            parent.add_child(scad!(Translate(c.at);{
+                c.cutout_frame.assemble()
+            }));
+        }
+
+        parent
+    }
+
     pub fn assemble_xaligned(&self) -> ScadObject {
-        scad!(Translate(vec3(0.0, self.thickness(), 0.0));{
-            scad!(Rotate(90.0, x_axis());{
-                self.assemble()
-            })
-        })
+        self.assemble()
     }
 
     pub fn assemble_cxaligned(&self) -> ScadObject {
@@ -80,8 +128,8 @@ impl Wall {
     }
 
     pub fn assemble_yaligned(&self) -> ScadObject {
-        scad!(Rotate(90.0, z_axis());{
-            scad!(Rotate(90.0, x_axis());{
+        scad!(Translate(vec3(self.thickness(), 0.0, 0.0));{
+            scad!(Rotate(90.0, z_axis());{
                 self.assemble()
             })
         })

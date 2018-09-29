@@ -1,37 +1,44 @@
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use parts::common_functions::*;
-use parts::{CutoutFrame, Wall};
+use parts::{CutoutFrame, CutoutFrameAt, Wall};
 use scad::*;
 
 use config::*;
 
-qstruct!(OuterWalls(color: Option<&'static str>) {
-    l4: Wall = Wall::new(
-        OUTER_WALL_L4_LENGTH,
-        OUTER_WALL_WIDTH,
-        OUTER_WALL_THICKNESS,
-        color),
-    l6: Wall = Wall::new(
-        OUTER_WALL_L6_LENGTH,
-        OUTER_WALL_WIDTH,
-        OUTER_WALL_THICKNESS,
-        color),
-    l8: Wall = Wall::new(
-        OUTER_WALL_L8_LENGTH,
-        OUTER_WALL_WIDTH,
-        OUTER_WALL_THICKNESS,
-        color),
-    l10: Wall = Wall::new(
-        OUTER_WALL_L10_LENGTH,
-        OUTER_WALL_WIDTH,
-        OUTER_WALL_THICKNESS,
-        color),
-    wd_l4: CutoutFrame = CutoutFrame::new(
+qstruct!(OuterWalls(frame_color: Option<&'static str>, color: Option<&'static str>) {
+     wd_l4: CutoutFrame = CutoutFrame::new(
         OUTER_WINDOW_L4_MAJOR,
         OUTER_WINDOW_L4_MINOR,
         OUTER_WINDOW_FRAME_WIDTH,
         OUTER_WINDOW_FRAME_THICKNESS,
-        Some("SandyBrown")),
+        true,
+        frame_color),
+    l4: Wall = Wall::new(
+        OUTER_WALL_L4_LENGTH,
+        OUTER_WALL_WIDTH,
+        OUTER_WALL_THICKNESS,
+        color,
+        vec!()),
+    l6: Wall = Wall::new(
+        OUTER_WALL_L6_LENGTH,
+        OUTER_WALL_WIDTH,
+        OUTER_WALL_THICKNESS,
+        color,
+        vec!()),
+    l8: Wall = Wall::new(
+        OUTER_WALL_L8_LENGTH,
+        OUTER_WALL_WIDTH,
+        OUTER_WALL_THICKNESS,
+        color,
+        vec!()),
+    l10: Wall = Wall::new(
+        OUTER_WALL_L10_LENGTH,
+        OUTER_WALL_WIDTH,
+        OUTER_WALL_THICKNESS,
+        color,
+        vec!(CutoutFrameAt::new(
+            wd_l4.clone(),
+            vec3(OUTER_WALL_L10_LENGTH / 2.0, -OUTER_WINDOW_FRAME_OVERRUN, OUTER_WINDOW_H3_Z)))),
 });
 
 impl OuterWalls {

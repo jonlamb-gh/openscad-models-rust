@@ -10,5 +10,5 @@ mod wall;
 
 pub use self::board::Board;
 pub use self::board_dimensions::BoardDimensions;
-pub use self::cutout_frame::CutoutFrame;
+pub use self::cutout_frame::{CutoutFrame, CutoutFrameAt};
 pub use self::wall::Wall;

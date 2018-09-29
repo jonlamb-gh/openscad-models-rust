@@ -10,27 +10,32 @@ qstruct!(InnerWalls(color: Option<&'static str>) {
         INNER_WALL_L4_LENGTH,
         INNER_WALL_WIDTH,
         INNER_WALL_THICKNESS,
-        color),
+        color,
+        vec!()),
     l5: Wall = Wall::new(
         INNER_WALL_L5_LENGTH,
         INNER_WALL_WIDTH,
         INNER_WALL_THICKNESS,
-        color),
+        color,
+        vec!()),
     l6: Wall = Wall::new(
         INNER_WALL_L6_LENGTH,
         INNER_WALL_WIDTH,
         INNER_WALL_THICKNESS,
-        color),
+        color,
+        vec!()),
     l8: Wall = Wall::new(
         INNER_WALL_L8_LENGTH,
         INNER_WALL_WIDTH,
         INNER_WALL_THICKNESS,
-        color),
+        color,
+        vec!()),
     l10: Wall = Wall::new(
         INNER_WALL_L10_LENGTH,
         INNER_WALL_WIDTH,
         INNER_WALL_THICKNESS,
-        color),
+        color,
+        vec!()),
 });
 
 impl InnerWalls {

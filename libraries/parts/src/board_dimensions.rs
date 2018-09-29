@@ -1,6 +1,7 @@
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
+#[derive(Clone, Copy)]
 pub struct BoardDimensions {
     // size[0] is always with the grain
     // size[1] is against the grain
