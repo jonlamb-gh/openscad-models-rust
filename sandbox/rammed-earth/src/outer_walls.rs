@@ -6,7 +6,7 @@ use scad::*;
 use config::*;
 
 qstruct!(OuterWalls(frame_color: Option<&'static str>, color: Option<&'static str>) {
-     wd_l4: CutoutFrame = CutoutFrame::new(
+     window_4x4_frame: CutoutFrame = CutoutFrame::new(
         OUTER_WINDOW_L4_MAJOR,
         OUTER_WINDOW_L4_MINOR,
         OUTER_WINDOW_FRAME_WIDTH,
