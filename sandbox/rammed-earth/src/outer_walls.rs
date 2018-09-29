@@ -78,15 +78,19 @@ impl OuterWalls {
             }));
         let x_offset = ft_to_cm(10.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-                self.l10.assemble_xaligned()
+                self.l6.assemble_xaligned()
             }));
-        let x_offset = ft_to_cm(20.0);
+        let x_offset = ft_to_cm(16.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
                 self.l10.assemble_xaligned()
             }));
-        let x_offset = ft_to_cm(30.0);
+        let x_offset = ft_to_cm(26.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-                self.l10.assemble_xaligned()
+                self.l6.assemble_xaligned()
+            }));
+        let x_offset = ft_to_cm(32.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+                self.l8.assemble_xaligned()
             }));
         let x_offset = ft_to_cm(40.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
