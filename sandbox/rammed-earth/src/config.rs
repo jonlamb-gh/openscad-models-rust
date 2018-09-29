@@ -42,3 +42,14 @@ pub const OUTER_WINDOW_L4_MINOR: f32 = 121.92;
 
 // 3'
 pub const OUTER_WINDOW_H3_Z: f32 = 91.44;
+
+//
+pub const DOOR_FRAME_OVERRUN: f32 = 0.5;
+pub const DOOR_FRAME_WIDTH: f32 = OUTER_WALL_THICKNESS + (2.0 * DOOR_FRAME_OVERRUN);
+pub const DOOR_FRAME_THICKNESS: f32 = 2.0;
+
+pub const SINGLE_DOOR_MAJOR: f32 = 106.68;
+pub const SINGLE_DOOR_MINOR: f32 = 213.36;
+
+pub const DOUBLE_DOOR_MAJOR: f32 = 212.0;
+pub const DOUBLE_DOOR_MINOR: f32 = 213.36;
