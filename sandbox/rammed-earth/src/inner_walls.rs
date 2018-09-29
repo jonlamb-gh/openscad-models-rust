@@ -115,9 +115,9 @@ impl InnerWalls {
         }));
 
         let x_offset = ft_to_cm(33.0);
-        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(8.0);
+        let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(6.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l6.assemble_yaligned()
+            self.l8.assemble_yaligned()
         }));
 
         parent

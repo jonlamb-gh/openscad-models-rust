@@ -34,6 +34,10 @@ impl OuterWalls {
 
         // row A
         parent.add_child(self.l10.assemble_xaligned());
+        let x_offset = ft_to_cm(10.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, 0.0, 0.0));{
+                self.l8.assemble_xaligned()
+            }));
         let x_offset = ft_to_cm(18.0);
         parent.add_child(scad!(Translate(vec3(x_offset, 0.0, 0.0));{
                 self.l8.assemble_xaligned()
@@ -60,13 +64,13 @@ impl OuterWalls {
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
                 self.l10.assemble_xaligned()
             }));
-        let x_offset = ft_to_cm(18.0);
+        let x_offset = ft_to_cm(10.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-                self.l6.assemble_xaligned()
+                self.l10.assemble_xaligned()
             }));
-        let x_offset = ft_to_cm(24.0);
+        let x_offset = ft_to_cm(20.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-                self.l6.assemble_xaligned()
+                self.l10.assemble_xaligned()
             }));
         let x_offset = ft_to_cm(30.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
