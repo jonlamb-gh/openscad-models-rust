@@ -5,3 +5,11 @@
 ## TODO
 
 - completely switch to SI units, convert 8' X 8' module to cm/m
+
+## STLs
+
+![stl](stl/rammed-earth.stl)
+
+## Images
+![image](images/rammed-earth.png)
+
