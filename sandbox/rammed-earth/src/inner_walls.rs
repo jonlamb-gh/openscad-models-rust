@@ -155,7 +155,7 @@ impl InnerWalls {
         let mut parent = scad!(Union);
 
         // columns
-        let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(16.0) - self.l8.thickness();
+        let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(14.5);
         let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(16.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
             self.l8.assemble_yaligned()
