@@ -75,6 +75,15 @@ qstruct!(OuterWalls(frame_color: Option<&'static str>, color: Option<&'static st
         OUTER_WALL_THICKNESS,
         color,
         vec!()),
+    l8_single_door: Wall = Wall::new(
+        OUTER_WALL_L8_LENGTH,
+        OUTER_WALL_WIDTH,
+        OUTER_WALL_THICKNESS,
+        color,
+        vec!(CutoutFrameAt::new(
+            single_door_frame.clone(),
+            vec3(ft_to_cm(2.0), -DOOR_FRAME_OVERRUN, 0.0),
+        ))),
     l8_4x4_window: Wall = Wall::new(
         OUTER_WALL_L8_LENGTH,
         OUTER_WALL_WIDTH,
@@ -216,15 +225,15 @@ impl OuterWalls {
             }));
         let x_offset = ft_to_cm(16.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-                self.l10_single_door.assemble_xaligned()
+                self.l8_single_door.assemble_xaligned()
             }));
-        let x_offset = ft_to_cm(26.0);
+        let x_offset = ft_to_cm(24.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+                self.l10_4x4_window.assemble_xaligned()
+            }));
+        let x_offset = ft_to_cm(34.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
                 self.l6.assemble_xaligned()
-            }));
-        let x_offset = ft_to_cm(32.0);
-        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-                self.l8.assemble_xaligned()
             }));
         let x_offset = ft_to_cm(40.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{

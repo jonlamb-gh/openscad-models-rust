@@ -9,7 +9,7 @@ use outer_walls::OuterWalls;
 qstruct!(House() {
     foundation: Foundation = Foundation::new(Some("Gainsboro")),
     outer_walls: OuterWalls = OuterWalls::new(Some("SandyBrown"), Some("SaddleBrown")),
-    inner_walls: InnerWalls = InnerWalls::new(Some("SaddleBrown")),
+    inner_walls: InnerWalls = InnerWalls::new(Some("SandyBrown"), Some("SaddleBrown")),
 });
 
 impl ObjectAssembler for House {

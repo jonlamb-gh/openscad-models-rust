@@ -1,11 +1,18 @@
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use parts::common_functions::*;
-use parts::Wall;
+use parts::{CutoutFrame, CutoutFrameAt, Wall};
 use scad::*;
 
 use config::*;
 
-qstruct!(InnerWalls(color: Option<&'static str>) {
+qstruct!(InnerWalls(frame_color: Option<&'static str>, color: Option<&'static str>) {
+    window_1x6_frame: CutoutFrame = CutoutFrame::new(
+        INNER_WINDOW_1X6_MAJOR,
+        INNER_WINDOW_1X6_MINOR,
+        INNER_WINDOW_FRAME_WIDTH,
+        INNER_WINDOW_FRAME_THICKNESS,
+        false,
+        frame_color),
     l2: Wall = Wall::new(
         INNER_WALL_L2_LENGTH,
         INNER_WALL_WIDTH,
@@ -36,12 +43,54 @@ qstruct!(InnerWalls(color: Option<&'static str>) {
         INNER_WALL_THICKNESS,
         color,
         vec!()),
+    l8_tall_windows: Wall = Wall::new(
+        INNER_WALL_L8_LENGTH,
+        INNER_WALL_WIDTH,
+        INNER_WALL_THICKNESS,
+        color,
+        vec!(
+            CutoutFrameAt::new(
+                window_1x6_frame.clone(),
+                vec3(ft_to_cm(1.5), -DOOR_FRAME_OVERRUN, INNER_WINDOW_H2_Z)
+            ),
+            CutoutFrameAt::new(
+                window_1x6_frame.clone(),
+                vec3(ft_to_cm(3.5), -DOOR_FRAME_OVERRUN, INNER_WINDOW_H2_Z)
+            ),
+            CutoutFrameAt::new(
+                window_1x6_frame.clone(),
+                vec3(ft_to_cm(5.5), -DOOR_FRAME_OVERRUN, INNER_WINDOW_H2_Z)
+            ),
+        )),
     l10: Wall = Wall::new(
         INNER_WALL_L10_LENGTH,
         INNER_WALL_WIDTH,
         INNER_WALL_THICKNESS,
         color,
         vec!()),
+    l10_tall_windows: Wall = Wall::new(
+        INNER_WALL_L10_LENGTH,
+        INNER_WALL_WIDTH,
+        INNER_WALL_THICKNESS,
+        color,
+        vec!(
+            CutoutFrameAt::new(
+                window_1x6_frame.clone(),
+                vec3(ft_to_cm(1.5), -DOOR_FRAME_OVERRUN, INNER_WINDOW_H2_Z)
+            ),
+            CutoutFrameAt::new(
+                window_1x6_frame.clone(),
+                vec3(ft_to_cm(3.5), -DOOR_FRAME_OVERRUN, INNER_WINDOW_H2_Z)
+            ),
+            CutoutFrameAt::new(
+                window_1x6_frame.clone(),
+                vec3(ft_to_cm(5.5), -DOOR_FRAME_OVERRUN, INNER_WINDOW_H2_Z)
+            ),
+            CutoutFrameAt::new(
+                window_1x6_frame.clone(),
+                vec3(ft_to_cm(7.5), -DOOR_FRAME_OVERRUN, INNER_WINDOW_H2_Z)
+            ),
+        )),
 });
 
 impl InnerWalls {
@@ -133,14 +182,14 @@ impl InnerWalls {
         let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(21.0);
         let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(20.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l8.assemble_xaligned()
+            self.l8_tall_windows.assemble_xaligned()
         }));
 
         // columns
         let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(20.0);
         let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(21.0) + self.l4.thickness();
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l10.assemble_yaligned()
+            self.l10_tall_windows.assemble_yaligned()
         }));
         let x_offset = OUTER_WALL_THICKNESS + ft_to_cm(28.0) - self.l4.thickness();
         let y_offset = OUTER_WALL_THICKNESS + ft_to_cm(21.0) + self.l4.thickness();
