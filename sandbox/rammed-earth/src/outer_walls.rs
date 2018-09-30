@@ -34,6 +34,13 @@ qstruct!(OuterWalls(frame_color: Option<&'static str>, color: Option<&'static st
         OUTER_WINDOW_FRAME_THICKNESS,
         true,
         frame_color),
+    window_7x5_frame: CutoutFrame = CutoutFrame::new(
+        OUTER_WINDOW_7X5_MAJOR,
+        OUTER_WINDOW_7X5_MINOR,
+        OUTER_WINDOW_FRAME_WIDTH,
+        OUTER_WINDOW_FRAME_THICKNESS,
+        true,
+        frame_color),
     single_door_frame: CutoutFrame = CutoutFrame::new(
         SINGLE_DOOR_MAJOR,
         SINGLE_DOOR_MINOR,
@@ -115,7 +122,7 @@ qstruct!(OuterWalls(frame_color: Option<&'static str>, color: Option<&'static st
         color,
         vec!(CutoutFrameAt::new(
             single_door_frame.clone(),
-            vec3(ft_to_cm(2.0), -DOOR_FRAME_OVERRUN, 0.0),
+            vec3(ft_to_cm(4.0), -DOOR_FRAME_OVERRUN, 0.0),
         ))),
     l10_double_door: Wall = Wall::new(
         OUTER_WALL_L10_LENGTH,
@@ -177,6 +184,15 @@ qstruct!(OuterWalls(frame_color: Option<&'static str>, color: Option<&'static st
             window_6x2_frame.clone(),
             vec3(OUTER_WALL_L12_LENGTH / 2.0, -DOOR_FRAME_OVERRUN, OUTER_WINDOW_H6P3_Z),
         ))),
+    l12_7x5_window: Wall = Wall::new(
+        OUTER_WALL_L12_LENGTH,
+        OUTER_WALL_WIDTH,
+        OUTER_WALL_THICKNESS,
+        color,
+        vec!(CutoutFrameAt::new(
+            window_7x5_frame.clone(),
+            vec3(OUTER_WALL_L12_LENGTH / 2.0, -DOOR_FRAME_OVERRUN, OUTER_WINDOW_H3_Z),
+        ))),
 });
 
 impl OuterWalls {
@@ -217,11 +233,11 @@ impl OuterWalls {
         let y_offset = ft_to_cm(36.0) - self.l4.thickness();
         let x_offset = 0.0;
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-                self.l12_6x2_window.assemble_xaligned()
-            }));
-        let x_offset = ft_to_cm(12.0);
-        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
                 self.l4.assemble_xaligned()
+            }));
+        let x_offset = ft_to_cm(4.0);
+        parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
+                self.l12_8x2_window.assemble_xaligned()
             }));
         let x_offset = ft_to_cm(16.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
@@ -254,15 +270,15 @@ impl OuterWalls {
         }));
         let y_offset = self.l8.thickness() + ft_to_cm(4.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l12_double_door.assemble_yaligned()
+            self.l12_7x5_window.assemble_yaligned()
         }));
         let y_offset = self.l8.thickness() + ft_to_cm(16.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l4.assemble_yaligned()
+            self.l12_7x5_window.assemble_yaligned()
         }));
-        let y_offset = self.l8.thickness() + ft_to_cm(20.0);
+        let y_offset = self.l8.thickness() + ft_to_cm(28.0);
         parent.add_child(scad!(Translate(vec3(x_offset, y_offset, 0.0));{
-            self.l12_8x2_window.assemble_yaligned()
+            self.l4.assemble_yaligned()
         }));
 
         // col 6

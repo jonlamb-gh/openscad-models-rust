@@ -48,6 +48,9 @@ pub const OUTER_WINDOW_8X2_MINOR: f32 = 60.96;
 pub const OUTER_WINDOW_6X2_MAJOR: f32 = 182.88;
 pub const OUTER_WINDOW_6X2_MINOR: f32 = 60.96;
 
+pub const OUTER_WINDOW_7X5_MAJOR: f32 = 213.36;
+pub const OUTER_WINDOW_7X5_MINOR: f32 = 152.4;
+
 // 3', 5', 6.3'
 pub const OUTER_WINDOW_H3_Z: f32 = 91.44;
 pub const OUTER_WINDOW_H5_Z: f32 = 152.4;
@@ -65,6 +68,8 @@ pub const INNER_WINDOW_H2_Z: f32 = 60.96;
 pub const DOOR_FRAME_OVERRUN: f32 = 0.5;
 pub const DOOR_FRAME_WIDTH: f32 = OUTER_WALL_THICKNESS + (2.0 * DOOR_FRAME_OVERRUN);
 pub const DOOR_FRAME_THICKNESS: f32 = 2.0;
+
+pub const DOOR_THICKNESS: f32 = 10.0;
 
 pub const SINGLE_DOOR_MAJOR: f32 = 106.68;
 pub const SINGLE_DOOR_MINOR: f32 = 213.36;

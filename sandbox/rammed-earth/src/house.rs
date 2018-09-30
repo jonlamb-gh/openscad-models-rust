@@ -2,14 +2,16 @@ use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 use config::*;
+use doors::Doors;
 use foundation::Foundation;
 use inner_walls::InnerWalls;
 use outer_walls::OuterWalls;
 
 qstruct!(House() {
-    foundation: Foundation = Foundation::new(Some("Gainsboro")),
-    outer_walls: OuterWalls = OuterWalls::new(Some("SandyBrown"), Some("SaddleBrown")),
-    inner_walls: InnerWalls = InnerWalls::new(Some("SandyBrown"), Some("SaddleBrown")),
+    foundation: Foundation = Foundation::new(Some("Silver")),
+    outer_walls: OuterWalls = OuterWalls::new(Some("SaddleBrown"), Some("Peru")),
+    inner_walls: InnerWalls = InnerWalls::new(Some("SaddleBrown"), Some("Peru")),
+    doors: Doors = Doors::new(Some("Sienna")),
 });
 
 impl ObjectAssembler for House {
@@ -27,6 +29,9 @@ impl ObjectAssembler for House {
             }),
             scad!(Translate(vec3(0.0, 0.0, FOUNDATION_THICKNESS));{
                 self.inner_walls.assemble(),
+            }),
+            scad!(Translate(vec3(0.0, 0.0, FOUNDATION_THICKNESS));{
+                self.doors.assemble(),
             }),
         })
     }

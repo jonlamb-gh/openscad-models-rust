@@ -4,6 +4,7 @@ extern crate parts;
 extern crate scad;
 
 mod config;
+mod doors;
 mod foundation;
 mod house;
 mod inner_walls;
