@@ -49,6 +49,7 @@ impl Foundation {
             scad!(Translate(vec3(ft_to_cm(40.0) + OUTER_WALL_THICKNESS, ft_to_cm(8.0), 0.0));{
                 self.assemble_minor(),
             }),
+            self.assemble_outer_wall_footing(),
         })
     }
 
@@ -83,8 +84,24 @@ impl Foundation {
     }
 
     fn assemble_outer_wall_footing(&self) -> ScadObject {
-        // TODO
-        scad!(Union)
+        scad!(Union;{
+            scad!(Cube(vec3(ft_to_cm(44.0), OUTER_WALL_THICKNESS, FOUNDATION_THICKNESS))),
+            scad!(Translate(vec3(0.0, OUTER_WALL_THICKNESS, 0.0));{
+                scad!(Cube(vec3(OUTER_WALL_THICKNESS, ft_to_cm(32.0), FOUNDATION_THICKNESS))),
+            }),
+            scad!(Translate(vec3(ft_to_cm(50.0), ft_to_cm(8.0), 0.0));{
+                scad!(Cube(vec3(OUTER_WALL_THICKNESS, ft_to_cm(28.0), FOUNDATION_THICKNESS))),
+            }),
+            scad!(Translate(vec3(ft_to_cm(42.0), OUTER_WALL_THICKNESS, 0.0));{
+                scad!(Cube(vec3(OUTER_WALL_THICKNESS, ft_to_cm(8.0), FOUNDATION_THICKNESS))),
+            }),
+            scad!(Translate(vec3(ft_to_cm(44.0), ft_to_cm(8.0), 0.0));{
+                scad!(Cube(vec3(ft_to_cm(6.0), OUTER_WALL_THICKNESS, FOUNDATION_THICKNESS))),
+            }),
+            scad!(Translate(vec3(0.0, ft_to_cm(34.0), 0.0));{
+                scad!(Cube(vec3(ft_to_cm(50.0), OUTER_WALL_THICKNESS, FOUNDATION_THICKNESS))),
+            })
+        })
     }
 
     fn assemble_module(&self) -> ScadObject {
