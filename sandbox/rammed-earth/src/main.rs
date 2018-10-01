@@ -9,6 +9,7 @@ mod foundation;
 mod house;
 mod inner_walls;
 mod outer_walls;
+mod roof;
 
 use dimdraw::ObjectAssembler;
 use scad::*;

@@ -76,3 +76,23 @@ pub const SINGLE_DOOR_MINOR: f32 = 213.36;
 
 pub const DOUBLE_DOOR_MAJOR: f32 = 212.0;
 pub const DOUBLE_DOOR_MINOR: f32 = 213.36;
+
+pub const ROOF_SLOPE_ANGLE: f32 = 6.0;
+
+// 2'
+pub const ROOF_OVERHANG: f32 = 60.96;
+
+// 8" X 6"
+pub const RAFTER_WIDTH: f32 = 20.32;
+pub const RAFTER_THICKNESS: f32 = 15.24;
+
+// 6" X 6"
+pub const ROOF_BEAM_WIDTH: f32 = 15.24;
+pub const ROOF_BEAM_THICKNESS: f32 = 15.24;
+
+// length = span / cos(slope-angle) + 2 * overhang
+// 37.585252167 ft == 1145.59848605016 cm
+pub const RAFTER_LENGTH: f32 = 1145.59848605016 + (2.0 * ROOF_OVERHANG);
+
+// TODO
+pub const RAFTER_SEP_DISTANCE: f32 = 120.0;
