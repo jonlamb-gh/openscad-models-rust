@@ -97,7 +97,7 @@ pub trait DrawingAssembler: ObjectAssembler {
             Viewport::TopRight => scad!(Translate(vec3(0.0, 0.0, -obj_desc.thickness));{
                 scad!(Rotate(20.0, z_axis());{
                     scad!(Rotate(40.0, y_axis());{
-                        scad!(Rotate(-30.0, x_axis());{
+                        scad!(Rotate(-50.0, x_axis());{
                             obj
                         })
                     })

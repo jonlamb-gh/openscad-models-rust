@@ -28,3 +28,5 @@ cargo run
 - [House](sandbox/house) A house project for experimenting with OpenSCAD
 
 - [Rammed Earth House](sandbox/rammed-earth) A Rammed Earth house project
+
+- [Slab Table](wood-projects/slab-table) A live edge slab coffee table
