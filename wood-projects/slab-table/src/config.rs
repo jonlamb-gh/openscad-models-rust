@@ -6,10 +6,10 @@ pub const VISUAL_OVERRUN: f32 = 0.1;
 pub const TENON_OVERRUN: f32 = 0.5;
 
 /// Depth of the post tenon cutout along the width/y-axis
-pub const POST_TENON_MAJOR_DEPTH: f32 = 3.0;
+pub const POST_TENON_MAJOR_DEPTH: f32 = 5.0;
 
 /// Depth of the post tenon cutout along the thickness/z-axis
-pub const POST_TENON_MINOR_DEPTH: f32 = 5.0;
+pub const POST_TENON_MINOR_DEPTH: f32 = 7.0;
 
 pub const SLAB_LENGTH: f32 = 238.76;
 pub const SLAB_WIDTH: f32 = 73.66;
