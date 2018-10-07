@@ -1,4 +1,4 @@
-use dimdraw::{ObjectAssembler, ObjectDescriptor};
+use dimdraw::{ObjectAssembler, ObjectDescriptor, DrawingAssembler, DrawingParams};
 use parts::common_functions::*;
 use parts::Board;
 use scad::*;
@@ -12,6 +12,12 @@ qstruct!(Post(color: Option<&'static str>) {
         POST_THICKNESS,
         color),
 });
+
+impl DrawingAssembler for Post {
+    fn drawing_params(&self) -> DrawingParams {
+        DrawingParams::default()
+    }
+}
 
 impl Post {
     pub fn assemble_aligned(&self) -> ScadObject {

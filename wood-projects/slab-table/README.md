@@ -10,3 +10,4 @@
 
 ![drawing](images/slab_table_drawing.png)
 
+![separated](images/separated.png)
