@@ -15,3 +15,7 @@
 - `cargo run --features "post-drawing"`
 
   ![post drawing](images/post_drawing.png)
+
+- `cargo run --features "slab-drawing"`
+
+  ![slab drawing](images/slab_drawing.png)

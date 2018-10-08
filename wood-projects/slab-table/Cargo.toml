@@ -17,3 +17,4 @@ path = "../../libraries/parts"
 default = []
 assembled-drawing = []
 post-drawing = []
+slab-drawing = []

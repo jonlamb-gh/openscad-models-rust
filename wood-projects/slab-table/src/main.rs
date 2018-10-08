@@ -31,6 +31,8 @@ fn main() {
         sfile.add_object(part.assemble_drawing());
     } else if cfg!(feature = "post-drawing") {
         sfile.add_object(part.post.assemble_drawing());
+    } else if cfg!(feature = "slab-drawing") {
+        sfile.add_object(part.slab.assemble_drawing());
     } else {
         sfile.add_object(part.assemble());
     }
