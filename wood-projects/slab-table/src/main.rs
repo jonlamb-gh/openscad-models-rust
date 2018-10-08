@@ -8,8 +8,8 @@ mod post;
 mod slab;
 mod slab_table;
 
+use dimdraw::DrawingAssembler;
 use dimdraw::ObjectAssembler;
-//use dimdraw::DrawingAssembler;
 use scad::*;
 
 use slab_table::SlabTable;
@@ -27,8 +27,13 @@ fn main() {
     sfile.set_detail(100);
 
     // Add the model to the file
-    sfile.add_object(part.assemble());
-    //sfile.add_object(part.assemble_drawing());
+    if cfg!(feature = "assembled-drawing") {
+        sfile.add_object(part.assemble_drawing());
+    } else if cfg!(feature = "post-drawing") {
+        sfile.add_object(part.post.assemble_drawing());
+    } else {
+        sfile.add_object(part.assemble());
+    }
 
     // Save the scad code to a file
     let filename = &format!("{}.scad", env!("CARGO_PKG_NAME"));

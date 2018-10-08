@@ -11,3 +11,7 @@
 ![drawing](images/slab_table_drawing.png)
 
 ![separated](images/separated.png)
+
+- `cargo run --features "post-drawing"`
+
+  ![post drawing](images/post_drawing.png)

@@ -13,12 +13,6 @@ qstruct!(Post(color: Option<&'static str>) {
         color),
 });
 
-impl DrawingAssembler for Post {
-    fn drawing_params(&self) -> DrawingParams {
-        DrawingParams::default()
-    }
-}
-
 impl Post {
     pub fn assemble_aligned(&self) -> ScadObject {
         scad!(Translate(vec3(self.board.thickness(), 0.0, 0.0));{
@@ -87,5 +81,20 @@ impl ObjectAssembler for Post {
                 self.assemble_minor_cutout()
             }),
         })
+    }
+}
+
+impl DrawingAssembler for Post {
+    fn drawing_params(&self) -> DrawingParams {
+        let delta = 30.0;
+        DrawingParams {
+            doc_scale: 20.0,
+            show_frame: true,
+            doc_height: POST_LENGTH + 5.0,
+            top_left_view_pos: vec3(-POST_LENGTH - delta, delta, 0.0),
+            top_right_view_pos: vec3(delta * 2.0, delta, 0.0),
+            bottom_left_view_pos: vec3(-POST_LENGTH - delta, -POST_WIDTH - delta, 0.0),
+            bottom_right_view_pos: vec3(delta, -POST_THICKNESS - delta, 0.0),
+        }
     }
 }

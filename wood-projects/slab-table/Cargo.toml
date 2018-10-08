@@ -12,3 +12,8 @@ path = "../../libraries/dimdraw"
 
 [dependencies.parts]
 path = "../../libraries/parts"
+
+[features]
+default = []
+assembled-drawing = []
+post-drawing = []
