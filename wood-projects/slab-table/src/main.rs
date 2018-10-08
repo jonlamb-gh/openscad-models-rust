@@ -34,6 +34,16 @@ fn main() {
         sfile.add_object(part.post.assemble_drawing());
     } else if cfg!(feature = "slab-drawing") {
         sfile.add_object(part.slab.assemble_drawing());
+    } else if cfg!(feature = "pieces") {
+        sfile.add_object(scad!(Union;{
+            part.post.assemble_aligned(),
+            scad!(Translate(vec3(30.0, 20.0, 0.0));{
+                part.slab.assemble(),
+            }),
+            scad!(Translate(vec3(30.0, -20.0, 0.0));{
+                part.post.assemble(),
+            }),
+        }));
     } else {
         sfile.add_object(part.assemble());
     }

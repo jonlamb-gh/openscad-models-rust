@@ -14,9 +14,9 @@
 
   ![drawing](images/slab_table_drawing.png)
 
-- TODO
+- `cargo run --features "pieces"`
 
-  ![separated](images/separated.png)
+  ![separated](images/pieces.png)
 
 - `cargo run --features "post-drawing"`
 
