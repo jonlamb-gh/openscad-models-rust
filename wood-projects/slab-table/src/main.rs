@@ -7,6 +7,7 @@ mod config;
 mod post;
 mod post_drawing;
 mod slab;
+mod slab_drawing;
 mod slab_table;
 
 use dimdraw::DrawingAssembler;
