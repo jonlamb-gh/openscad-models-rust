@@ -139,10 +139,22 @@ pub trait DrawingAssembler: ObjectAssembler {
             Viewport::BottomRight => (obj_desc.width, obj_desc.thickness),
         };
 
+        let major_dim_loc = if major_dim < 10.0 {
+            DimLocation::Left
+        } else {
+            DimLocation::Center
+        };
+
+         let minor_dim_loc = if minor_dim < 10.0 {
+            DimLocation::Left
+        } else {
+            DimLocation::Center
+        };
+
         // major dimension
         dims_children.add_child(
             scad!(Translate(vec3(0.0, minor_dim + (drawing.spacing * 3.0), 0.0));{
-                drawing.dim_line(major_dim, DimLocation::Center)
+                drawing.dim_line(major_dim, major_dim_loc)
             }),
         );
 
@@ -166,7 +178,7 @@ pub trait DrawingAssembler: ObjectAssembler {
         dims_children.add_child(
             scad!(Translate(vec3(major_dim + drawing.spacing * 3.0, minor_dim, 0.0));{
                 scad!(Rotate(-90.0, z_axis());{
-                    drawing.dim_line(minor_dim, DimLocation::Center)
+                    drawing.dim_line(minor_dim, minor_dim_loc)
                 })
             }),
         );

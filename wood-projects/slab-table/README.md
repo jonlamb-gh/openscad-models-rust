@@ -6,11 +6,17 @@
 
 ## Images
 
-![assembled](images/assembled.png)
+- `cargo run`
 
-![drawing](images/slab_table_drawing.png)
+  ![assembled](images/slab_table.png)
 
-![separated](images/separated.png)
+- `cargo run --features "assembled-drawing"`
+
+  ![drawing](images/slab_table_drawing.png)
+
+- TODO
+
+  ![separated](images/separated.png)
 
 - `cargo run --features "post-drawing"`
 
