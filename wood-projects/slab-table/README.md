@@ -1,5 +1,10 @@
 # Slab Table
 
+## The Real Thing
+
+[Link to image gallery](https://github.com/jonlamb-gh/jonlamb-gh.github.io/blob/master/wood-projects/slab-table/README.md)
+
+
 ## STLs
 
 - [assembled](stl/slab_table.stl)
