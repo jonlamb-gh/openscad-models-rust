@@ -9,8 +9,11 @@ then
 fi
 
 EXEC_FILE="$1"
+#OPENSCAD_ARGS="${@:2}"
 
 # run the Rust executable, expects it to output the scad filename
+# as the first token in the argument vector, followed by zero
+# or more arguments to be given to OpenSCAD
 SCAD_FILE="$($EXEC_FILE)"
 
 if [[ "$SCAD_FILE" != /* ]]; then
@@ -23,5 +26,6 @@ if [ ! -f $SCAD_FILE ]; then
 fi
 
 openscad $SCAD_FILE
+#openscad $OPENSCAD_ARGS $SCAD_FILE
 
 exit 0

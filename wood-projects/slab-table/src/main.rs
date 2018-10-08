@@ -5,6 +5,7 @@ extern crate scad;
 
 mod config;
 mod post;
+mod post_drawing;
 mod slab;
 mod slab_table;
 
@@ -43,5 +44,7 @@ fn main() {
     assert_eq!(result, true);
 
     // The custom runner script expects the generated scad filename on stdout
+    // argv[0] = path/to/filename.scad
+    // argv[1+] = arguments given to OpenSCAD
     println!("{}", filename);
 }

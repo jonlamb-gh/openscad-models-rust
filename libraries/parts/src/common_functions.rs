@@ -15,7 +15,7 @@ pub fn z_axis() -> na::Vector3<f32> {
 }
 
 pub fn v3zero() -> na::Vector3<f32> {
-    na::Vector3::new(0.0, 0.0, 1.0)
+    na::Vector3::new(0.0, 0.0, 0.0)
 }
 
 pub fn in_to_cm(v: f32) -> f32 {
