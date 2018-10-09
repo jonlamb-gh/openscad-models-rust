@@ -2,6 +2,7 @@ use scad::*;
 
 use drawing::Drawing;
 
+#[derive(Clone, Copy, PartialEq)]
 pub enum DimLocation {
     Center,
     Left,

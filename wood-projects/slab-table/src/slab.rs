@@ -1,4 +1,4 @@
-use dimdraw::{DrawingAssembler, DrawingParams, ObjectAssembler, ObjectDescriptor};
+use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use parts::Board;
 use scad::*;
 

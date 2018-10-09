@@ -88,7 +88,7 @@ pub trait DrawingAssembler: ObjectAssembler {
         let obj_desc = self.describe();
         let obj = self.assemble();
 
-        let parent = match vp {
+        match vp {
             // top
             Viewport::TopLeft => scad!(Translate(vec3(0.0, 0.0, -obj_desc.thickness));{
                 obj
@@ -117,13 +117,15 @@ pub trait DrawingAssembler: ObjectAssembler {
                         })
                     })
                 }),
-        };
+        }
+    }
 
-        parent
+    fn assemble_viewport(&self, vp: Viewport) -> ScadObject {
+        self.assemble_default_viewport(vp)
     }
 
     // default impl just does some basic major/minor dimensions
-    fn assemble_viewport(&self, vp: Viewport) -> ScadObject {
+    fn assemble_default_viewport(&self, vp: Viewport) -> ScadObject {
         let params = self.drawing_params();
         let drawing = Drawing::new(params.doc_scale);
         let obj_desc = self.describe();
@@ -145,7 +147,7 @@ pub trait DrawingAssembler: ObjectAssembler {
             DimLocation::Center
         };
 
-         let minor_dim_loc = if minor_dim < 10.0 {
+        let minor_dim_loc = if minor_dim < 10.0 {
             DimLocation::Left
         } else {
             DimLocation::Center

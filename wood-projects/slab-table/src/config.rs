@@ -20,4 +20,6 @@ pub const POST_WIDTH: f32 = 25.4;
 pub const POST_THICKNESS: f32 = 20.32;
 
 /// Distance from edge of slab to outer face of post
+///
+/// Distance to center of post is POST_TO_EDGE_DIST + (POST_THICKNESS/2).
 pub const POST_TO_EDGE_DIST: f32 = 40.64;

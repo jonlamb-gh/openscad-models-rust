@@ -5,8 +5,8 @@ use drawing::Drawing;
 
 impl Drawing {
     pub fn line(&self, length: f32, left_arrow: bool, right_arrow: bool) -> ScadObject {
-        // TODO
-        //assert!(length >= 0.0);
+        assert_eq!(length.is_sign_negative(), false);
+        assert_eq!(length == 0.0, false);
 
         let arrow_size = self.line_width * 4.0;
         let arrow_length = arrow_size * 0.6;
