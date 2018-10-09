@@ -11,9 +11,9 @@ pub const POST_TENON_MAJOR_DEPTH: f32 = 5.0;
 /// Depth of the post tenon cutout along the thickness/z-axis
 pub const POST_TENON_MINOR_DEPTH: f32 = 7.0;
 
-pub const SLAB_LENGTH: f32 = 238.76;
-pub const SLAB_WIDTH: f32 = 73.66;
-pub const SLAB_THICKNESS: f32 = 5.08;
+pub const SLAB_LENGTH: f32 = 238.0;
+pub const SLAB_WIDTH: f32 = 73.0;
+pub const SLAB_THICKNESS: f32 = 5.5;
 
 pub const POST_LENGTH: f32 = 48.26;
 pub const POST_WIDTH: f32 = 25.4;
