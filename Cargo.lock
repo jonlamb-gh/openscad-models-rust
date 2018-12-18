@@ -190,6 +190,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "table"
+version = "0.1.0"
+dependencies = [
+ "dimdraw 0.1.0",
+ "parts 0.1.0",
+ "scad 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "template-project"
 version = "0.1.0"
 dependencies = [

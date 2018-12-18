@@ -5,6 +5,7 @@ members = [
     "libraries/parts",
     "wood-projects/couch",
     "wood-projects/slab-table",
+    "wood-projects/table",
     "sandbox/house",
     "sandbox/rammed-earth",
 ]
