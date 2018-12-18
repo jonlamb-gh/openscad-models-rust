@@ -194,6 +194,7 @@ name = "table"
 version = "0.1.0"
 dependencies = [
  "dimdraw 0.1.0",
+ "nalgebra 0.13.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "parts 0.1.0",
  "scad 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]

@@ -1,6 +1,6 @@
 use crate::config::*;
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
-use parts::common_functions::*;
+use parts::common_functions::z_axis;
 use parts::Board;
 use scad::*;
 

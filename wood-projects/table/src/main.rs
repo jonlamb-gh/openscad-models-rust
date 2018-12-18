@@ -1,13 +1,46 @@
+use crate::leg::Leg;
+use crate::mortise_side_board::MortiseSideBoard;
 use crate::table::Table;
+use crate::tenon_side_board::TenonSideBoard;
+use crate::top_board::{TopBoard, WidthType};
+use crate::top_support_board::TopSupportBoard;
 use dimdraw::ObjectAssembler;
-use scad::ScadFile;
+use scad::{ScadFile, ScadObject};
 
 mod config;
+mod cutaway;
 mod leg;
+mod mortise_side_board;
+mod side_board;
 mod table;
 mod table_top;
+mod tenon_side_board;
 mod top_board;
 mod top_support_board;
+
+enum Part {
+    LegBoard,
+    MajorTopBoard,
+    MinorTopBoard,
+    TopSupportBoard,
+    TenonSideBoard,
+    MortiseSideBoard,
+    Table,
+}
+
+impl Part {
+    fn assemble(&self) -> ScadObject {
+        match *self {
+            Part::LegBoard => Leg::new(None).assemble(),
+            Part::MajorTopBoard => TopBoard::new(WidthType::Major, None).assemble(),
+            Part::MinorTopBoard => TopBoard::new(WidthType::Minor, None).assemble(),
+            Part::TopSupportBoard => TopSupportBoard::new(None).assemble(),
+            Part::TenonSideBoard => TenonSideBoard::new(None).assemble(),
+            Part::MortiseSideBoard => MortiseSideBoard::new(None).assemble(),
+            Part::Table => Table::new().assemble(),
+        }
+    }
+}
 
 pub fn main() {
     // Create an scad file object for storing the scad objects. This
@@ -19,7 +52,13 @@ pub fn main() {
     sfile.set_detail(50);
 
     // Create the model
-    let part = Table::new();
+    //let part = Part::LegBoard;
+    //let part = Part::MajorTopBoard;
+    //let part = Part::MinorTopBoard;
+    //let part = Part::TopSupportBoard;
+    //let part = Part::TenonSideBoard;
+    //let part = Part::MortiseSideBoard;
+    let part = Part::Table;
 
     // Add the model to the file
     sfile.add_object(part.assemble());

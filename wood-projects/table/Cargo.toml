@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 scad = "1.0.1"
+nalgebra = "*"
 
 [dependencies.parts]
 path = "../../libraries/parts/"
