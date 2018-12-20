@@ -6,32 +6,33 @@ pub const VISUAL_OVERRUN: f32 = 0.1;
 // TODO
 /// Distance between leg center to leg center along the outside parimeter
 pub const MAJOR_LEG_TO_LEG_DIST: f32 = 70.0;
-pub const MINOR_LEG_TO_LEG_DIST: f32 = 75.0;
+pub const MINOR_LEG_TO_LEG_DIST: f32 = 65.0;
 
 pub const TOP_SUPPORT_CUTOUT_DEPTH: f32 = 1.0;
 
 pub const TENON_OVERRUN: f32 = 5.0;
 pub const MORTISE_BOARD_TENON_OVERRUN: f32 = 1.0;
 
-pub const LEG_CHAMFER_RATIO: f32 = 1.0 / 32.0;
+pub const LEG_CHAMFER_RATIO: f32 = 1.0 / 16.0;
 
 pub const TOP_CHAMFER_RATIO: f32 = 1.0 / 8.0;
 
 pub const SIDE_TENON_RATIO: f32 = 1.0 / 2.0;
 
 pub const WEDGE_LENGTH: f32 = 6.0;
-pub const WEDGE_WIDTH: f32 = 2.0;
+pub const WEDGE_WIDTH: f32 = 1.9;
 pub const WEDGE_THICKNESS: f32 = 1.5;
 pub const WEDGE_BOARD_SIZE: [f32; 3] = [WEDGE_LENGTH, WEDGE_WIDTH, WEDGE_THICKNESS];
 
 /// TODO
-pub const POST_WIDTH: f32 = 8.0;
-pub const POST_THICKNESS: f32 = 8.0;
+pub const POST_WIDTH: f32 = 8.89;
+pub const POST_THICKNESS: f32 = 8.89;
 
 /// TODO
 /// - chamfer
 /// - 36" == 91.44 cm
-pub const LEG_LENGTH: f32 = 92.0;
+/// - ~30.7" == 78 cm
+pub const LEG_LENGTH: f32 = 78.0;
 pub const LEG_WIDTH: f32 = POST_WIDTH;
 pub const LEG_THICKNESS: f32 = POST_THICKNESS;
 pub const LEG_CHAMFER_LENGTH: f32 = SIDE_SUPPORT_BOARD_HEIGHT - SIDE_SUPPORT_BOARD_WIDTH;
@@ -78,7 +79,7 @@ pub const TENON_SIDE_SUPPORT_BOARD_LENGTH: f32 =
 pub const MORTISE_SIDE_SUPPORT_BOARD_LENGTH: f32 =
     MINOR_LEG_TO_LEG_DIST + POST_THICKNESS + (2.0 * MORTISE_BOARD_TENON_OVERRUN);
 pub const SIDE_SUPPORT_BOARD_WIDTH: f32 = 10.0;
-pub const SIDE_SUPPORT_BOARD_THICKNESS: f32 = 2.5;
+pub const SIDE_SUPPORT_BOARD_THICKNESS: f32 = 1.9;
 pub const SIDE_SUPPORT_BOARD_HEIGHT: f32 = LEG_LENGTH - (TOP_SUPPORT_BOARD_THICKNESS / 2.0);
 pub const SIDE_SUPPORT_TENON_LENGTH: f32 = POST_THICKNESS + TENON_OVERRUN;
 pub const SIDE_SUPPORT_TENON_WIDTH: f32 = SIDE_SUPPORT_BOARD_WIDTH * SIDE_TENON_RATIO;
