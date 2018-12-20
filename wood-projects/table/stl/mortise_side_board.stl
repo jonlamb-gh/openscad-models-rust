@@ -335,20 +335,6 @@ solid OpenSCAD_Model
       vertex 81.25 2.5 2.5
     endloop
   endfacet
-  facet normal 0 -1 0
-    outer loop
-      vertex 78.75 7.5 0
-      vertex 81.25 7.5 2.5
-      vertex 78.75 7.5 2.5
-    endloop
-  endfacet
-  facet normal 0 -1 -0
-    outer loop
-      vertex 81.25 7.5 2.5
-      vertex 78.75 7.5 0
-      vertex 81.25 7.5 0
-    endloop
-  endfacet
   facet normal 0 1 -0
     outer loop
       vertex 81.25 2.5 0
@@ -361,6 +347,20 @@ solid OpenSCAD_Model
       vertex 78.75 2.5 2.5
       vertex 81.25 2.5 0
       vertex 78.75 2.5 0
+    endloop
+  endfacet
+  facet normal 0 -1 0
+    outer loop
+      vertex 78.75 7.5 0
+      vertex 81.25 7.5 2.5
+      vertex 78.75 7.5 2.5
+    endloop
+  endfacet
+  facet normal 0 -1 -0
+    outer loop
+      vertex 81.25 7.5 2.5
+      vertex 78.75 7.5 0
+      vertex 81.25 7.5 0
     endloop
   endfacet
 endsolid OpenSCAD_Model

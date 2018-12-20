@@ -4,19 +4,22 @@ use crate::table::Table;
 use crate::tenon_side_board::TenonSideBoard;
 use crate::top_board::{TopBoard, WidthType};
 use crate::top_support_board::TopSupportBoard;
+use crate::wedge_board::WedgeBoard;
 use dimdraw::ObjectAssembler;
 use scad::{ScadFile, ScadObject};
 
+mod axis;
 mod config;
 mod cutaway;
 mod leg;
 mod mortise_side_board;
-mod side_board;
+mod quadrant;
 mod table;
 mod table_top;
 mod tenon_side_board;
 mod top_board;
 mod top_support_board;
+mod wedge_board;
 
 enum Part {
     LegBoard,
@@ -25,6 +28,7 @@ enum Part {
     TopSupportBoard,
     TenonSideBoard,
     MortiseSideBoard,
+    WedgeBoard,
     Table,
 }
 
@@ -37,6 +41,7 @@ impl Part {
             Part::TopSupportBoard => TopSupportBoard::new(None).assemble(),
             Part::TenonSideBoard => TenonSideBoard::new(None).assemble(),
             Part::MortiseSideBoard => MortiseSideBoard::new(None).assemble(),
+            Part::WedgeBoard => WedgeBoard::new(None).assemble(),
             Part::Table => Table::new().assemble(),
         }
     }
@@ -58,6 +63,7 @@ pub fn main() {
     //let part = Part::TopSupportBoard;
     //let part = Part::TenonSideBoard;
     //let part = Part::MortiseSideBoard;
+    //let part = Part::WedgeBoard;
     let part = Part::Table;
 
     // Add the model to the file

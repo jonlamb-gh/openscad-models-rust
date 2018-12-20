@@ -15,7 +15,7 @@ impl TableTop {
         let z = self.support_board.describe().thickness;
 
         let mut parent = scad!(Union);
-        let mut toggle = false;
+        let mut toggle = true;
         let mut y = 0.0;
         for _b in 0..TOP_BOARD_COUNT {
             let child = if toggle {
@@ -36,20 +36,14 @@ impl TableTop {
     }
 
     pub fn assemble_top_support(&self) -> ScadObject {
-        let cx = self.top_major_board.describe().length / 2.0;
-        let z = 0.0;
-
-        let y = TOP_SUPPORT_BOARD_INSET;
-        let x0 = cx - (LEG_TO_LEG_DIST / 2.0) + (LEG_THICKNESS / 2.0);
-        let x1 = cx + (LEG_TO_LEG_DIST / 2.0)
-            - (LEG_THICKNESS / 2.0)
-            - self.support_board.describe().width;
+        let t_left = TopSupportBoard::abs_pos(true);
+        let t_right = TopSupportBoard::abs_pos(false);
 
         scad!(Union;{
-            scad!(Translate(vec3(x0, y, z));{
+            scad!(Translate(t_left);{
                 self.support_board.assemble(),
             }),
-            scad!(Translate(vec3(x1, y, z));{
+            scad!(Translate(t_right);{
                 self.support_board.assemble(),
             }),
         })

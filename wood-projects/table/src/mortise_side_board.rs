@@ -1,7 +1,8 @@
+use crate::axis::Axis;
 use crate::config::*;
 use crate::cutaway::Cutaway;
-use crate::side_board::Axis;
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
+use nalgebra::Vector3;
 use parts::common_functions::{x_axis, y_axis, z_axis};
 use parts::Board;
 use scad::*;
@@ -10,7 +11,33 @@ qstruct!(MortiseSideBoard(color: Option<&'static str>) {
     board: Board = Board::from_array(&MORTISE_SIDE_SUPPORT_BOARD_SIZE, color),
 });
 
+pub enum MortiseSide {
+    /// Quandrants Q0 and Q1
+    Left,
+    /// Quandrants Q2 and Q3
+    Right,
+}
+
 impl MortiseSideBoard {
+    // TODO - trait
+    // move to Part/part.rs?
+    // TODO - center?
+    pub fn abs_pos(side: MortiseSide) -> Vector3<f32> {
+        let center = Vector3::new(TOTAL_SIZE[0] / 2.0, TOTAL_SIZE[1] / 2.0, 0.0);
+
+        let z = SIDE_SUPPORT_BOARD_HEIGHT - SIDE_SUPPORT_BOARD_WIDTH;
+        let hl = MORTISE_SIDE_SUPPORT_BOARD_LENGTH / 2.0;
+        let ht = SIDE_SUPPORT_BOARD_THICKNESS / 2.0;
+        let hmajor = MAJOR_LEG_TO_LEG_DIST / 2.0;
+
+        let t = match side {
+            MortiseSide::Left => Vector3::new(-hmajor - ht, -hl, z),
+            MortiseSide::Right => Vector3::new(hmajor - ht, -hl, z),
+        };
+
+        center + t
+    }
+
     pub fn assemble_aligned(&self, axis: Axis) -> ScadObject {
         let dim = self.board.describe();
         match axis {

@@ -1,7 +1,8 @@
+use crate::axis::Axis;
 use crate::config::*;
 use crate::cutaway::Cutaway;
-use crate::side_board::Axis;
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
+use nalgebra::Vector3;
 use parts::common_functions::{x_axis, y_axis, z_axis};
 use parts::Board;
 use scad::*;
@@ -10,7 +11,33 @@ qstruct!(TenonSideBoard(color: Option<&'static str>) {
     board: Board = Board::from_array(&TENON_SIDE_SUPPORT_BOARD_SIZE, color),
 });
 
+pub enum TenonSide {
+    /// Quandrants Q0 and Q3
+    Front,
+    /// Quandrants Q1 and Q2
+    Back,
+}
+
 impl TenonSideBoard {
+    // TODO - trait
+    // move to Part/part.rs?
+    // TODO - center?
+    pub fn abs_pos(side: TenonSide) -> Vector3<f32> {
+        let center = Vector3::new(TOTAL_SIZE[0] / 2.0, TOTAL_SIZE[1] / 2.0, 0.0);
+
+        let z = SIDE_SUPPORT_BOARD_HEIGHT - SIDE_SUPPORT_BOARD_WIDTH;
+        let hl = TENON_SIDE_SUPPORT_BOARD_LENGTH / 2.0;
+        let ht = SIDE_SUPPORT_BOARD_THICKNESS / 2.0;
+        let hminor = MINOR_LEG_TO_LEG_DIST / 2.0;
+
+        let t = match side {
+            TenonSide::Front => Vector3::new(-hl, -hminor - ht, z),
+            TenonSide::Back => Vector3::new(-hl, hminor - ht, z),
+        };
+
+        center + t
+    }
+
     pub fn assemble_aligned(&self, axis: Axis) -> ScadObject {
         let dim = self.board.describe();
         match axis {

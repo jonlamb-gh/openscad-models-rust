@@ -1,26 +1,39 @@
 use crate::config::*;
+use crate::quadrant::Quadrant;
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
-use nalgebra::Vector2;
+use nalgebra::{Vector2, Vector3};
 use parts::common_functions::*;
 use parts::Board;
 use scad::*;
-
-pub enum Quadrant {
-    /// Bottom left
-    Q0,
-    /// Top left
-    Q1,
-    /// Top right
-    Q2,
-    /// Bottom right
-    Q3,
-}
 
 qstruct!(Leg(color: Option<&'static str>) {
     board: Board = Board::from_array(&LEG_BOARD_SIZE, color),
 });
 
 impl Leg {
+    // TODO - trait
+    // move to Part/part.rs?
+    // TODO - center
+    pub fn abs_pos(quad: Quadrant, _center: bool) -> Vector3<f32> {
+        let center = Vector3::new(TOTAL_SIZE[0] / 2.0, TOTAL_SIZE[1] / 2.0, 0.0);
+
+        let ht = LEG_THICKNESS / 2.0;
+        let hw = LEG_WIDTH / 2.0;
+
+        let hmajor = MAJOR_LEG_TO_LEG_DIST / 2.0;
+        let hminor = MINOR_LEG_TO_LEG_DIST / 2.0;
+
+        // Translation from center
+        let tq = match quad {
+            Quadrant::Q0 => Vector3::new(-hmajor - ht, -hminor - hw, 0.0),
+            Quadrant::Q1 => Vector3::new(-hmajor - ht, hminor - hw, 0.0),
+            Quadrant::Q2 => Vector3::new(hmajor - ht, hminor - hw, 0.0),
+            Quadrant::Q3 => Vector3::new(hmajor - ht, -hminor - hw, 0.0),
+        };
+
+        center + tq
+    }
+
     pub fn assemble_aligned(&self, quad: Quadrant) -> ScadObject {
         let angle = match quad {
             Quadrant::Q0 => 0.0,
