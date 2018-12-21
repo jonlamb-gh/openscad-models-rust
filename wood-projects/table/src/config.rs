@@ -10,7 +10,7 @@ pub const MINOR_LEG_TO_LEG_DIST: f32 = 70.0;
 
 pub const TOP_SUPPORT_CUTOUT_DEPTH: f32 = 1.0;
 
-pub const TENON_OVERRUN: f32 = 5.0;
+pub const TENON_OVERRUN: f32 = 2.54;
 pub const MORTISE_BOARD_TENON_OVERRUN: f32 = 1.0;
 
 pub const LEG_CHAMFER_RATIO: f32 = 1.0 / 16.0;
@@ -21,7 +21,7 @@ pub const SIDE_TENON_RATIO: f32 = 5.0 / 8.0;
 
 pub const WEDGE_LENGTH: f32 = 6.0;
 pub const WEDGE_WIDTH: f32 = 1.9;
-pub const WEDGE_THICKNESS: f32 = 1.5;
+pub const WEDGE_THICKNESS: f32 = 0.6;
 pub const WEDGE_BOARD_SIZE: [f32; 3] = [WEDGE_LENGTH, WEDGE_WIDTH, WEDGE_THICKNESS];
 
 /// TODO
