@@ -17,7 +17,7 @@ pub const LEG_CHAMFER_RATIO: f32 = 1.0 / 16.0;
 
 pub const TOP_CHAMFER_RATIO: f32 = 1.0 / 8.0;
 
-pub const SIDE_TENON_RATIO: f32 = 1.0 / 2.0;
+pub const SIDE_TENON_RATIO: f32 = 5.0 / 8.0;
 
 pub const WEDGE_LENGTH: f32 = 6.0;
 pub const WEDGE_WIDTH: f32 = 1.9;

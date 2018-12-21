@@ -1,6 +1,6 @@
 use crate::axis::Axis;
 use crate::config::*;
-use crate::leg::Leg;
+use crate::leg::{JoineryType, Leg};
 use crate::mortise_side_board::{MortiseSide, MortiseSideBoard};
 use crate::quadrant::Quadrant;
 use crate::table_top::TableTop;
@@ -10,7 +10,8 @@ use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 qstruct!(Table() {
-    leg: Leg = Leg::new(Some("Peru")),
+    leg_type0: Leg = Leg::new(JoineryType::JT0, Some("Peru")),
+    leg_type1: Leg = Leg::new(JoineryType::JT1, Some("Peru")),
     top: TableTop = TableTop::new(Some("SaddleBrown"), Some("SandyBrown")),
     tenon_side_board: TenonSideBoard = TenonSideBoard::new(Some("BurlyWood")),
     mortise_side_board: MortiseSideBoard = MortiseSideBoard::new(Some("BurlyWood")),
@@ -26,24 +27,22 @@ impl Table {
 
         scad!(Union;{
             scad!(Translate(q0);{
-                self.leg.assemble_aligned(Quadrant::Q0),
+                self.leg_type0.assemble_aligned(Quadrant::Q0),
             }),
             scad!(Translate(q1);{
-                self.leg.assemble_aligned(Quadrant::Q1),
+                self.leg_type1.assemble_aligned(Quadrant::Q1),
             }),
             scad!(Translate(q2);{
-                self.leg.assemble_aligned(Quadrant::Q2),
+                self.leg_type0.assemble_aligned(Quadrant::Q2),
             }),
             scad!(Translate(q3);{
-                self.leg.assemble_aligned(Quadrant::Q3),
+                self.leg_type1.assemble_aligned(Quadrant::Q3),
             }),
         })
     }
 
     pub fn assemble_top(&self) -> ScadObject {
-        let z = self.leg.describe().length
-            - (TOP_SUPPORT_BOARD_THICKNESS / 2.0)
-            - TOP_SUPPORT_CUTOUT_DEPTH;
+        let z = LEG_LENGTH - (TOP_SUPPORT_BOARD_THICKNESS / 2.0) - TOP_SUPPORT_CUTOUT_DEPTH;
         scad!(Translate(vec3(0.0, 0.0, z));{
             self.top.assemble()
         })

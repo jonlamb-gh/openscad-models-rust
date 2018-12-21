@@ -1,4 +1,5 @@
 use crate::config::*;
+use crate::cutaway::Cutaway;
 use crate::quadrant::Quadrant;
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use nalgebra::{Vector2, Vector3};
@@ -6,8 +7,17 @@ use parts::common_functions::*;
 use parts::Board;
 use scad::*;
 
-qstruct!(Leg(color: Option<&'static str>) {
+#[derive(Copy, Clone, Debug)]
+pub enum JoineryType {
+    /// Type 0, fits A/Q0 and C/Q2
+    JT0,
+    /// Type 1, fits B/Q1 and D/Q3
+    JT1,
+}
+
+qstruct!(Leg(joinery_type: JoineryType, color: Option<&'static str>) {
     board: Board = Board::from_array(&LEG_BOARD_SIZE, color),
+    joinery_type: JoineryType = joinery_type,
 });
 
 impl Leg {
@@ -100,6 +110,74 @@ impl Leg {
             })
         })
     }
+
+    fn jt0_major_cutaway(&self) -> Cutaway {
+        Cutaway::from_parts(
+            // position
+            SIDE_SUPPORT_BOARD_HEIGHT - SIDE_SUPPORT_BOARD_WIDTH,
+            -VISUAL_OVERRUN,
+            (LEG_THICKNESS / 2.0) - (SIDE_SUPPORT_BOARD_THICKNESS / 2.0),
+            // size
+            SIDE_SUPPORT_BOARD_WIDTH,
+            LEG_WIDTH + (2.0 * VISUAL_OVERRUN),
+            SIDE_SUPPORT_BOARD_THICKNESS,
+        )
+    }
+
+    fn jt0_minor_cutaway(&self) -> Cutaway {
+        Cutaway::from_parts(
+            // position
+            SIDE_SUPPORT_BOARD_HEIGHT - SIDE_SUPPORT_BOARD_WIDTH + (SIDE_SUPPORT_BOARD_WIDTH / 2.0)
+                - (SIDE_SUPPORT_TENON_WIDTH / 2.0),
+            (LEG_WIDTH / 2.0) - (SIDE_SUPPORT_BOARD_THICKNESS / 2.0),
+            -VISUAL_OVERRUN,
+            // size
+            SIDE_SUPPORT_TENON_WIDTH,
+            SIDE_SUPPORT_BOARD_THICKNESS,
+            LEG_THICKNESS + (2.0 * VISUAL_OVERRUN),
+        )
+    }
+
+    fn jt1_major_cutaway(&self) -> Cutaway {
+        Cutaway::from_parts(
+            // position
+            SIDE_SUPPORT_BOARD_HEIGHT - SIDE_SUPPORT_BOARD_WIDTH,
+            (LEG_WIDTH / 2.0) - (SIDE_SUPPORT_BOARD_THICKNESS / 2.0),
+            -VISUAL_OVERRUN,
+            // size
+            SIDE_SUPPORT_BOARD_WIDTH,
+            SIDE_SUPPORT_BOARD_THICKNESS,
+            LEG_THICKNESS + (2.0 * VISUAL_OVERRUN),
+        )
+    }
+
+    fn jt1_minor_cutaway(&self) -> Cutaway {
+        Cutaway::from_parts(
+            // position
+            SIDE_SUPPORT_BOARD_HEIGHT - SIDE_SUPPORT_BOARD_WIDTH + (SIDE_SUPPORT_BOARD_WIDTH / 2.0)
+                - (SIDE_SUPPORT_TENON_WIDTH / 2.0),
+            -VISUAL_OVERRUN,
+            (LEG_THICKNESS / 2.0) - (SIDE_SUPPORT_BOARD_THICKNESS / 2.0),
+            // size
+            SIDE_SUPPORT_TENON_WIDTH,
+            LEG_WIDTH + (2.0 * VISUAL_OVERRUN),
+            SIDE_SUPPORT_BOARD_THICKNESS,
+        )
+    }
+
+    fn major_cutaway(&self) -> Cutaway {
+        match self.joinery_type {
+            JoineryType::JT0 => self.jt0_major_cutaway(),
+            JoineryType::JT1 => self.jt1_major_cutaway(),
+        }
+    }
+
+    fn minor_cutaway(&self) -> Cutaway {
+        match self.joinery_type {
+            JoineryType::JT0 => self.jt0_minor_cutaway(),
+            JoineryType::JT1 => self.jt1_minor_cutaway(),
+        }
+    }
 }
 
 impl ObjectAssembler for Leg {
@@ -112,6 +190,8 @@ impl ObjectAssembler for Leg {
         parent.add_child(self.board.assemble());
         parent.add_child(self.chamfer_x_cutaway());
         parent.add_child(self.chamfer_y_cutaway());
+        parent.add_child(self.major_cutaway().assemble());
+        parent.add_child(self.minor_cutaway().assemble());
         parent
     }
 }

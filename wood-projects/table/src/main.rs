@@ -1,4 +1,4 @@
-use crate::leg::Leg;
+use crate::leg::{JoineryType, Leg};
 use crate::mortise_side_board::MortiseSideBoard;
 use crate::table::Table;
 use crate::tenon_side_board::TenonSideBoard;
@@ -22,7 +22,8 @@ mod top_support_board;
 mod wedge_board;
 
 enum Part {
-    LegBoard,
+    LegBoardJT0,
+    LegBoardJT1,
     MajorTopBoard,
     MinorTopBoard,
     TopSupportBoard,
@@ -35,7 +36,8 @@ enum Part {
 impl Part {
     fn assemble(&self) -> ScadObject {
         match *self {
-            Part::LegBoard => Leg::new(None).assemble(),
+            Part::LegBoardJT0 => Leg::new(JoineryType::JT0, None).assemble(),
+            Part::LegBoardJT1 => Leg::new(JoineryType::JT1, None).assemble(),
             Part::MajorTopBoard => TopBoard::new(WidthType::Major, None).assemble(),
             Part::MinorTopBoard => TopBoard::new(WidthType::Minor, None).assemble(),
             Part::TopSupportBoard => TopSupportBoard::new(None).assemble(),
@@ -57,7 +59,8 @@ pub fn main() {
     sfile.set_detail(50);
 
     // Create the model
-    //let part = Part::LegBoard;
+    //let part = Part::LegBoardJT0;
+    //let part = Part::LegBoardJT1;
     //let part = Part::MajorTopBoard;
     //let part = Part::MinorTopBoard;
     //let part = Part::TopSupportBoard;

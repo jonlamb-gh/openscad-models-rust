@@ -56,6 +56,32 @@ impl TenonSideBoard {
         }
     }
 
+    fn left_wedge_cutaway(&self) -> Cutaway {
+        Cutaway::from_parts(
+            // position
+            TENON_OVERRUN - WEDGE_THICKNESS,
+            (SIDE_SUPPORT_BOARD_WIDTH / 2.0) - (WEDGE_WIDTH / 2.0),
+            -VISUAL_OVERRUN,
+            // size
+            WEDGE_THICKNESS,
+            WEDGE_WIDTH,
+            SIDE_SUPPORT_BOARD_THICKNESS + (2.0 * VISUAL_OVERRUN),
+        )
+    }
+
+    fn right_wedge_cutaway(&self) -> Cutaway {
+        Cutaway::from_parts(
+            // position
+            TENON_SIDE_SUPPORT_BOARD_LENGTH - TENON_OVERRUN,
+            (SIDE_SUPPORT_BOARD_WIDTH / 2.0) - (WEDGE_WIDTH / 2.0),
+            -VISUAL_OVERRUN,
+            // size
+            WEDGE_THICKNESS,
+            WEDGE_WIDTH,
+            SIDE_SUPPORT_BOARD_THICKNESS + (2.0 * VISUAL_OVERRUN),
+        )
+    }
+
     fn tenon_cutaway(&self) -> Cutaway {
         Cutaway::from_parts(
             // position
@@ -105,6 +131,8 @@ impl ObjectAssembler for TenonSideBoard {
             self.board.assemble(),
             self.left_tenon_cutaways(),
             self.right_tenon_cutaways(),
+            self.left_wedge_cutaway().assemble(),
+            self.right_wedge_cutaway().assemble(),
         })
     }
 }
