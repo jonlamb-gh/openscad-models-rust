@@ -1,5 +1,12 @@
 //! Global configurations
 //! Units: centimeter
+//!
+//! Materials:
+//! - Top boards: African Mohogany
+//! - Top support boards: African Mohogany
+//! - Side support boards: Canary
+//! - Leg boards: Cherry
+//! - Tenon pins: Padauk
 
 pub const VISUAL_OVERRUN: f32 = 0.1;
 
