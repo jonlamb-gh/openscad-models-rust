@@ -138,6 +138,19 @@ impl Leg {
         )
     }
 
+    fn jt0_minor_ext_cutaway(&self) -> Cutaway {
+        Cutaway::from_parts(
+            // position
+            SIDE_SUPPORT_BOARD_HEIGHT - SIDE_SUPPORT_BOARD_WIDTH,
+            (LEG_WIDTH / 2.0) - (SIDE_SUPPORT_BOARD_THICKNESS / 2.0),
+            -VISUAL_OVERRUN,
+            // size
+            SIDE_SUPPORT_TENON_WIDTH,
+            SIDE_SUPPORT_BOARD_THICKNESS,
+            LEG_THICKNESS / 2.0,
+        )
+    }
+
     fn jt1_major_cutaway(&self) -> Cutaway {
         Cutaway::from_parts(
             // position
@@ -165,6 +178,19 @@ impl Leg {
         )
     }
 
+    fn jt1_minor_ext_cutaway(&self) -> Cutaway {
+        Cutaway::from_parts(
+            // position
+            SIDE_SUPPORT_BOARD_HEIGHT - SIDE_SUPPORT_BOARD_WIDTH,
+            LEG_WIDTH / 2.0,
+            (LEG_THICKNESS / 2.0) - (SIDE_SUPPORT_BOARD_THICKNESS / 2.0),
+            // size
+            SIDE_SUPPORT_TENON_WIDTH,
+            LEG_WIDTH,
+            SIDE_SUPPORT_BOARD_THICKNESS,
+        )
+    }
+
     fn major_cutaway(&self) -> Cutaway {
         match self.joinery_type {
             JoineryType::JT0 => self.jt0_major_cutaway(),
@@ -176,6 +202,13 @@ impl Leg {
         match self.joinery_type {
             JoineryType::JT0 => self.jt0_minor_cutaway(),
             JoineryType::JT1 => self.jt1_minor_cutaway(),
+        }
+    }
+
+    fn minor_ext_cutaway(&self) -> Cutaway {
+        match self.joinery_type {
+            JoineryType::JT0 => self.jt0_minor_ext_cutaway(),
+            JoineryType::JT1 => self.jt1_minor_ext_cutaway(),
         }
     }
 }
@@ -192,6 +225,7 @@ impl ObjectAssembler for Leg {
         parent.add_child(self.chamfer_y_cutaway());
         parent.add_child(self.major_cutaway().assemble());
         parent.add_child(self.minor_cutaway().assemble());
+        parent.add_child(self.minor_ext_cutaway().assemble());
         parent
     }
 }

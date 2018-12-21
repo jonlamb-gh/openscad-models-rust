@@ -5,8 +5,8 @@ pub const VISUAL_OVERRUN: f32 = 0.1;
 
 // TODO
 /// Distance between leg center to leg center along the outside parimeter
-pub const MAJOR_LEG_TO_LEG_DIST: f32 = 70.0;
-pub const MINOR_LEG_TO_LEG_DIST: f32 = 65.0;
+pub const MAJOR_LEG_TO_LEG_DIST: f32 = 78.74;
+pub const MINOR_LEG_TO_LEG_DIST: f32 = 70.0;
 
 pub const TOP_SUPPORT_CUTOUT_DEPTH: f32 = 1.0;
 
@@ -25,13 +25,16 @@ pub const WEDGE_THICKNESS: f32 = 1.5;
 pub const WEDGE_BOARD_SIZE: [f32; 3] = [WEDGE_LENGTH, WEDGE_WIDTH, WEDGE_THICKNESS];
 
 /// TODO
-pub const POST_WIDTH: f32 = 8.89;
-pub const POST_THICKNESS: f32 = 8.89;
+/// 3" == 7.62 cm
+/// 1.5" == 3.81 cm
+pub const POST_WIDTH: f32 = 7.62;
+pub const POST_THICKNESS: f32 = 7.62;
 
 /// TODO
 /// - chamfer
 /// - 36" == 91.44 cm
 /// - ~30.7" == 78 cm
+/// - 33.5
 pub const LEG_LENGTH: f32 = 78.0;
 pub const LEG_WIDTH: f32 = POST_WIDTH;
 pub const LEG_THICKNESS: f32 = POST_THICKNESS;
@@ -65,8 +68,8 @@ pub const TOP_BOARD_MINOR_SIZE: [f32; 3] =
 /// TODO
 pub const TOP_SUPPORT_BOARD_LENGTH: f32 = TOP_TOTAL_WIDTH - (2.0 * TOP_SUPPORT_BOARD_INSET);
 pub const TOP_SUPPORT_BOARD_WIDTH: f32 = 5.0;
-pub const TOP_SUPPORT_BOARD_THICKNESS: f32 = 5.0;
-pub const TOP_SUPPORT_BOARD_INSET: f32 = 5.0;
+pub const TOP_SUPPORT_BOARD_THICKNESS: f32 = 3.3;
+pub const TOP_SUPPORT_BOARD_INSET: f32 = 9.0;
 pub const TOP_SUPPORT_BOARD_SIZE: [f32; 3] = [
     TOP_SUPPORT_BOARD_LENGTH,
     TOP_SUPPORT_BOARD_WIDTH,

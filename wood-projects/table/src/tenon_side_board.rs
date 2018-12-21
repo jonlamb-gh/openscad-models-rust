@@ -82,7 +82,7 @@ impl TenonSideBoard {
         )
     }
 
-    fn tenon_cutaway(&self) -> Cutaway {
+    fn upper_tenon_cutaway(&self) -> Cutaway {
         Cutaway::from_parts(
             // position
             -VISUAL_OVERRUN,
@@ -95,13 +95,27 @@ impl TenonSideBoard {
         )
     }
 
+    fn lower_tenon_cutaway(&self) -> Cutaway {
+        let offset = (LEG_THICKNESS / 2.0) - (SIDE_SUPPORT_BOARD_THICKNESS / 2.0);
+        Cutaway::from_parts(
+            // position
+            -VISUAL_OVERRUN,
+            -VISUAL_OVERRUN,
+            -VISUAL_OVERRUN,
+            // size
+            SIDE_SUPPORT_TENON_LENGTH + VISUAL_OVERRUN - offset,
+            (self.describe().width - SIDE_SUPPORT_TENON_WIDTH) / 2.0 + VISUAL_OVERRUN,
+            self.describe().thickness + (2.0 * VISUAL_OVERRUN),
+        )
+    }
+
     fn left_tenon_cutaways(&self) -> ScadObject {
         let y =
             (self.board.describe().width / 2.0) + (SIDE_SUPPORT_TENON_WIDTH / 2.0) + VISUAL_OVERRUN;
         scad!(Union;{
-            self.tenon_cutaway().assemble(),
+            self.lower_tenon_cutaway().assemble(),
             scad!(Translate(vec3(0.0, y, 0.0));{
-                self.tenon_cutaway().assemble(),
+                self.upper_tenon_cutaway().assemble(),
             })
         })
     }
@@ -110,11 +124,12 @@ impl TenonSideBoard {
         let x = self.board.describe().length - SIDE_SUPPORT_TENON_LENGTH + VISUAL_OVERRUN;
         let y =
             (self.board.describe().width / 2.0) + (SIDE_SUPPORT_TENON_WIDTH / 2.0) + VISUAL_OVERRUN;
-        scad!(Translate(vec3(x, 0.0, 0.0));{
+        let offset = (LEG_THICKNESS / 2.0) - (SIDE_SUPPORT_BOARD_THICKNESS / 2.0);
+        scad!(Translate(vec3(x + offset, 0.0, 0.0));{
             scad!(Union;{
-                self.tenon_cutaway().assemble(),
-                scad!(Translate(vec3(0.0, y, 0.0));{
-                    self.tenon_cutaway().assemble(),
+                self.lower_tenon_cutaway().assemble(),
+                scad!(Translate(vec3(-offset, y, 0.0));{
+                    self.upper_tenon_cutaway().assemble(),
                 })
             })
         })
