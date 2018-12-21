@@ -4,7 +4,7 @@
 //! Materials:
 //! - Top boards: African Mohogany
 //! - Top support boards: African Mohogany
-//! - Side support boards: Canary
+//! - Side support boards: Canary Wood
 //! - Leg boards: Cherry
 //! - Tenon pins: Padauk
 
