@@ -10,7 +10,6 @@
 
 pub const VISUAL_OVERRUN: f32 = 0.1;
 
-// TODO
 /// Distance between leg center to leg center along the outside parimeter
 pub const MAJOR_LEG_TO_LEG_DIST: f32 = 78.74;
 pub const MINOR_LEG_TO_LEG_DIST: f32 = 70.0;
@@ -31,26 +30,21 @@ pub const WEDGE_WIDTH: f32 = 1.9;
 pub const WEDGE_THICKNESS: f32 = 0.6;
 pub const WEDGE_BOARD_SIZE: [f32; 3] = [WEDGE_LENGTH, WEDGE_WIDTH, WEDGE_THICKNESS];
 
-/// TODO
 /// 3" == 7.62 cm
 /// 1.5" == 3.81 cm
 pub const POST_WIDTH: f32 = 7.62;
 pub const POST_THICKNESS: f32 = 7.62;
 
-/// TODO
-/// - chamfer
 /// - 36" == 91.44 cm
 /// - ~30.7" == 78 cm
 /// - 33.5
-pub const LEG_LENGTH: f32 = 78.0;
+pub const LEG_LENGTH: f32 = 81.0;
 pub const LEG_WIDTH: f32 = POST_WIDTH;
 pub const LEG_THICKNESS: f32 = POST_THICKNESS;
 pub const LEG_CHAMFER_LENGTH: f32 = SIDE_SUPPORT_BOARD_HEIGHT - SIDE_SUPPORT_BOARD_WIDTH;
 pub const LEG_CHAMFER_DEPTH: f32 = LEG_CHAMFER_LENGTH * LEG_CHAMFER_RATIO;
 pub const LEG_BOARD_SIZE: [f32; 3] = [LEG_LENGTH, LEG_WIDTH, LEG_THICKNESS];
 
-/// TODO
-/// - chamfer
 /// - rough length 46" == 116.84 cm
 /// - rough major width 9.84252" == 25 cm
 /// - rough minor width 5.23622" == 13.3 cm
@@ -72,7 +66,6 @@ pub const TOP_BOARD_MAJOR_SIZE: [f32; 3] =
 pub const TOP_BOARD_MINOR_SIZE: [f32; 3] =
     [TOP_BOARD_LENGTH, TOP_BOARD_MINOR_WIDTH, TOP_BOARD_THICKNESS];
 
-/// TODO
 pub const TOP_SUPPORT_BOARD_LENGTH: f32 = TOP_TOTAL_WIDTH - (2.0 * TOP_SUPPORT_BOARD_INSET);
 pub const TOP_SUPPORT_BOARD_WIDTH: f32 = 5.0;
 pub const TOP_SUPPORT_BOARD_THICKNESS: f32 = 3.3;
@@ -83,7 +76,6 @@ pub const TOP_SUPPORT_BOARD_SIZE: [f32; 3] = [
     TOP_SUPPORT_BOARD_THICKNESS,
 ];
 
-/// TODO
 pub const TENON_SIDE_SUPPORT_BOARD_LENGTH: f32 =
     MAJOR_LEG_TO_LEG_DIST + POST_THICKNESS + (2.0 * TENON_OVERRUN);
 pub const MORTISE_SIDE_SUPPORT_BOARD_LENGTH: f32 =
@@ -106,7 +98,6 @@ pub const MORTISE_SIDE_SUPPORT_BOARD_SIZE: [f32; 3] = [
     SIDE_SUPPORT_BOARD_THICKNESS,
 ];
 
-/// TODO
 pub const TOTAL_SIZE: [f32; 3] = [
     TOP_BOARD_LENGTH,
     TOP_TOTAL_WIDTH,
