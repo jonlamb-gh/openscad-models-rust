@@ -4,6 +4,8 @@ This repository contains the Rust source code that generates the OpenSCAD model(
 
 The FreeCAD and MeshLab files can be found [here](https://github.com/jonlamb-gh/freecad-workspace/tree/master/wood-projects/table).
 
+LibreCAD/DXF drawings can be found [here](https://github.com/jonlamb-gh/librecad-workspace/tree/master/table-drawings).
+
 ![table.stl](stl/table.stl)
 
 ![table.png](images/table.png)
