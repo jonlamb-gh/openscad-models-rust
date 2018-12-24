@@ -1,18 +1,19 @@
 use crate::config::*;
 use crate::top_board::{TopBoard, WidthType};
-use crate::top_support_board::TopSupportBoard;
+use crate::top_support_board::{SupportSide, TopSupportBoard};
 use dimdraw::{ObjectAssembler, ObjectDescriptor};
 use scad::*;
 
 qstruct!(TableTop(top_color: Option<&'static str>, support_color: Option<&'static str>) {
     top_major_board: TopBoard = TopBoard::new(WidthType::Major, top_color),
     top_minor_board: TopBoard = TopBoard::new(WidthType::Minor, top_color),
-    support_board: TopSupportBoard = TopSupportBoard::new(support_color),
+    left_support_board: TopSupportBoard = TopSupportBoard::new(SupportSide::Left, support_color),
+    right_support_board: TopSupportBoard = TopSupportBoard::new(SupportSide::Right, support_color),
 });
 
 impl TableTop {
     pub fn assemble_top(&self) -> ScadObject {
-        let z = self.support_board.describe().thickness;
+        let z = self.left_support_board.describe().thickness;
 
         let mut parent = scad!(Union);
         let mut toggle = true;
@@ -36,15 +37,20 @@ impl TableTop {
     }
 
     pub fn assemble_top_support(&self) -> ScadObject {
-        let t_left = TopSupportBoard::abs_pos(true);
-        let t_right = TopSupportBoard::abs_pos(false);
+        assert_eq!(
+            self.left_support_board.describe(),
+            self.right_support_board.describe()
+        );
+
+        let t_left = TopSupportBoard::abs_pos(SupportSide::Left);
+        let t_right = TopSupportBoard::abs_pos(SupportSide::Right);
 
         scad!(Union;{
             scad!(Translate(t_left);{
-                self.support_board.assemble(),
+                self.left_support_board.assemble(),
             }),
             scad!(Translate(t_right);{
-                self.support_board.assemble(),
+                self.right_support_board.assemble(),
             }),
         })
     }
@@ -57,7 +63,7 @@ impl ObjectAssembler for TableTop {
             length: self.top_major_board.board.length(),
             width: TOP_TOTAL_WIDTH,
             thickness: self.top_major_board.describe().thickness
-                + self.support_board.describe().thickness,
+                + self.left_support_board.describe().thickness,
         }
     }
 

@@ -14,10 +14,18 @@ pub const VISUAL_OVERRUN: f32 = 0.1;
 pub const MAJOR_LEG_TO_LEG_DIST: f32 = 78.74;
 pub const MINOR_LEG_TO_LEG_DIST: f32 = 70.0;
 
-pub const TOP_SUPPORT_CUTOUT_DEPTH: f32 = 1.0;
+pub const TOP_SUPPORT_CUTOUT_DEPTH: f32 = 0.5;
+
+pub const TOP_SUPPORT_LEG_CUTOUT_DEPTH: f32 = 0.5;
 
 pub const TENON_OVERRUN: f32 = 2.54;
+
 pub const MORTISE_BOARD_TENON_OVERRUN: f32 = 1.0;
+
+/// 17 mm pan head 1/4" x 20 bolts
+pub const TOP_SUPPORT_BOLT_HEAD_RADIUS: f32 = 1.7 / 2.0;
+pub const TOP_SUPPORT_BOLT_RADIUS: f32 = 0.635 / 2.0;
+pub const TOP_SUPPORT_BOLT_HEAD_THICKNESS: f32 = 0.2;
 
 pub const LEG_CHAMFER_RATIO: f32 = 1.0 / 16.0;
 

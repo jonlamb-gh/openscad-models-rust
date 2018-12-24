@@ -1,5 +1,6 @@
 use scad::*;
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct ObjectDescriptor {
     pub length: f32,
     pub width: f32,

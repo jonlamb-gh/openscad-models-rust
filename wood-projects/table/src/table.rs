@@ -42,7 +42,7 @@ impl Table {
     }
 
     pub fn assemble_top(&self) -> ScadObject {
-        let z = LEG_LENGTH - (TOP_SUPPORT_BOARD_THICKNESS / 2.0) - TOP_SUPPORT_CUTOUT_DEPTH;
+        let z = SIDE_SUPPORT_BOARD_HEIGHT - TOP_SUPPORT_CUTOUT_DEPTH;
         scad!(Translate(vec3(0.0, 0.0, z));{
             self.top.assemble()
         })

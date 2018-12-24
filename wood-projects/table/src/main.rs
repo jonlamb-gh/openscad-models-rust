@@ -3,7 +3,7 @@ use crate::mortise_side_board::MortiseSideBoard;
 use crate::table::Table;
 use crate::tenon_side_board::TenonSideBoard;
 use crate::top_board::{TopBoard, WidthType};
-use crate::top_support_board::TopSupportBoard;
+use crate::top_support_board::{SupportSide, TopSupportBoard};
 use crate::wedge_board::WedgeBoard;
 use dimdraw::ObjectAssembler;
 use scad::{ScadFile, ScadObject};
@@ -26,7 +26,8 @@ enum Part {
     LegBoardJT1,
     MajorTopBoard,
     MinorTopBoard,
-    TopSupportBoard,
+    TopSupportBoardLeft,
+    TopSupportBoardRight,
     TenonSideBoard,
     MortiseSideBoard,
     WedgeBoard,
@@ -40,7 +41,8 @@ impl Part {
             Part::LegBoardJT1 => Leg::new(JoineryType::JT1, None).assemble(),
             Part::MajorTopBoard => TopBoard::new(WidthType::Major, None).assemble(),
             Part::MinorTopBoard => TopBoard::new(WidthType::Minor, None).assemble(),
-            Part::TopSupportBoard => TopSupportBoard::new(None).assemble(),
+            Part::TopSupportBoardLeft => TopSupportBoard::new(SupportSide::Left, None).assemble(),
+            Part::TopSupportBoardRight => TopSupportBoard::new(SupportSide::Right, None).assemble(),
             Part::TenonSideBoard => TenonSideBoard::new(None).assemble(),
             Part::MortiseSideBoard => MortiseSideBoard::new(None).assemble(),
             Part::WedgeBoard => WedgeBoard::new(None).assemble(),
@@ -56,14 +58,15 @@ pub fn main() {
 
     // Sets the $fn variable in scad which controls the detail level of things
     // like spheres. Look at the scad wiki for details
-    sfile.set_detail(50);
+    sfile.set_detail(75);
 
     // Create the model
     //let part = Part::LegBoardJT0;
     //let part = Part::LegBoardJT1;
     //let part = Part::MajorTopBoard;
     //let part = Part::MinorTopBoard;
-    //let part = Part::TopSupportBoard;
+    //let part = Part::TopSupportBoardLeft;
+    //let part = Part::TopSupportBoardRight;
     //let part = Part::TenonSideBoard;
     //let part = Part::MortiseSideBoard;
     //let part = Part::WedgeBoard;
