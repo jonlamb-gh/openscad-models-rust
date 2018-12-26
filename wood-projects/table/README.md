@@ -1,4 +1,4 @@
-# Prototype Table
+# Puzzle Table
 
 This repository contains the Rust source code that generates the OpenSCAD model(s).
 
@@ -8,7 +8,7 @@ The FreeCAD and MeshLab files can be found [here](https://github.com/jonlamb-gh/
 
 LibreCAD/DXF drawings can be found [here](https://github.com/jonlamb-gh/librecad-workspace/tree/master/table-drawings).
 
-![table.stl](stl/table.stl)
+STL part files are in the [stl/](stl/) directory.
 
 ![table.png](images/table.png)
 
