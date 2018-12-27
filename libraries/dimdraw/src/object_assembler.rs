@@ -34,6 +34,14 @@ pub trait ObjectAssembler {
             self.assemble()
         })
     }
+
+    fn assemble_center(&self) -> ScadObject {
+        let obj = self.describe();
+
+        scad!(Translate(vec3(-obj.length / 2.0, -obj.width / 2.0, -obj.thickness / 2.0));{
+            self.assemble()
+        })
+    }
 }
 
 pub fn some_color(color: Option<&'static str>) -> Option<String> {

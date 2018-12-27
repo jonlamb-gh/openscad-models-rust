@@ -1,18 +1,13 @@
-use crate::leg::{JoineryType, Leg};
-use crate::mortise_side_board::MortiseSideBoard;
-use crate::table::Table;
-use crate::tenon_side_board::TenonSideBoard;
-use crate::top_board::{TopBoard, WidthType};
-use crate::top_support_board::{SupportSide, TopSupportBoard};
-use crate::wedge_board::WedgeBoard;
+use crate::part::Part;
 use dimdraw::ObjectAssembler;
-use scad::{ScadFile, ScadObject};
+use scad::ScadFile;
 
 mod axis;
 mod config;
 mod cutaway;
 mod leg;
 mod mortise_side_board;
+mod part;
 mod quadrant;
 mod table;
 mod table_top;
@@ -20,36 +15,6 @@ mod tenon_side_board;
 mod top_board;
 mod top_support_board;
 mod wedge_board;
-
-enum Part {
-    LegBoardJT0,
-    LegBoardJT1,
-    MajorTopBoard,
-    MinorTopBoard,
-    TopSupportBoardLeft,
-    TopSupportBoardRight,
-    TenonSideBoard,
-    MortiseSideBoard,
-    WedgeBoard,
-    Table,
-}
-
-impl Part {
-    fn assemble(&self) -> ScadObject {
-        match *self {
-            Part::LegBoardJT0 => Leg::new(JoineryType::JT0, None).assemble(),
-            Part::LegBoardJT1 => Leg::new(JoineryType::JT1, None).assemble(),
-            Part::MajorTopBoard => TopBoard::new(WidthType::Major, None).assemble(),
-            Part::MinorTopBoard => TopBoard::new(WidthType::Minor, None).assemble(),
-            Part::TopSupportBoardLeft => TopSupportBoard::new(SupportSide::Left, None).assemble(),
-            Part::TopSupportBoardRight => TopSupportBoard::new(SupportSide::Right, None).assemble(),
-            Part::TenonSideBoard => TenonSideBoard::new(None).assemble(),
-            Part::MortiseSideBoard => MortiseSideBoard::new(None).assemble(),
-            Part::WedgeBoard => WedgeBoard::new(None).assemble(),
-            Part::Table => Table::new().assemble(),
-        }
-    }
-}
 
 pub fn main() {
     // Create an scad file object for storing the scad objects. This
