@@ -7,6 +7,7 @@ use std::string::ToString;
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 pub enum Color {
     SandyBrown,
+    SaddleBrown,
     PapayaWhip,
 }
 
@@ -14,6 +15,7 @@ impl ToString for Color {
     fn to_string(&self) -> String {
         match *self {
             Color::SandyBrown => String::from("SandyBrown"),
+            Color::SaddleBrown => String::from("SaddleBrown"),
             Color::PapayaWhip => String::from("PapayaWhip"),
         }
     }

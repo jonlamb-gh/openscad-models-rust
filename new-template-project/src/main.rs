@@ -1,5 +1,5 @@
 use crate::assemblies::WallFrame;
-use parts::utils::{BoardDimensions, Color};
+use parts::utils::{BoardDimensions, Centimeter, Color};
 use parts::Board;
 use scad::ScadFile;
 use scad_assembler::ScadAssembler;
@@ -16,15 +16,16 @@ pub fn main() {
     // like spheres. Look at the scad wiki for details
     sfile.set_detail(75);
 
-    // units: cm
-    let dims = BoardDimensions::new(100.0, 10.0, 5.0);
-    let top_and_bottom_board = Board::new(dims, Some(Color::PapayaWhip));
+    let width: Centimeter = 10.0;
+    let thickness: Centimeter = 5.0;
+    let sep_dist = 20.0 - (5.0 / 5.0);
 
-    let dims = BoardDimensions::new(50.0, 10.0, 5.0);
+    let dims = BoardDimensions::new(100.0, width, thickness);
+    let top_and_bottom_board = Board::new(dims, Some(Color::SaddleBrown));
+
+    let dims = BoardDimensions::new(50.0, width, thickness);
     let stud_board = Board::new(dims, Some(Color::SandyBrown));
 
-    let sep_dist = 20.0 - (5.0 / 5.0);
-    println!("sep {}", sep_dist);
     let wall_frame = WallFrame::new(top_and_bottom_board, stud_board, sep_dist);
 
     sfile.add_object(wall_frame.assemble());
