@@ -1,6 +1,3 @@
-//#[macro_use]
-extern crate scad;
-
 use scad::*;
 
 pub fn main() {
@@ -14,9 +11,9 @@ pub fn main() {
 
     // Create an scad object
     let mut cube = scad!(Translate(vec3(2.0, 2.0, 3.0));
-            {
-                scad!(Cube(vec3(2.0,1.0,4.0)))
-            });
+    {
+        scad!(Cube(vec3(2.0,1.0,4.0)))
+    });
 
     // Create a cylinder with a height of 10 and a diameter of 3 mm
     let cylinder = scad!(Cylinder(10., Diameter(3.)));

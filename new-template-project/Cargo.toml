@@ -1,15 +1,15 @@
 [package]
-name = "parts"
+name = "new-template-project"
 version = "0.1.0"
 authors = ["Jon Lamb"]
 edition = "2018"
 
 [dependencies]
 scad = "1.2"
-nalgebra= "0.16"
 approx = "0.3"
-dimensioned = "0.7"
 
 [dependencies.scad-assembler]
-path = "../scad-assembler"
+path = "../libraries/scad-assembler"
 
+[dependencies.parts]
+path = "../libraries/parts"

@@ -1,5 +1,5 @@
 [package]
-name = "template-project"
+name = "scad-assembler"
 version = "0.1.0"
 authors = ["Jon Lamb"]
 edition = "2018"

@@ -6,7 +6,6 @@ Rust workspace for my OpenSCAD projects
 ### Rust-Scad
 
 - [crates.io](https://crates.io/crates/scad)
-- [docs](http://thezoq2.github.io/Rust-Scad/doc/scad_generator/index.html)
 
 ## Building the Projects
 

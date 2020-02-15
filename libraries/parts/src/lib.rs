@@ -1,14 +1,6 @@
-extern crate dimdraw;
-extern crate nalgebra as na;
-extern crate scad;
+extern crate dimensioned as dim;
 
 mod board;
-mod board_dimensions;
-pub mod common_functions;
-mod cutout_frame;
-mod wall;
+pub mod utils;
 
-pub use self::board::Board;
-pub use self::board_dimensions::BoardDimensions;
-pub use self::cutout_frame::{CutoutFrame, CutoutFrameAt};
-pub use self::wall::Wall;
+pub use crate::board::*;

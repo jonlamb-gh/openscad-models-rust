@@ -1,74 +1,33 @@
-use dimdraw::{some_color, ObjectAssembler, ObjectDescriptor};
-use scad::*;
+use crate::utils::{BoardDimensions, Color};
+use scad::{scad, Cube, ScadObject};
+use scad_assembler::ScadAssembler;
 
-use board_dimensions::BoardDimensions;
-
-#[derive(Clone)]
+#[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
 pub struct Board {
     dimensions: BoardDimensions,
-    color: Option<String>,
+    color: Option<Color>,
 }
 
 impl Board {
-    pub fn new(length: f32, width: f32, thickness: f32, color: Option<&'static str>) -> Self {
-        Self {
-            dimensions: BoardDimensions::new(length, width, thickness),
-            color: some_color(color),
-        }
+    pub fn new(dimensions: BoardDimensions, color: Option<Color>) -> Self {
+        Board { dimensions, color }
     }
 
-    pub fn from_array(size: &[f32; 3], color: Option<&'static str>) -> Self {
-        Self::new(size[0], size[1], size[2], color)
-    }
-
-    pub fn dims(&self) -> &BoardDimensions {
+    pub fn dimensions(&self) -> &BoardDimensions {
         &self.dimensions
-    }
-
-    pub fn length(&self) -> f32 {
-        self.dimensions.length()
-    }
-
-    pub fn width(&self) -> f32 {
-        self.dimensions.width()
-    }
-
-    pub fn thickness(&self) -> f32 {
-        self.dimensions.thickness()
     }
 }
 
-impl ObjectAssembler for Board {
-    fn describe(&self) -> ObjectDescriptor {
-        ObjectDescriptor {
-            length: self.dimensions.length(),
-            width: self.dimensions.width(),
-            thickness: self.dimensions.thickness(),
-        }
-    }
-
-    fn object_color(&self) -> Option<ScadObject> {
-        if let Some(ref c) = self.color {
-            Some(scad!(NamedColor(c.to_string())))
-        } else {
-            None
-        }
-    }
-
+impl ScadAssembler for Board {
     fn assemble(&self) -> ScadObject {
-        if let Some(mut c) = self.object_color() {
-            c.add_child(scad!(Cube(vec3(
-                self.dimensions.length(),
-                self.dimensions.width(),
-                self.dimensions.thickness(),
-            ))));
-            c
-        } else {
-            scad!(Cube(vec3(
-                self.dimensions.length(),
-                self.dimensions.width(),
-                self.dimensions.thickness(),
-            )))
+        let obj = scad!(Cube(*self.dimensions().size()));
+        match &self.color {
+            None => obj,
+            Some(c) => {
+                let mut parent = c.to_scad();
+                parent.add_child(obj);
+                parent
+            }
         }
     }
 }

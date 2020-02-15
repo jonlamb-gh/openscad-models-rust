@@ -1,0 +1,11 @@
+[package]
+name = "old-parts"
+version = "0.1.0"
+authors = ["Jon Lamb"]
+
+[dependencies]
+scad = "1.0.1"
+nalgebra = "0.13"
+
+[dependencies.dimdraw]
+path = "../../libraries/dimdraw"

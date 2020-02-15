@@ -1,8 +1,16 @@
 [workspace]
 members = [
+    "libraries/parts",
+    "libraries/scad-assembler",
+    "new-template-project",
+]
+
+# TODO port these over to the new stuff
+exclude = [
+    "scripts/",
     "template-project",
     "libraries/dimdraw",
-    "libraries/parts",
+    "libraries/old-parts",
     "wood-projects/couch",
     "wood-projects/slab-table",
     "wood-projects/table",
