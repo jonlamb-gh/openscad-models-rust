@@ -9,8 +9,18 @@ pub struct Board {
 }
 
 impl Board {
-    pub fn new(dimensions: BoardDimensions, color: Option<Color>) -> Self {
-        Board { dimensions, color }
+    pub fn new(dimensions: BoardDimensions) -> Self {
+        Board {
+            dimensions,
+            color: None,
+        }
+    }
+
+    pub fn with_color(dimensions: BoardDimensions, color: Color) -> Self {
+        Board {
+            dimensions,
+            color: Some(color),
+        }
     }
 
     pub fn dimensions(&self) -> &BoardDimensions {
@@ -20,7 +30,7 @@ impl Board {
 
 impl ScadAssembler for Board {
     fn assemble(&self) -> ScadObject {
-        let obj = scad!(Cube(*self.dimensions().size()));
+        let obj = scad!(Cube(self.dimensions().unitless_size()));
         match &self.color {
             None => obj,
             Some(c) => {

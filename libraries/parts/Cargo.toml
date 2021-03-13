@@ -5,9 +5,7 @@ authors = ["Jon Lamb"]
 edition = "2018"
 
 [dependencies]
-#scad = "1.2"
-nalgebra= "0.16"
-approx = "0.3"
+approx = "0.4"
 dimensioned = "0.7"
 
 [dependencies.scad-assembler]
@@ -15,4 +13,4 @@ path = "../scad-assembler"
 
 [dependencies.scad]
 git = "https://github.com/jonlamb-gh/Rust-Scad.git"
-branch = "more-modifier-characters"
+branch = "various-changes"

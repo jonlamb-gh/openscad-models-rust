@@ -1,5 +1,5 @@
 use approx::assert_relative_eq;
-use parts::utils::{y_axis, Centimeter};
+use parts::utils::{y_axis, Centimeter, Unit};
 use parts::Board;
 use scad::{scad, vec3, Rotate, ScadObject, Translate, Union};
 use scad_assembler::ScadAssembler;
@@ -17,11 +17,6 @@ impl WallFrame {
         stud_board: Board,
         separation_distance: Centimeter,
     ) -> Self {
-        // NOTE: just a programming example, doesn't actually constrain to any
-        // engineering/building standards
-        //
-        // Panic if separation_distance doesn't align equally to the length
-        // of the top_and_bottom_board
         assert!(separation_distance > 0.0);
         let span = top_and_bottom_board.dimensions().length() - stud_board.dimensions().thickness();
         assert_relative_eq!(span % separation_distance, 0.0);
@@ -38,7 +33,7 @@ impl WallFrame {
 
         scad!(Union;{
             self.top_and_bottom_board.assemble(),
-            scad!(Translate(vec3(0.0, 0.0, offset));{
+            scad!(Translate(vec3(0.0, 0.0, offset.get()));{
                 self.top_and_bottom_board.assemble(),
             })
         })
@@ -48,15 +43,16 @@ impl WallFrame {
         let mut parent = scad!(Union);
 
         let num_studs = 1
-            + (self.top_and_bottom_board.dimensions().length() / self.separation_distance) as usize;
+            + (self.top_and_bottom_board.dimensions().length().get()
+                / self.separation_distance.get()) as usize;
 
         let offset_z = self.top_and_bottom_board.dimensions().thickness();
 
         for offset_i in 0..num_studs {
             let offset = self.stud_board.dimensions().thickness()
-                + (offset_i as Centimeter * self.separation_distance);
+                + (Centimeter::from(offset_i as f32) * self.separation_distance);
             parent.add_child(scad!(Rotate(-90.0, y_axis());{
-                scad!(Translate(vec3(offset_z, 0.0, -offset));{
+                scad!(Translate(vec3(offset_z.get(), 0.0, -offset.get()));{
                     self.stud_board.assemble()
                 })
             }));

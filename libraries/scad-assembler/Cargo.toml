@@ -9,4 +9,4 @@ edition = "2018"
 
 [dependencies.scad]
 git = "https://github.com/jonlamb-gh/Rust-Scad.git"
-branch = "more-modifier-characters"
+branch = "various-changes"

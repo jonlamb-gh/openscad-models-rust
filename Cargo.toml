@@ -10,7 +10,6 @@ exclude = [
     "scripts/",
     "template-project",
     "libraries/dimdraw",
-    "libraries/old-parts",
     "wood-projects/couch",
     "wood-projects/slab-table",
     "wood-projects/table",

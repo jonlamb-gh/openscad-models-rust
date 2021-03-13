@@ -5,8 +5,7 @@ authors = ["Jon Lamb"]
 edition = "2018"
 
 [dependencies]
-#scad = "1.2"
-approx = "0.3"
+approx = "0.4"
 
 [dependencies.scad-assembler]
 path = "../libraries/scad-assembler"
@@ -16,4 +15,4 @@ path = "../libraries/parts"
 
 [dependencies.scad]
 git = "https://github.com/jonlamb-gh/Rust-Scad.git"
-branch = "more-modifier-characters"
+branch = "various-changes"
