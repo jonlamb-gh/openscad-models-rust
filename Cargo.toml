@@ -3,6 +3,7 @@ members = [
     "libraries/parts",
     "libraries/scad-assembler",
     "new-template-project",
+    "wood-projects/base-frame",
 ]
 
 # TODO port these over to the new stuff

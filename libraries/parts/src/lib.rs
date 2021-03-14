@@ -1,7 +1,6 @@
 extern crate dimensioned as dim;
 
-mod board;
-mod macros;
+pub mod board;
+pub mod macros;
+pub mod prelude;
 pub mod utils;
-
-pub use crate::board::*;

@@ -1,0 +1,18 @@
+[package]
+name = "base-frame"
+version = "0.1.0"
+authors = ["Jon Lamb"]
+edition = "2018"
+
+[dependencies]
+approx = "0.4"
+
+[dependencies.scad-assembler]
+path = "../../libraries/scad-assembler"
+
+[dependencies.parts]
+path = "../../libraries/parts"
+
+[dependencies.scad]
+git = "https://github.com/jonlamb-gh/Rust-Scad.git"
+branch = "various-changes"
