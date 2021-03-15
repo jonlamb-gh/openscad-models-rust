@@ -1,14 +1,16 @@
 use crate::{boards::*, config::*, joinery::*};
+use approx::{assert_relative_eq, relative_ne};
 use parts::prelude::*;
 use scad::*;
-use scad_assembler::ScadAssembler;
 
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
 pub struct BaseFrame {
+    // TODO - don't need each board, some are the same, just needed for doing a summary
     left_long_frame_board: Board,
     right_long_frame_board: Board,
     top_short_frame_board: Board,
     bottom_short_frame_board: Board,
+    slat_boards: [Board; NUM_SLAT_BOARDS],
 }
 
 impl BaseFrame {
@@ -18,86 +20,99 @@ impl BaseFrame {
             right_long_frame_board: long_frame_board(),
             top_short_frame_board: short_frame_board(),
             bottom_short_frame_board: short_frame_board(),
+            slat_boards: [slat_board(); NUM_SLAT_BOARDS],
         }
     }
 
     fn join_frame_boards(&self) -> ScadObject {
         let offset = SHORT_FRAME_BOARD_LENGTH - FRAME_BOARD_WIDTH;
 
-        let left_long_frame_board = cut_45deg_ends(&self.left_long_frame_board);
-        let right_long_frame_board = cut_45deg_ends(&self.right_long_frame_board);
-
-        let top_short_frame_board = cut_45deg_ends(&self.top_short_frame_board);
-        let bottom_short_frame_board = cut_45deg_ends(&self.bottom_short_frame_board);
-
+        // TODO - helper method to distribute slat boards, used here to do the
+        // cutouts in the frame boards
         scad!(Union;{
-            left_long_frame_board,
+            self.left_long_frame_board.assemble_with(|obj, color| {
+                let obj = cut_bottom_ends(self.left_long_frame_board.dimensions(), obj);
+                let obj = cut_slat_board_slots(self.left_long_frame_board.dimensions(), obj);
+                color_or_render_root(obj, color)
+            }),
             scad!(Translate(vec3(0.0, offset.get(), 0.0));{
-                scad!(Translate(vec3(0.0, FRAME_BOARD_WIDTH.get(), FRAME_BOARD_THICKNESS.get()));{
-                    scad!(Rotate(180.0, vec3(1.0, 0.0, 0.0));{
-                        right_long_frame_board
-                    })
-                })
+                self.right_long_frame_board.assemble_with(|obj, color| {
+                    let obj = cut_bottom_ends(self.right_long_frame_board.dimensions(), obj);
+                    let obj = cut_slat_board_slots(self.right_long_frame_board.dimensions(), obj);
+                    color_or_render_root(obj, color)
+                }),
             }),
             scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
-                scad!(Translate(vec3(0.0, 0.0, FRAME_BOARD_THICKNESS.get()));{
-                    scad!(Rotate(180.0, vec3(1.0, 0.0, 0.0));{
-                        top_short_frame_board
+                scad!(Translate(vec3(0.0, -FRAME_BOARD_WIDTH.get(), 0.0));{
+                    self.top_short_frame_board.assemble_with(|obj, color| {
+                        let obj = cut_top_ends(self.top_short_frame_board.dimensions(), obj);
+                        color_or_render_root(obj, color)
                     })
                 })
             }),
             scad!(Translate(vec3(LONG_FRAME_BOARD_LENGTH.get(), 0.0, 0.0));{
                 scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
-                    bottom_short_frame_board
+                    self.bottom_short_frame_board.assemble_with(|obj, color| {
+                        let obj = cut_top_ends(self.bottom_short_frame_board.dimensions(), obj);
+                        color_or_render_root(obj, color)
+                    })
                 })
             })
         })
     }
 
-    // slat boards
+    fn join_slat_boards(&self) -> ScadObject {
+        assert_relative_eq!(SLAT_BOARD_LENGTH, SHORT_FRAME_BOARD_LENGTH);
+        assert!(
+            self.slat_boards.windows(2).all(|w| w[0] == w[1]),
+            "All the slat boards should be the same"
+        );
+        let board = self.slat_boards[0];
+        let mut root = ScadObject::new(ScadElement::Union);
+        let start = LONG_FRAME_BOARD_LENGTH / 2.0;
+        let slat_offsets = slat_offsets();
 
-    /*
-    fn assemble_top_and_bottom(&self) -> ScadObject {
-        let offset = self.top_and_bottom_board.dimensions().thickness()
-            + self.stud_board.dimensions().length();
+        // See if distance between last slat board and inner side of the short frame board
+        // matches the SLAT_BOARD_SEP_DISTANCE
+        let last_offset = *slat_offsets.last().unwrap();
+        let last_board_end = last_offset + board.dimensions().width();
+        let dist = (LONG_FRAME_BOARD_LENGTH / 2.0) - FRAME_BOARD_WIDTH - last_board_end;
+        if relative_ne!(dist, SLAT_BOARD_SEP_DISTANCE) {
+            println!(
+                "WARN: Last slat remaining dist={}, SLAT_BOARD_SEP_DISTANCE={}",
+                dist, SLAT_BOARD_SEP_DISTANCE
+            );
+        }
 
-        scad!(Union;{
-            self.top_and_bottom_board.assemble(),
-            scad!(Translate(vec3(0.0, 0.0, offset.get()));{
-                self.top_and_bottom_board.assemble(),
-            })
-        })
-    }
-
-    fn assemble_studs(&self) -> ScadObject {
-        let mut parent = scad!(Union);
-
-        let num_studs = 1
-            + (self.top_and_bottom_board.dimensions().length().get()
-                / self.separation_distance.get()) as usize;
-
-        let offset_z = self.top_and_bottom_board.dimensions().thickness();
-
-        for offset_i in 0..num_studs {
-            let offset = self.stud_board.dimensions().thickness()
-                + (Centimeter::from(offset_i as f32) * self.separation_distance);
-            parent.add_child(scad!(Rotate(-90.0, y_axis());{
-                scad!(Translate(vec3(offset_z.get(), 0.0, -offset.get()));{
-                    self.stud_board.assemble()
+        let obj = scad!(Translate(vec3(board.dimensions().width().get(), 0.0, 0.0));{
+            scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
+                board.assemble_with(|obj, color| {
+                    color_or_render_root(obj, color)
                 })
+            })
+        });
+        for rel_offset in slat_offsets.into_iter() {
+            let offset_a = start + rel_offset;
+            let offset_b = start - board.dimensions().width() - rel_offset;
+            root.add_child(scad!(Translate(vec3(offset_a.get(), 0.0, 0.0));{
+                obj.clone()
+            }));
+            root.add_child(scad!(Translate(vec3(offset_b.get(), 0.0, 0.0));{
+                obj.clone()
             }));
         }
 
-        parent
+        root
     }
-    */
 }
 
 impl ScadAssembler for BaseFrame {
     fn assemble(&self) -> ScadObject {
         scad!(Union;{
             self.join_frame_boards(),
-            //self.assemble_studs(),
+            scad!(Translate(vec3(0.0, 0.0, (FRAME_BOARD_THICKNESS - SLAT_BOARD_THICKNESS).get()));{
+                self.join_slat_boards(),
+            })
         })
     }
 }

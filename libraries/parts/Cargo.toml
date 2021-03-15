@@ -8,9 +8,6 @@ edition = "2018"
 approx = "0.4"
 dimensioned = "0.7"
 
-[dependencies.scad-assembler]
-path = "../scad-assembler"
-
 [dependencies.scad]
 git = "https://github.com/jonlamb-gh/Rust-Scad.git"
 branch = "various-changes"

@@ -1,6 +1,6 @@
+use crate::assembler::ScadAssembler;
 use crate::utils::{BoardDimensions, Color};
 use scad::{scad, Cube, ScadObject};
-use scad_assembler::ScadAssembler;
 
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
 pub struct Board {
@@ -30,14 +30,10 @@ impl Board {
 
 impl ScadAssembler for Board {
     fn assemble(&self) -> ScadObject {
-        let obj = scad!(Cube(self.dimensions().unitless_size()));
-        match &self.color {
-            None => obj,
-            Some(c) => {
-                let mut parent = c.to_scad();
-                parent.add_child(obj);
-                parent
-            }
-        }
+        scad!(Cube(self.dimensions().unitless_size()))
+    }
+
+    fn color(&self) -> Option<Color> {
+        self.color
     }
 }

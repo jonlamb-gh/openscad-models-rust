@@ -6,9 +6,7 @@ edition = "2018"
 
 [dependencies]
 approx = "0.4"
-
-[dependencies.scad-assembler]
-path = "../../libraries/scad-assembler"
+static_assertions = "1.1"
 
 [dependencies.parts]
 path = "../../libraries/parts"

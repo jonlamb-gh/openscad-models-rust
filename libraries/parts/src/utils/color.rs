@@ -9,6 +9,11 @@ pub enum Color {
     SandyBrown,
     SaddleBrown,
     PapayaWhip,
+    Cornsilk,
+    BlanchedAlmond,
+    Bisque,
+    BurlyWood,
+    Sienna,
 }
 
 impl ToString for Color {
@@ -17,6 +22,11 @@ impl ToString for Color {
             Color::SandyBrown => String::from("SandyBrown"),
             Color::SaddleBrown => String::from("SaddleBrown"),
             Color::PapayaWhip => String::from("PapayaWhip"),
+            Color::Cornsilk => String::from("Cornsilk"),
+            Color::BlanchedAlmond => String::from("BlanchedAlmond"),
+            Color::Bisque => String::from("Bisque"),
+            Color::BurlyWood => String::from("BurlyWood"),
+            Color::Sienna => String::from("Sienna"),
         }
     }
 }

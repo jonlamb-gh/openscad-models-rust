@@ -1,8 +1,6 @@
 use crate::assemblies::WallFrame;
-use parts::utils::{BoardDimensions, Centimeter, Color};
-use parts::Board;
+use parts::prelude::*;
 use scad::ScadFile;
-use scad_assembler::ScadAssembler;
 
 mod assemblies;
 mod config;

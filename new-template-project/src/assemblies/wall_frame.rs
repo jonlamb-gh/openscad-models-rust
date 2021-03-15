@@ -1,8 +1,6 @@
 use approx::assert_relative_eq;
-use parts::utils::{y_axis, Centimeter, Unit};
-use parts::Board;
+use parts::prelude::*;
 use scad::{scad, vec3, Rotate, ScadObject, Translate, Union};
-use scad_assembler::ScadAssembler;
 
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
 pub struct WallFrame {
