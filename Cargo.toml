@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "libraries/scad-cli",
     "libraries/parts",
     "new-template-project",
     "wood-projects/base-frame",

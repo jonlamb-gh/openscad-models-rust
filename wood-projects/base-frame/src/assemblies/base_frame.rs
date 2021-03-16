@@ -3,6 +3,14 @@ use approx::{assert_relative_eq, relative_ne};
 use parts::prelude::*;
 use scad::*;
 
+// TODO
+// Part/Assembly trait
+//  - part name
+//  - impls assembler
+//  - so the CLI can generate each part scad in a dir, same for stl files
+//  - CLI flags for exploded view
+//  - stuff in join_frame_boards() can be part-specific
+
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
 pub struct BaseFrame {
     // TODO - don't need each board, some are the same, just needed for doing a summary
@@ -27,8 +35,6 @@ impl BaseFrame {
     fn join_frame_boards(&self) -> ScadObject {
         let offset = SHORT_FRAME_BOARD_LENGTH - FRAME_BOARD_WIDTH;
 
-        // TODO - helper method to distribute slat boards, used here to do the
-        // cutouts in the frame boards
         scad!(Union;{
             self.left_long_frame_board.assemble_with(|obj, color| {
                 let obj = cut_bottom_ends(self.left_long_frame_board.dimensions(), obj);
