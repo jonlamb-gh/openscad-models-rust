@@ -3,12 +3,15 @@ use parts::prelude::*;
 use scad::ScadFile;
 use scad_cli::BaseOpts;
 use std::path::PathBuf;
+use std::{io, io::Write};
 use structopt::StructOpt;
+use tabwriter::TabWriter;
 
 mod assemblies;
 mod boards;
 mod config;
 mod joinery;
+mod project_parts;
 
 #[derive(Debug, Clone, Eq, PartialEq, StructOpt)]
 #[structopt(name = "base-frame")]
@@ -21,23 +24,37 @@ struct Opts {
     output_path: PathBuf,
 }
 
-fn main() {
+fn main() -> io::Result<()> {
     let opts = Opts::from_args();
 
     let mut sfile = ScadFile::new();
     sfile.set_detail(75);
 
-    let base_frame = BaseFrame::new();
+    let base_frame = BaseFrame::new(opts.base_opts.exploded_view);
 
     let root = base_frame.assemble();
     sfile.add_object(root);
 
     let filename = &format!("{}.scad", env!("CARGO_PKG_NAME"));
     let out_file = opts.output_path.join(&filename);
-    sfile
-        .write_to_file(&out_file)
-        .expect("Failed to write scad file");
+    sfile.write_to_file(&out_file)?;
 
-    // TODO - do a summary output with boards, dimensions, etc
-    // print all the config vars
+    if opts.base_opts.summary {
+        let boards = base_frame.boards();
+        let mut tw = TabWriter::new(io::stdout());
+        writeln!(tw, "BOARD\tDIMENSIONS\tUNITS\tBOARD FEET")?;
+        for (idx, b) in boards.into_iter().enumerate() {
+            writeln!(
+                tw,
+                "{}\t{}\t{}\t{}",
+                idx + 1,
+                b.dimensions(),
+                b.dimensions().units(),
+                b.dimensions().board_feet()
+            )?;
+        }
+        tw.flush()?;
+    }
+
+    Ok(())
 }

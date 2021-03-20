@@ -1,5 +1,6 @@
 use crate::utils::{cm3_to_board_foot, BoardFoot, BoardFootExt, Centimeter, Unit};
 use scad::na::Vector3;
+use std::fmt;
 
 /// Default unit is centimeter
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
@@ -49,6 +50,21 @@ where
 
     pub fn thickness(&self) -> U {
         self.size[2]
+    }
+}
+
+impl<U> fmt::Display for BoardDimensions<U>
+where
+    U: Unit + fmt::Display,
+{
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{} x {} x {}",
+            self.length(),
+            self.width(),
+            self.thickness(),
+        )
     }
 }
 

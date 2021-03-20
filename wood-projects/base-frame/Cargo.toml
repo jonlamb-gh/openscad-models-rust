@@ -8,6 +8,7 @@ edition = "2018"
 structopt = "0.3"
 approx = "0.4"
 static_assertions = "1.1"
+tabwriter = "1.2"
 
 [dependencies.parts]
 path = "../../libraries/parts"

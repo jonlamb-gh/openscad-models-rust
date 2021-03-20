@@ -56,6 +56,24 @@ pub fn cut_slat_board_slots(dims: &BoardDimensions, obj: ScadObject) -> ScadObje
     root
 }
 
+pub fn cut_bolt_holes(dims: &BoardDimensions, obj: ScadObject) -> ScadObject {
+    let s = dims.unitless_size();
+    let cutout = scad!(Translate(vec3(0.0, s.y, s.z / 2.0));{
+        scad!(Rotate(90.0, vec3(1.0, 0.0, 0.0));{
+            scad!(Cylinder(s.y, CircleType::Diameter(BOLT_HOLE_DIAMETER.get())))
+        })
+    });
+    scad!(Difference;{
+        obj,
+        scad!(Translate(vec3((s.x / 2.0) - SHORT_FRAME_BOLT_OFFSET.get(), 0.0, 0.0));{
+            cutout.clone()
+        }),
+        scad!(Translate(vec3((s.x / 2.0) + SHORT_FRAME_BOLT_OFFSET.get(), 0.0, 0.0));{
+            cutout
+        })
+    })
+}
+
 const_assert!(NUM_SLAT_BOARDS % 2 == 0);
 pub fn slat_offsets() -> Vec<Centimeter> {
     let start = SLAT_BOARD_SEP_DISTANCE / 2.0;

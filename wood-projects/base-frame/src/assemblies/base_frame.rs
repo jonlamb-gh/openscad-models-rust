@@ -1,4 +1,4 @@
-use crate::{boards::*, config::*, joinery::*};
+use crate::{boards::*, config::*, joinery::*, project_parts::*};
 use approx::{assert_relative_eq, relative_ne};
 use parts::prelude::*;
 use scad::*;
@@ -10,58 +10,64 @@ use scad::*;
 //  - so the CLI can generate each part scad in a dir, same for stl files
 //  - CLI flags for exploded view
 //  - stuff in join_frame_boards() can be part-specific
+//
+//  - consider migrating the Assembler trait to Rust-Scad crate
 
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
 pub struct BaseFrame {
-    // TODO - don't need each board, some are the same, just needed for doing a summary
-    left_long_frame_board: Board,
-    right_long_frame_board: Board,
-    top_short_frame_board: Board,
-    bottom_short_frame_board: Board,
+    exploded_view: bool,
+    left_long_frame_board: LongFrameBoard,
+    right_long_frame_board: LongFrameBoard,
+    top_short_frame_board: ShortFrameBoard,
+    bottom_short_frame_board: ShortFrameBoard,
     slat_boards: [Board; NUM_SLAT_BOARDS],
 }
 
 impl BaseFrame {
-    pub fn new() -> Self {
+    pub fn new(exploded_view: bool) -> Self {
         BaseFrame {
-            left_long_frame_board: long_frame_board(),
-            right_long_frame_board: long_frame_board(),
-            top_short_frame_board: short_frame_board(),
-            bottom_short_frame_board: short_frame_board(),
+            exploded_view,
+            left_long_frame_board: LongFrameBoard::new(),
+            right_long_frame_board: LongFrameBoard::new(),
+            top_short_frame_board: ShortFrameBoard::new(),
+            bottom_short_frame_board: ShortFrameBoard::new(),
             slat_boards: [slat_board(); NUM_SLAT_BOARDS],
         }
     }
 
+    pub fn boards(&self) -> Vec<&Board> {
+        let mut boards = Vec::new();
+        boards.push(&self.left_long_frame_board.0);
+        boards.push(&self.right_long_frame_board.0);
+        boards.push(&self.top_short_frame_board.0);
+        boards.push(&self.bottom_short_frame_board.0);
+        for b in self.slat_boards.iter() {
+            boards.push(b);
+        }
+        boards
+    }
+
     fn join_frame_boards(&self) -> ScadObject {
         let offset = SHORT_FRAME_BOARD_LENGTH - FRAME_BOARD_WIDTH;
+        let exploded_view_offset = if self.exploded_view {
+            EXPLODED_VIEW_OFFSET
+        } else {
+            0.0.into()
+        };
 
         scad!(Union;{
-            self.left_long_frame_board.assemble_with(|obj, color| {
-                let obj = cut_bottom_ends(self.left_long_frame_board.dimensions(), obj);
-                let obj = cut_slat_board_slots(self.left_long_frame_board.dimensions(), obj);
-                color_or_render_root(obj, color)
-            }),
+            self.left_long_frame_board.assemble(),
             scad!(Translate(vec3(0.0, offset.get(), 0.0));{
-                self.right_long_frame_board.assemble_with(|obj, color| {
-                    let obj = cut_bottom_ends(self.right_long_frame_board.dimensions(), obj);
-                    let obj = cut_slat_board_slots(self.right_long_frame_board.dimensions(), obj);
-                    color_or_render_root(obj, color)
-                }),
+                self.right_long_frame_board.assemble()
             }),
-            scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
-                scad!(Translate(vec3(0.0, -FRAME_BOARD_WIDTH.get(), 0.0));{
-                    self.top_short_frame_board.assemble_with(|obj, color| {
-                        let obj = cut_top_ends(self.top_short_frame_board.dimensions(), obj);
-                        color_or_render_root(obj, color)
-                    })
+            scad!(Translate(vec3(FRAME_BOARD_WIDTH.get() - exploded_view_offset.get(), 0.0, 0.0));{
+                scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
+                    self.top_short_frame_board.assemble()
                 })
             }),
-            scad!(Translate(vec3(LONG_FRAME_BOARD_LENGTH.get(), 0.0, 0.0));{
+            scad!(Translate(vec3(LONG_FRAME_BOARD_LENGTH.get() + exploded_view_offset.get(), 0.0, 0.0));{
                 scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
-                    self.bottom_short_frame_board.assemble_with(|obj, color| {
-                        let obj = cut_top_ends(self.bottom_short_frame_board.dimensions(), obj);
-                        color_or_render_root(obj, color)
-                    })
+                    self.bottom_short_frame_board.assemble()
                 })
             })
         })
@@ -114,9 +120,14 @@ impl BaseFrame {
 
 impl ScadAssembler for BaseFrame {
     fn assemble(&self) -> ScadObject {
+        let exploded_view_offset = if self.exploded_view {
+            EXPLODED_VIEW_OFFSET
+        } else {
+            0.0.into()
+        };
         scad!(Union;{
             self.join_frame_boards(),
-            scad!(Translate(vec3(0.0, 0.0, (FRAME_BOARD_THICKNESS - SLAT_BOARD_THICKNESS).get()));{
+            scad!(Translate(vec3(0.0, 0.0, (FRAME_BOARD_THICKNESS - SLAT_BOARD_THICKNESS).get() + exploded_view_offset.get()));{
                 self.join_slat_boards(),
             })
         })
