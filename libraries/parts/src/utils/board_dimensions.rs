@@ -3,7 +3,7 @@ use scad::na::Vector3;
 use std::fmt;
 
 /// Default unit is centimeter
-#[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Hash, Debug)]
 pub struct BoardDimensions<U: Unit + 'static = Centimeter> {
     /// size[0] is with the grain
     /// size[1] is against the grain

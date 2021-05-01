@@ -2,6 +2,7 @@ use crate::assemblies::BaseFrame;
 use parts::prelude::*;
 use scad::ScadFile;
 use scad_cli::BaseOpts;
+use std::collections::HashMap;
 use std::path::PathBuf;
 use std::{io, io::Write};
 use structopt::StructOpt;
@@ -41,16 +42,22 @@ fn main() -> io::Result<()> {
 
     if opts.base_opts.summary {
         let boards = base_frame.boards();
+        let mut board_counts: HashMap<Board, usize> = HashMap::new();
+        for b in boards.into_iter() {
+            let count = board_counts.entry(*b).or_insert(0);
+            *count += 1;
+        }
         let mut tw = TabWriter::new(io::stdout());
-        writeln!(tw, "BOARD\tDIMENSIONS\tUNITS\tBOARD FEET")?;
-        for (idx, b) in boards.into_iter().enumerate() {
+        writeln!(tw, "NUM BOARDS\tDIMENSIONS\tUNITS\tBOARD FEET")?;
+        for (board, count) in board_counts.into_iter() {
+            let total_board_feet = board.dimensions().board_feet() * (count as f32);
             writeln!(
                 tw,
                 "{}\t{}\t{}\t{}",
-                idx + 1,
-                b.dimensions(),
-                b.dimensions().units(),
-                b.dimensions().board_feet()
+                count,
+                board.dimensions(),
+                board.dimensions().units(),
+                total_board_feet
             )?;
         }
         tw.flush()?;

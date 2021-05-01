@@ -7,6 +7,7 @@ edition = "2018"
 [dependencies]
 approx = "0.4"
 dimensioned = "0.7"
+ordered-float = "2.1"
 
 [dependencies.scad]
 git = "https://github.com/jonlamb-gh/Rust-Scad.git"

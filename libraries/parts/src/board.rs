@@ -2,7 +2,7 @@ use crate::assembler::ScadAssembler;
 use crate::utils::{BoardDimensions, Color};
 use scad::{scad, Cube, ScadObject};
 
-#[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Hash, Debug)]
 pub struct Board {
     dimensions: BoardDimensions,
     color: Option<Color>,

@@ -152,6 +152,55 @@ macro_rules! newtype_helper_impls {
     };
 }
 
+// TODO - refactor unit types to actually use the crate instead of this
+// Taken from https://crates.io/crates/ordered-float
+#[macro_export]
+macro_rules! newtype_ordered_float {
+    ($name:ident) => {
+        impl Eq for $name {}
+        impl PartialOrd for $name {
+            fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+                Some(self.cmp(other))
+            }
+        }
+        impl Ord for $name {
+            fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+                let lhs = self.0;
+                let rhs = other.0;
+                match lhs.partial_cmp(&rhs) {
+                    Some(ordering) => ordering,
+                    None => {
+                        if lhs.is_nan() {
+                            if rhs.is_nan() {
+                                std::cmp::Ordering::Equal
+                            } else {
+                                std::cmp::Ordering::Greater
+                            }
+                        } else {
+                            std::cmp::Ordering::Less
+                        }
+                    }
+                }
+            }
+        }
+        impl PartialEq for $name {
+            fn eq(&self, other: &$name) -> bool {
+                if self.0.is_nan() {
+                    other.0.is_nan()
+                } else {
+                    self.0 == other.0
+                }
+            }
+        }
+        impl std::hash::Hash for $name {
+            fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+                let t = ordered_float::OrderedFloat(self.0);
+                t.hash(state);
+            }
+        }
+    };
+}
+
 #[macro_export]
 macro_rules! newtype_approx_impls {
     ($name:ident) => {

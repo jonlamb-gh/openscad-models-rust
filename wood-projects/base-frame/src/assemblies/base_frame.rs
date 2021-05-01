@@ -79,6 +79,10 @@ impl BaseFrame {
             self.slat_boards.windows(2).all(|w| w[0] == w[1]),
             "All the slat boards should be the same"
         );
+        assert!(
+            SLAT_BOARD_SEP_DISTANCE < 6.032,
+            "For safety, the slat board separation distance must be less than 2-and-3/8 inches (2.375 in ~= 6.032 cm)"
+        );
         let board = self.slat_boards[0];
         let mut root = ScadObject::new(ScadElement::Union);
         let start = LONG_FRAME_BOARD_LENGTH / 2.0;
@@ -95,6 +99,10 @@ impl BaseFrame {
                 dist, SLAT_BOARD_SEP_DISTANCE
             );
         }
+        assert!(
+            dist < 6.032,
+            "For safety, the slat board separation distance must be less than 2-and-3/8 inches (2.375 in ~= 6.032 cm)"
+        );
 
         let obj = scad!(Translate(vec3(board.dimensions().width().get(), 0.0, 0.0));{
             scad!(Rotate(90.0, vec3(0.0, 0.0, 1.0));{
