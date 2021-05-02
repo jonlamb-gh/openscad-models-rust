@@ -7,17 +7,8 @@
 ```
 cargo run -- --summary
 
-BOARD  DIMENSIONS     UNITS       BOARD FEET
-1      129.3 x 5 x 5  Centimeter  1.3698558
-2      129.3 x 5 x 5  Centimeter  1.3698558
-3      68 x 5 x 5     Centimeter  0.72041917
-4      68 x 5 x 5     Centimeter  0.72041917
-5      68 x 8 x 1.5   Centimeter  0.34580126
-6      68 x 8 x 1.5   Centimeter  0.34580126
-7      68 x 8 x 1.5   Centimeter  0.34580126
-8      68 x 8 x 1.5   Centimeter  0.34580126
-9      68 x 8 x 1.5   Centimeter  0.34580126
-10     68 x 8 x 1.5   Centimeter  0.34580126
-11     68 x 8 x 1.5   Centimeter  0.34580126
-12     68 x 8 x 1.5   Centimeter  0.34580126
+NUM BOARDS  DIMENSIONS         UNITS       BOARD FEET
+2           129.3 x 3.8 x 3.8  Centimeter  1.5824577
+2           68 x 3.8 x 3.8     Centimeter  0.8322283
+8           68 x 8.9 x 1.8     Centimeter  3.693157
 ```
