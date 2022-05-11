@@ -4,6 +4,7 @@ members = [
     "libraries/parts",
     "new-template-project",
     "wood-projects/base-frame",
+    "wood-projects/storage-shelves",
 ]
 
 # TODO port these over to the new stuff

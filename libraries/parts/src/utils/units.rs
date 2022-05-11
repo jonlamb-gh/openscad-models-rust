@@ -1,7 +1,7 @@
 use crate::{
     from_newtype, newtype_add, newtype_approx_impls, newtype_deref, newtype_deref_mut,
     newtype_display, newtype_div, newtype_from, newtype_helper_impls, newtype_mul,
-    newtype_ordered_float, newtype_sub,
+    newtype_ordered_float, newtype_sub, utils::common_functions::in_to_cm,
 };
 use std::fmt;
 use std::hash::Hash;
@@ -95,6 +95,12 @@ newtype_ordered_float!(Inch);
 impl private::Sealed for Inch {}
 impl Unit for Inch {
     const UNIT_NAME: &'static str = "Inch";
+}
+
+impl From<Inch> for Centimeter {
+    fn from(v: Inch) -> Self {
+        in_to_cm(v)
+    }
 }
 
 #[derive(Copy, Clone, Debug, Default)]

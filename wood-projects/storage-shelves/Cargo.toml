@@ -1,0 +1,22 @@
+[package]
+name = "storage-shelves"
+version = "0.1.0"
+authors = ["Jon Lamb"]
+edition = "2021"
+
+[dependencies]
+structopt = "0.3"
+approx = "0.4"
+static_assertions = "1.1"
+tabwriter = "1.2"
+derive_more = "0.99"
+
+[dependencies.parts]
+path = "../../libraries/parts"
+
+[dependencies.scad-cli]
+path = "../../libraries/scad-cli"
+
+[dependencies.scad]
+git = "https://github.com/jonlamb-gh/Rust-Scad.git"
+branch = "various-changes"

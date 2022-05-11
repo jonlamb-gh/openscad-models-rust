@@ -43,6 +43,12 @@ pub fn cm_to_ft<U: Into<Centimeter>>(val: U) -> Foot {
     (m / ucum::f32consts::FT_I).value_unsafe.into()
 }
 
+/// Convert inch to international foot
+pub fn in_to_ft<U: Into<Inch>>(val: U) -> Foot {
+    let m: ucum::Meter<f32> = val.into().as_f32() * ucum::f32consts::IN_I;
+    (m / ucum::f32consts::FT_I).value_unsafe.into()
+}
+
 /// Convert length, width, thickness in centimeters to international board feet
 /// https://en.wikipedia.org/wiki/Board_foot
 pub fn cm3_to_board_foot<U: Into<Centimeter> + fmt::Debug + Copy + PartialEq + 'static>(
@@ -51,6 +57,17 @@ pub fn cm3_to_board_foot<U: Into<Centimeter> + fmt::Debug + Copy + PartialEq + '
     let volume_cin: ucum::Meter3<f32> = (cm_to_ft(dims.x).as_f32() * ucum::f32consts::FT_I)
         * (cm_to_in(dims.y).as_f32() * ucum::f32consts::IN_I)
         * (cm_to_in(dims.z).as_f32() * ucum::f32consts::IN_I);
+    (volume_cin / ucum::f32consts::BF_I).value_unsafe.into()
+}
+
+/// Convert length, width, thickness in inches to international board feet
+/// https://en.wikipedia.org/wiki/Board_foot
+pub fn in3_to_board_foot<U: Into<Inch> + fmt::Debug + Copy + PartialEq + 'static>(
+    dims: &Vector3<U>,
+) -> BoardFoot {
+    let volume_cin: ucum::Meter3<f32> = (in_to_ft(dims.x).as_f32() * ucum::f32consts::FT_I)
+        * (dims.y.into().as_f32() * ucum::f32consts::IN_I)
+        * (dims.z.into().as_f32() * ucum::f32consts::IN_I);
     (volume_cin / ucum::f32consts::BF_I).value_unsafe.into()
 }
 
